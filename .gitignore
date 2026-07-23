@@ -39,3 +39,6 @@ HACKATHON_BLOG_POST.md
 *.ps1
 .env.yaml
 .pnpm-store/
+
+# local editor / MCP config (contains secrets)
+.vscode/mcp.json
