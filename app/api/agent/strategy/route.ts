@@ -17,8 +17,9 @@ import { agentAudit } from '@/lib/audit-logger';
 const strategyIntelligenceTool = new FunctionTool({
   name: "strategy_intelligence",
   description: "Search for industry best practices, mitigation strategies, and market resilience trends.",
-  parameters: z.object({ query: z.string() }),
-  execute: async (args) => {
+  // Cast at the ADK boundary (dual-zod structural mismatch; identical at runtime).
+  parameters: z.object({ query: z.string() }) as any,
+  execute: async (args: any) => {
     if (!process.env.TAVILY_API_KEY) return { error: "Tavily API key missing" };
     const tavilyClient = tavily({ apiKey: process.env.TAVILY_API_KEY });
     const result = await tavilyClient.search(args.query, { 
@@ -152,7 +153,7 @@ class ProductionStrategyAgent {
                 model: AI_MODELS.agents, 
                 apiKey: getAIKeyForModule("agents")
               }),
-              outputSchema: StrategyResponseSchema,
+              outputSchema: StrategyResponseSchema as any,
               tools: [strategyIntelligenceTool]
             });
 

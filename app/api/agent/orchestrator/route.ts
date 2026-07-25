@@ -35,7 +35,8 @@ function buildTools(coordinationLogs: CoordinationStep[]) {
     return new FunctionTool({
       name,
       description,
-      parameters,
+      // Cast at the ADK boundary (dual-zod structural mismatch; identical at runtime).
+      parameters: parameters as any,
       execute: async (args: any) => {
         const start = Date.now();
         try {

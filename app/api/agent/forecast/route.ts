@@ -32,11 +32,12 @@ const ForecastRequestSchema = z.object({
 const forecastDataTool = new FunctionTool({
   name: "get_forecast_data",
   description: "Fetch historical forecasts and supply chain intelligence for a specific supply chain or node.",
+  // Cast at the ADK boundary (dual-zod structural mismatch; identical at runtime).
   parameters: z.object({
     nodeId: z.string().optional(),
     supplyChainId: z.string()
-  }),
-  execute: async (args) => {
+  }) as any,
+  execute: async (args: any) => {
     try {
       const supabase = supabaseServer;
       
@@ -114,7 +115,7 @@ Generate realistic, actionable forecast scenarios that a supply chain manager wo
           model: AI_MODELS.agents, 
           apiKey: getAIKeyForModule('agents') 
         }),
-        outputSchema: ForecastOutputSchema,
+        outputSchema: ForecastOutputSchema as any,
         tools: [forecastDataTool]
       });
 

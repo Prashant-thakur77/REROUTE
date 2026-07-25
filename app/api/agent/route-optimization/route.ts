@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         description: 'Analyzes supply chain disruptions and recommends optimal alternate routes.',
         instruction: 'You are a logistics route optimization specialist. Analyze the disrupted node and supply chain graph, then return alternate routing recommendations as valid JSON matching the schema exactly.',
         model: new Gemini({ model: AI_MODELS.agents, apiKey: getAIKeyForModule('agents') }),
-        outputSchema: RouteOptimizationSchema,
+        outputSchema: RouteOptimizationSchema as any,
         disallowTransferToParent: true,
         disallowTransferToPeers: true,
       });

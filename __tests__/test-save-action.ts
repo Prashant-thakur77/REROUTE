@@ -1,5 +1,5 @@
 
-import { saveSupplyChainAction } from './lib/actions/edge-functions';
+import { saveSupplyChainAction } from '../lib/actions/edge-functions';
 import { createClient } from '@supabase/supabase-js';
 import * as dotenv from 'dotenv';
 import { resolve } from 'path';

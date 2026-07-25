@@ -19,8 +19,10 @@ import { z } from 'zod';
 const tavilySearchTool = new FunctionTool({
   name: "tavily_search",
   description: "Search for real-time supply chain intelligence, weather, and disruptions.",
-  parameters: z.object({ query: z.string() }),
-  execute: async (args) => {
+  // Cast at the ADK boundary: dual-zod setup makes the schema types structurally
+  // incompatible with ADK's ToolInputParameters, though they are identical at runtime.
+  parameters: z.object({ query: z.string() }) as any,
+  execute: async (args: any) => {
     if (!process.env.TAVILY_API_KEY) return { error: "Tavily API key missing" };
     const tavilyClient = tavily({ apiKey: process.env.TAVILY_API_KEY });
     const result = await tavilyClient.search(args.query, { 

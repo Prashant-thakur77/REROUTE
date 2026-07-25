@@ -147,16 +147,21 @@ export async function POST(req: Request) {
         apiKey: getAIKeyForModule('suggestions')
       });
 
-      const result = await generateObject({
+      // Cast at the AI-SDK boundary (dual-zod structural mismatch; identical at
+      // runtime) and re-assert the result shape, since the cast erases inference.
+      const result = (await generateObject({
         model: google(AI_MODELS.suggestions, { structuredOutputs: false }),
-        schema: SupplyChainSuggestionSchema,
+        schema: SupplyChainSuggestionSchema as any,
         messages: [
           { role: "system", content: SUPPLY_CHAIN_SUGGESTION_SYSTEM_PROMPT },
           ...messages
         ],
         maxOutputTokens: 4096,
         temperature: 0.7,
-      })
+      } as any)) as {
+        object: { suggestions: Array<{ title: string; [k: string]: any }> };
+        usage: any;
+      };
 
       // Truncate titles manually if they exceed 3 words
       const suggestions = result.object.suggestions.map(s => {

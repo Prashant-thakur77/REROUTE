@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
             4. Set \`disruptionsFound\` to true ONLY if at least one node scores above 0.80.
             5. Summarize the overall situation in \`description\`. Always return valid JSON matching the schema.`,
         model: new Gemini({ model: AI_MODELS.agents, apiKey: getAIKeyForModule('agents') }),
-        outputSchema: LiveIntelligenceSchema,
+        outputSchema: LiveIntelligenceSchema as any,
         disallowTransferToParent: true,
         disallowTransferToPeers: true,
       });

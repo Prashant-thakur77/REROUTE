@@ -981,7 +981,7 @@ Please provide a comprehensive impact assessment matching the strict JSON schema
                 model: AI_MODELS.agents, 
                 apiKey: getAIKeyForModule("agents")
               }),
-              outputSchema: SimulationResultsSchema
+              outputSchema: SimulationResultsSchema as any
             });
 
             const runner = new InMemoryRunner({ appName: 'impact', agent });
@@ -1106,6 +1106,7 @@ Please provide a comprehensive impact assessment matching the strict JSON schema
       downstream.set(n.node_id, []);
     });
     edges.forEach(e => {
+      if (!e.from_node_id || !e.to_node_id) return;
       const list = downstream.get(e.from_node_id) || [];
       list.push(e.to_node_id);
       downstream.set(e.from_node_id, list);
