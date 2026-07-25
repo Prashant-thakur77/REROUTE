@@ -10,7 +10,7 @@ const ControlTowerToggle: FC = () => {
 
   return (
     <div 
-      className="fixed top-20 right-[150px] z-50 group"
+      className="fixed top-20 right-[150px] z-40 group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

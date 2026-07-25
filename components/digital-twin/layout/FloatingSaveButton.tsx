@@ -18,7 +18,7 @@ const FloatingSaveButton: FC<FloatingSaveButtonProps> = ({
 
   return (
     <div 
-      className="fixed top-20 right-4 z-50 group"
+      className="fixed top-20 right-4 z-40 group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
