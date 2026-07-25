@@ -14,7 +14,7 @@ const ControlTowerPanel: FC = () => {
   const activeNodes = nodes.filter(n => disruptedNodes.includes(n.id));
 
   return (
-    <div className="absolute top-24 left-4 z-40 w-80 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-xl shadow-2xl p-4 transition-all animate-in slide-in-from-left-4">
+    <div className="absolute top-24 left-4 right-4 sm:right-auto z-40 w-auto sm:w-80 max-w-[calc(100vw-2rem)] max-h-[calc(100vh-8rem)] overflow-y-auto bg-card/80 backdrop-blur-md border border-border rounded-xl shadow-2xl p-4 transition-all animate-in slide-in-from-left-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold flex items-center gap-2">
           <ShieldAlertIcon /> Control Tower
@@ -22,7 +22,7 @@ const ControlTowerPanel: FC = () => {
         {disruptedNodes.length > 0 && (
           <button 
             onClick={clearDisruptions}
-            className="text-xs text-gray-500 hover:text-gray-900 dark:hover:text-white"
+            className="text-xs text-muted-foreground hover:text-foreground"
           >
             Clear All
           </button>
@@ -30,12 +30,12 @@ const ControlTowerPanel: FC = () => {
       </div>
 
       {disruptedNodes.length === 0 ? (
-        <div className="text-sm text-gray-500 dark:text-gray-400 text-center py-6 space-y-4">
+        <div className="text-sm text-muted-foreground text-center py-6 space-y-4">
           <p>Right-click any node to manually simulate a disruption.</p>
           <div className="relative flex items-center py-2">
-            <div className="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
-            <span className="flex-shrink-0 mx-4 text-xs font-medium text-gray-400 uppercase">OR</span>
-            <div className="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+            <div className="flex-grow border-t border-border"></div>
+            <span className="flex-shrink-0 mx-4 text-xs font-medium text-muted-foreground uppercase">OR</span>
+            <div className="flex-grow border-t border-border"></div>
           </div>
           <button 
             onClick={async () => {
@@ -92,7 +92,7 @@ const ControlTowerPanel: FC = () => {
             disabled={isScanning || nodes.length === 0}
             className={`w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-medium transition-colors border ${
               nodes.length === 0 
-                ? 'bg-gray-100 text-gray-400 border-gray-200 dark:bg-gray-800 dark:text-gray-500 dark:border-gray-700 cursor-not-allowed'
+                ? 'bg-muted text-muted-foreground border-border cursor-not-allowed'
                 : 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/40 border-blue-200 dark:border-blue-800'
             }`}
           >
@@ -101,7 +101,7 @@ const ControlTowerPanel: FC = () => {
           </button>
         </div>
       ) : isAnalyzingDisruption ? (
-        <div className="flex flex-col items-center justify-center py-10 space-y-4 text-sm text-gray-500">
+        <div className="flex flex-col items-center justify-center py-10 space-y-4 text-sm text-muted-foreground">
           <Loader2 className="w-8 h-8 animate-spin text-red-500" />
           <p>AI is analyzing disruption impact...</p>
         </div>
@@ -112,7 +112,7 @@ const ControlTowerPanel: FC = () => {
               <AlertCircle className="w-4 h-4" />
               Active Disruption
             </div>
-            <div className="text-sm text-gray-700 dark:text-gray-300">
+            <div className="text-sm text-muted-foreground">
               Root node: <strong>{activeNodes[0]?.data?.label || activeNodes[0]?.id}</strong>
             </div>
           </div>
@@ -137,23 +137,23 @@ const ControlTowerPanel: FC = () => {
           </div>
           
           {disruptionAnalysis && (
-            <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-800 space-y-3">
+            <div className="mt-4 pt-4 border-t border-border space-y-3">
               <div className="text-sm font-semibold flex items-center gap-2">
                 <span className={`w-2 h-2 rounded-full ${disruptionAnalysis.severity === 'High' ? 'bg-red-500' : 'bg-yellow-500'}`}></span>
                 AI Impact Analysis
               </div>
-              <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-xs text-muted-foreground leading-relaxed">
                 {disruptionAnalysis.impactDescription}
               </p>
               
               {disruptionAnalysis.alternateRoutes && disruptionAnalysis.alternateRoutes.length > 0 && (
                 <div className="pt-2">
-                  <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Recommended Detours</div>
+                  <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Recommended Detours</div>
                   <ul className="space-y-2">
                     {disruptionAnalysis.alternateRoutes.map((route: string, i: number) => (
-                      <li key={i} className="text-xs flex items-start gap-2 bg-gray-50 dark:bg-gray-800 p-2 rounded-md border border-gray-100 dark:border-gray-700">
+                      <li key={i} className="text-xs flex items-start gap-2 bg-muted p-2 rounded-md border border-border">
                         <Route className="w-3 h-3 mt-0.5 text-blue-500" />
-                        <span className="text-gray-700 dark:text-gray-300">{route}</span>
+                        <span className="text-muted-foreground">{route}</span>
                       </li>
                     ))}
                   </ul>
@@ -163,8 +163,8 @@ const ControlTowerPanel: FC = () => {
           )}
 
           {!disruptionAnalysis && (
-            <div className="pt-2 border-t border-gray-200 dark:border-gray-800">
-               <button className="w-full flex items-center justify-center gap-2 py-2 bg-black dark:bg-white text-white dark:text-black rounded-lg text-sm font-medium hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors">
+            <div className="pt-2 border-t border-border">
+               <button className="w-full flex items-center justify-center gap-2 py-2 bg-foreground text-background rounded-lg text-sm font-medium hover:bg-foreground/90 transition-colors">
                  <Route className="w-4 h-4" />
                  Find Alternate Routes
                </button>

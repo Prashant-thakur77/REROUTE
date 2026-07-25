@@ -175,7 +175,7 @@ const SourceLinkWithTooltip = ({ source }: { source: Source }) => {
             href={source.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1.5"
+            className="text-sm font-medium text-primary hover:underline flex items-center gap-1.5"
           >
             {getSiteIcon(source.url)}
             {source.title}
@@ -237,10 +237,10 @@ const SourceLinkWithTooltip = ({ source }: { source: Source }) => {
 export function AlertDetailsSheet({ isOpen, onOpenChange, event: selectedEvent }: AlertDetailsSheetProps) {
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full sm:max-w-md bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-slate-200/40 dark:border-slate-800/40 shadow-2xl rounded-lg">
+      <SheetContent className="w-full p-0 sm:max-w-lg bg-card border-border shadow-2xl">
         {selectedEvent && (
           <div className="overflow-y-auto h-full">
-            <CardHeader className="pt-8">
+            <CardHeader className="px-4 pt-8 sm:px-6">
               <div className="flex items-center space-x-2 mb-4">
                 <span className="text-3xl">{getCategoryIcon(selectedEvent.category)}</span>
                 <div>
@@ -252,26 +252,26 @@ export function AlertDetailsSheet({ isOpen, onOpenChange, event: selectedEvent }
                   </Badge>
                 </div>
               </div>
-              <CardTitle className="text-2xl font-bold text-gray-900 dark:text-gray-50 leading-tight">
+              <CardTitle className="font-display text-2xl font-bold text-foreground leading-tight">
                 {selectedEvent.title}
               </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-400 pt-1">
+              <CardDescription className="text-muted-foreground pt-1">
                 {selectedEvent.summary}
               </CardDescription>
             </CardHeader>
 
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 px-4 pb-8 sm:px-6">
               {/* Supply Chain and Timeline */}
               <div className="grid grid-cols-2 gap-6 pt-4">
                 <div>
-                  <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">Supply Chain</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{selectedEvent.supplyChainName}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{selectedEvent.nodeName}</p>
+                  <h4 className="font-semibold text-foreground mb-2 text-sm">Supply Chain</h4>
+                  <p className="text-sm text-muted-foreground">{selectedEvent.supplyChainName}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{selectedEvent.nodeName}</p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-2 text-sm">Timeframe</h4>
-                  <p className="text-sm text-gray-600 dark:text-gray-300">{selectedEvent.timeframe}</p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <h4 className="font-semibold text-foreground mb-2 text-sm">Timeframe</h4>
+                  <p className="text-sm text-muted-foreground">{selectedEvent.timeframe}</p>
+                  <p className="text-xs text-muted-foreground mt-1">
                     Detected {formatTimeAgo(selectedEvent.batchTimestamp)}
                   </p>
                 </div>
@@ -279,10 +279,10 @@ export function AlertDetailsSheet({ isOpen, onOpenChange, event: selectedEvent }
 
               {/* Affected Entities */}
               <div>
-                <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3 text-sm">Affected Entities</h4>
+                <h4 className="font-semibold text-foreground mb-3 text-sm">Affected Entities</h4>
                 <div className="flex flex-wrap gap-2">
                   {selectedEvent.affectedEntities.map((entity, index) => (
-                    <Badge key={index} variant="secondary" className="text-sm font-normal border-gray-300/50 dark:border-gray-700/50 text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50">
+                    <Badge key={index} variant="secondary" className="text-sm font-normal border border-border text-muted-foreground bg-muted">
                       {entity}
                     </Badge>
                   ))}
@@ -292,14 +292,14 @@ export function AlertDetailsSheet({ isOpen, onOpenChange, event: selectedEvent }
               {/* Confidence */}
               <div className='pt-2'>
                 <div className='flex justify-between items-center mb-2'>
-                  <h4 className="font-semibold text-gray-800 dark:text-gray-200 text-sm">Confidence Level</h4>
-                  <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
+                  <h4 className="font-semibold text-foreground text-sm">Confidence Level</h4>
+                  <span className="text-sm font-semibold text-primary">
                     {Math.round(selectedEvent.confidence * 100)}%
                   </span>
                 </div>
-                <div className="w-full bg-gray-200/80 dark:bg-gray-700/60 rounded-full h-2.5">
-                  <div 
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-400 dark:to-blue-500 h-2.5 rounded-full shadow-md" 
+                <div className="w-full bg-muted rounded-full h-2.5">
+                  <div
+                    className="bg-primary h-2.5 rounded-full shadow-sm"
                     style={{ width: `${selectedEvent.confidence * 100}%` }}
                   ></div>
                 </div>
@@ -308,18 +308,18 @@ export function AlertDetailsSheet({ isOpen, onOpenChange, event: selectedEvent }
               {/* Sources */}
               {selectedEvent.sources.length > 0 && (
                 <div className='pt-2'>
-                  <h4 className="font-semibold text-gray-800 dark:text-gray-200 mb-3 text-sm">Sources</h4>
+                  <h4 className="font-semibold text-foreground mb-3 text-sm">Sources</h4>
                   <div className="space-y-3">
                     {selectedEvent.sources.map((source, index) => (
-                      <div key={index} className="p-3 bg-white/60 dark:bg-slate-800/50 rounded-lg border border-gray-200/80 dark:border-slate-700/50 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors duration-200">
+                      <div key={index} className="p-3 bg-muted/50 rounded-lg border border-border hover:bg-muted transition-colors duration-200">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <SourceLinkWithTooltip source={source} />
-                            <div className="flex items-center gap-2 mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
                               <Badge variant="outline" className='border-green-300/80 text-green-700 bg-green-50/80 dark:text-green-300 dark:bg-green-950/50 dark:border-green-700/50'>
                                 {Math.round(source.credibility * 100)}% credible
                               </Badge>
-                              <span className='text-gray-400 dark:text-gray-600'>•</span>
+                              <span className='text-muted-foreground'>•</span>
                               <span>{formatTimeAgo(source.publishedAt)}</span>
                             </div>
                           </div>

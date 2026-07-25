@@ -25,10 +25,10 @@ export default function InternetSearchIcon({
             className={cn(
                 "rounded-full transition-all flex items-center gap-1.5 px-1.5 py-1 border h-7",
                 status
-                    ? "bg-gray-200 dark:bg-gray-800 border-gray-300 cursor-not-allowed opacity-50"
+                    ? "bg-muted border-border cursor-not-allowed opacity-50"
                     : showSearch || internet
                         ? "bg-sky-500/15 border-sky-400 text-sky-500 px-1.5"
-                        : "bg-neutral-200 dark:bg-gray-900 border-transparent hover:bg-neutral-300 dark:hover:bg-gray-800",
+                        : "bg-muted border-transparent hover:bg-accent",
             )}
         >
             <div className="w-3.5 h-3.5 flex items-center justify-center flex-shrink-0">

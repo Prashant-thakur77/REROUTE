@@ -93,13 +93,13 @@ export function SourceBubble({ source }: SourceBubbleProps) {
     <TooltipProvider>
       <Tooltip onOpenChange={setIsOpen}>
         <TooltipTrigger asChild>
-          <button 
+          <button
             onClick={handleClick}
-            className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md cursor-pointer hover:opacity-80 transition-all border bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="inline-flex max-w-full min-w-0 items-center gap-1 px-2 py-1 text-xs rounded-md cursor-pointer hover:opacity-80 transition-all border bg-muted text-muted-foreground border-border hover:bg-accent"
           >
-            {getSiteIcon(source.url)}
-            {displayTitle.length > 25 ? `${displayTitle.substring(0, 25)}...` : displayTitle}
-            <ExternalLink className="w-2 h-2 opacity-60" />
+            <span className="shrink-0">{getSiteIcon(source.url)}</span>
+            <span className="truncate">{displayTitle.length > 25 ? `${displayTitle.substring(0, 25)}...` : displayTitle}</span>
+            <ExternalLink className="w-2 h-2 opacity-60 shrink-0" />
           </button>
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-sm">

@@ -10,20 +10,25 @@ import { Badge } from '@/components/ui/badge'
 import { NewsRoomHeaderProps } from './types'
 
 const NewsRoomTitle = ({ alertCount }: { alertCount: number }) => (
-    <div className="flex items-center gap-3">
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+    <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+        <h1 className="min-w-0 truncate font-display text-base font-semibold tracking-tight text-foreground sm:text-xl">
             Real Time Intelligence Gathering
         </h1>
         {alertCount > 0 && (
-            <Badge variant="destructive" className="animate-pulse">
+            <Badge variant="destructive" className="hidden shrink-0 animate-pulse whitespace-nowrap sm:inline-flex">
                 {alertCount} New Alerts
+            </Badge>
+        )}
+        {alertCount > 0 && (
+            <Badge variant="destructive" className="shrink-0 animate-pulse sm:hidden">
+                {alertCount}
             </Badge>
         )}
         <Tooltip>
             <TooltipTrigger asChild>
-                <HelpCircle className="h-5 w-5 text-muted-foreground cursor-help" />
+                <HelpCircle className="hidden h-5 w-5 shrink-0 cursor-help text-muted-foreground sm:block" />
             </TooltipTrigger>
-            <TooltipContent side="bottom" className="max-w-sm text-gray-900 dark:text-gray-100">
+            <TooltipContent side="bottom" className="max-w-sm text-foreground">
                 <p className="text-sm text-muted-foreground">
                 We gather information about all your supply chains, including nodes, edges (paths), and connections at regular intervals. 
                 All relevant updates and intelligence are provided here in the news room to keep you informed about your supply chain status.
@@ -34,7 +39,7 @@ const NewsRoomTitle = ({ alertCount }: { alertCount: number }) => (
 )
 
 const BackButton = () => (
-    <Button asChild variant="ghost" size="icon" className="text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">
+    <Button asChild variant="ghost" size="icon" className="text-foreground hover:bg-accent">
         <Link href="/dashboard">
             <ArrowLeft className="h-5 w-5" />
         </Link>
@@ -48,7 +53,7 @@ export function NewsRoomHeader({ alertCount }: NewsRoomHeaderProps) {
             as="div"
             title={<NewsRoomTitle alertCount={alertCount} />}
             leftContent={<BackButton />}
-            className="relative border-white/30 dark:border-slate-700/10 bg-white/70 dark:bg-slate-900/5 backdrop-blur-xl shadow-xl shadow-black/5 dark:shadow-black/20 border-b"
+            className="relative border-b border-border bg-background/80 backdrop-blur-xl shadow-sm"
         />
     </TooltipProvider>
   )

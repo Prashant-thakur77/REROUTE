@@ -34,7 +34,7 @@ const nodeTypeConfigs = {
   },
   retailer: {
     label: 'RETAILER',
-    colorHex: '#6B7280',
+    colorHex: '#475569',
     icon: Store
   },
   manufacturer: {
@@ -108,18 +108,18 @@ const BaseNode = memo(({
       ? 'animate-pulse-border-orange border-2' 
       : '';
 
-  const selectedClass = selected 
-    ? 'ring-2 ring-[#2748E8] ring-offset-2 dark:ring-offset-zinc-950 scale-[1.02]' 
+  const selectedClass = selected
+    ? 'ring-2 ring-theme-blue ring-offset-2 ring-offset-[color:var(--bg-primary)] scale-[1.02]'
     : '';
 
   return (
     <div
       style={borderStyle}
       title="Click to view node details"
-      className={`relative w-[190px] rounded-xl px-3 py-2.5 transition-all duration-200 shadow-sm text-left cursor-pointer ${
-        isHighRisk 
-          ? 'bg-[#FEF2F2] dark:bg-[#2A1515]' 
-          : 'bg-white dark:bg-zinc-900'
+      className={`relative w-[190px] rounded-xl px-3 py-2.5 transition-all duration-200 shadow-[var(--shadow-sm)] text-left cursor-pointer ${
+        isHighRisk
+          ? 'bg-theme-red-soft'
+          : 'bg-theme-bg-surface'
       } ${disruptionBorderClass} ${selectedClass}`}
     >
       {showLeftHandle && (
@@ -127,7 +127,7 @@ const BaseNode = memo(({
           type="target"
           position={Position.Left}
           isConnectable={isConnectable}
-          className="!w-2.5 !h-2.5 !bg-theme-border-default hover:!bg-[#2748E8] transition-colors"
+          className="!w-2.5 !h-2.5 !bg-theme-border-default hover:!bg-theme-blue transition-colors"
         />
       )}
       {showRightHandle && (
@@ -135,7 +135,7 @@ const BaseNode = memo(({
           type="source"
           position={Position.Right}
           isConnectable={isConnectable}
-          className="!w-2.5 !h-2.5 !bg-theme-border-default hover:!bg-[#2748E8] transition-colors"
+          className="!w-2.5 !h-2.5 !bg-theme-border-default hover:!bg-theme-blue transition-colors"
         />
       )}
 
@@ -155,7 +155,7 @@ const BaseNode = memo(({
       </div>
 
       {/* Middle row: node name */}
-      <div className="font-semibold text-xs leading-tight text-[#18160F] dark:text-[#F0EDE7] mb-2 truncate" title={data.label}>
+      <div className="font-semibold text-xs leading-tight text-theme-text-primary mb-2 truncate" title={data.label}>
         {data.label}
       </div>
 
@@ -216,11 +216,11 @@ ManufacturerNode.displayName = 'ManufacturerNode';
 
 // Template Group Node
 export const TemplateGroupNode = memo(({ data, selected }: NodeProps) => {
-  const templateSelectionClass = selected ? 'ring-2 ring-blue-500/50' : '';
+  const templateSelectionClass = selected ? 'ring-2 ring-theme-blue/50' : '';
   
   return (
     <div 
-      className={`template-group h-full w-full border border-dashed border-[#D6CFC4] dark:border-zinc-800 rounded-lg bg-black/[0.02] dark:bg-white/[0.02] ${templateSelectionClass}`}
+      className={`template-group h-full w-full border border-dashed border-theme-border-default rounded-lg bg-theme-text-primary/[0.02] ${templateSelectionClass}`}
       data-label={data.label}
       title="Double-click to ungroup this template"
     >

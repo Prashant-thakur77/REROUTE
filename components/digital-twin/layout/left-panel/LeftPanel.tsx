@@ -151,7 +151,7 @@ const LeftPanel: FC<LeftPanelProps> = ({
 
   return (
     <motion.div 
-      className="h-full border-r border-theme-border-subtle bg-theme-bg-surface flex flex-col z-20 flex-shrink-0 lg:relative absolute left-0 top-0 shadow-lg lg:shadow-none"
+      className="h-full border-r border-theme-border-subtle bg-theme-bg-surface flex flex-col z-20 flex-shrink-0 lg:relative absolute left-0 top-0 shadow-lg lg:shadow-none max-w-[85vw] lg:max-w-none"
       initial={false}
       animate={{ 
         width: isCollapsed ? 48 : 320 
@@ -268,7 +268,7 @@ const LeftPanel: FC<LeftPanelProps> = ({
               <label className="text-[10px] font-bold text-theme-text-muted uppercase tracking-wider block mb-1.5">SUPPLY CHAIN</label>
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="w-full flex items-center justify-between px-3 py-2 bg-theme-bg-surface border border-theme-border-subtle rounded-lg text-xs font-semibold text-theme-text-primary hover:bg-[#EFEBE3] dark:hover:bg-[#191817] transition-all"
+                className="w-full flex items-center justify-between px-3 py-2 bg-theme-bg-surface border border-theme-border-subtle rounded-lg text-xs font-semibold text-theme-text-primary hover:bg-[#F1F5F9] dark:hover:bg-[#131A28] transition-all"
               >
                 <div className="flex items-center gap-2">
                   <GitBranch className="w-3.5 h-3.5 text-theme-text-secondary" />
@@ -285,7 +285,7 @@ const LeftPanel: FC<LeftPanelProps> = ({
                         setSelectedSupplyChain?.(option.id);
                         setIsDropdownOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-xs font-medium text-theme-text-primary hover:bg-[#EFEBE3] dark:hover:bg-[#191817] transition-colors"
+                      className="w-full text-left px-3 py-2 text-xs font-medium text-theme-text-primary hover:bg-[#F1F5F9] dark:hover:bg-[#131A28] transition-colors"
                     >
                       {option.name}
                     </button>
@@ -332,7 +332,7 @@ const LeftPanel: FC<LeftPanelProps> = ({
                       onDragEnd={onDragEnd}
                       draggable={!simulationMode}
                       disabled={simulationMode || !onLoadTemplate}
-                      className="w-full flex items-center justify-between p-2.5 bg-theme-bg-surface border border-theme-border-subtle rounded-lg hover:bg-[#EFEBE3] dark:hover:bg-[#191817] hover:border-theme-border-default transition-all cursor-grab active:cursor-grabbing text-left shadow-sm disabled:opacity-50"
+                      className="w-full flex items-center justify-between p-2.5 bg-theme-bg-surface border border-theme-border-subtle rounded-lg hover:bg-[#F1F5F9] dark:hover:bg-[#131A28] hover:border-theme-border-default transition-all cursor-grab active:cursor-grabbing text-left shadow-sm disabled:opacity-50"
                     >
                       <div className="flex items-center gap-2 truncate">
                         <span className="text-sm">{template.icon}</span>
@@ -352,7 +352,7 @@ const LeftPanel: FC<LeftPanelProps> = ({
               <Button
                 onClick={() => handleImmersiveModeChange(true)}
                 disabled={simulationMode}
-                className="w-full bg-black text-white hover:bg-black/90 dark:bg-white dark:text-black dark:hover:bg-white/90 font-semibold text-xs py-2 rounded-lg flex items-center justify-center gap-2 transition-all shadow-sm"
+                className="w-full bg-foreground text-background hover:bg-foreground/90 font-semibold text-xs py-2 rounded-lg flex items-center justify-center gap-2 transition-all shadow-sm"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 Build with AI

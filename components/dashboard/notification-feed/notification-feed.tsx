@@ -384,13 +384,13 @@ export function NotificationFeed() {
   const getTypeIcon = (type: NotificationType) => {
     switch (type) {
       case "alert":
-        return <AlertTriangle className="h-4 w-4 text-black dark:text-white" />
+        return <AlertTriangle className="h-4 w-4 text-foreground" />
       case "warning":
-        return <AlertTriangle className="h-4 w-4 text-gray-700 dark:text-gray-300" />
+        return <AlertTriangle className="h-4 w-4 text-foreground" />
       case "info":
-        return <Info className="h-4 w-4 text-gray-500 dark:text-gray-400" />
+        return <Info className="h-4 w-4 text-muted-foreground" />
       case "success":
-        return <CheckCircle className="h-4 w-4 text-black dark:text-white" />
+        return <CheckCircle className="h-4 w-4 text-foreground" />
     }
   }
 
@@ -423,12 +423,12 @@ export function NotificationFeed() {
       return (
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="flex items-start gap-3 rounded-lg border p-4 bg-white dark:bg-gray-900 shadow-sm animate-pulse">
-              <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+            <div key={i} className="flex items-start gap-3 rounded-lg border p-4 bg-card shadow-sm animate-pulse">
+              <div className="w-10 h-10 bg-muted rounded-full"></div>
               <div className="flex-1 space-y-2">
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                <div className="h-4 bg-muted rounded w-3/4"></div>
+                <div className="h-3 bg-muted rounded w-full"></div>
+                <div className="h-3 bg-muted rounded w-1/2"></div>
               </div>
             </div>
           ))}
@@ -441,7 +441,7 @@ export function NotificationFeed() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <h3 className="font-semibold text-foreground">
+            <h3 className="font-display text-lg font-semibold text-foreground">
               {activeMainTab === "alerts" ? "Threat Alerts" : "Live News"}
             </h3>
             {unreadCount > 0 && (
@@ -455,7 +455,7 @@ export function NotificationFeed() {
             variant="ghost" 
             size="sm" 
             onClick={handleMarkAllAsRead}
-            className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+            className="text-xs text-muted-foreground hover:text-foreground"
             disabled={unreadCount === 0}
           >
             <BellOff className="h-3 w-3 mr-1" />
@@ -470,7 +470,7 @@ export function NotificationFeed() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex flex-col items-center justify-center p-8 text-center text-gray-500 dark:text-gray-400"
+                className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground"
               >
                 <BellOff className="h-12 w-12 mb-3 opacity-20" />
                 <p className="text-sm">No notifications to display</p>
@@ -486,7 +486,7 @@ export function NotificationFeed() {
                   <motion.div
                     key={notification.notification_id || index}
                     className={cn(
-                      "relative pl-7 py-4 pr-5 border rounded-theme-md transition-all duration-200 cursor-pointer flex flex-col mb-2",
+                      "relative pl-5 py-3.5 pr-3 sm:pl-7 sm:py-4 sm:pr-5 border rounded-theme-md transition-all duration-200 cursor-pointer flex flex-col mb-2",
                       isRead 
                         ? "bg-theme-bg-surface/50 border-theme-border-subtle/50 opacity-60" 
                         : "bg-theme-bg-surface border-theme-border-subtle hover:bg-theme-bg-secondary hover:border-theme-border-default hover:shadow-md"
@@ -505,7 +505,7 @@ export function NotificationFeed() {
                       )
                     )} />
                     {/* Main content */}
-                    <div className="flex items-start gap-4 mb-3">
+                    <div className="flex items-start gap-3 sm:gap-4 mb-3">
                       {/* Icon */}
                       <div className="flex-shrink-0">
                         <div className="rounded-full p-2 bg-theme-bg-secondary">
@@ -515,8 +515,8 @@ export function NotificationFeed() {
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <p className="font-[600] text-theme-text-primary text-[0.88rem] leading-[1.4]">{notification.title}</p>
+                          <div className="flex flex-wrap items-center gap-2 min-w-0">
+                            <p className="font-[600] text-theme-text-primary text-[0.88rem] leading-[1.4] break-words min-w-0">{notification.title}</p>
                             {/* Visual indicator for Live News */}
                             {notification.notification_type === 'live_news_alert' && (
                                 <div className="inline-flex items-center gap-1.5 px-[8px] py-[2px] rounded-theme-pill bg-theme-blue-soft border border-theme-blue/20 text-theme-blue text-[0.65rem] font-[700] tracking-[0.05em] uppercase w-fit shrink-0">
@@ -546,7 +546,7 @@ export function NotificationFeed() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-6 w-6 p-0 rounded-full hover:bg-theme-bg-secondary text-theme-text-secondary"
+                                className="h-8 w-8 p-0 rounded-full hover:bg-theme-bg-secondary text-theme-text-secondary shrink-0"
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   handleMarkAsRead(notification.notification_id)
@@ -563,8 +563,8 @@ export function NotificationFeed() {
                         )}
 
                         {/* Simplified metadata row */}
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 min-w-0">
                             {getTypeIcon(type)}
                             <p className="text-xs text-theme-text-muted">
                               {notification.created_at && safeDateFormat(notification.created_at) || "Unknown time"}
@@ -594,7 +594,7 @@ export function NotificationFeed() {
                           </div>
                           
                           <button
-                            className="h-7 px-2 text-[0.78rem] text-theme-blue font-[500] hover:text-theme-blue/80 transition-colors flex items-center gap-1 bg-transparent border-none cursor-pointer"
+                            className="h-8 px-2 text-[0.78rem] text-theme-blue font-[500] hover:text-theme-blue/80 transition-colors flex items-center gap-1 bg-transparent border-none cursor-pointer shrink-0"
                             onClick={(e) => {
                               e.stopPropagation()
                               handleViewDetails(notification)
@@ -644,7 +644,7 @@ export function NotificationFeed() {
               variant="outline"
               size="sm"
               onClick={() => setShowMore(!showMore)}
-              className="flex items-center gap-2 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="flex items-center gap-2 bg-card border-border hover:bg-accent"
             >
               {showMore ? (
                 <span>Show Less</span>
@@ -666,11 +666,11 @@ export function NotificationFeed() {
       return (
         <div className="space-y-4">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="flex items-start gap-3 rounded-lg border p-4 bg-white dark:bg-gray-900 shadow-sm animate-pulse">
-              <div className="w-10 h-10 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+            <div key={i} className="flex items-start gap-3 rounded-lg border p-4 bg-card shadow-sm animate-pulse">
+              <div className="w-10 h-10 bg-muted rounded-full"></div>
               <div className="flex-1 space-y-2">
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                <div className="h-4 bg-muted rounded w-3/4"></div>
+                <div className="h-3 bg-muted rounded w-full"></div>
               </div>
             </div>
           ))}
@@ -680,7 +680,7 @@ export function NotificationFeed() {
 
     if (auditLogs.length === 0) {
       return (
-        <div className="flex flex-col items-center justify-center py-12 text-center text-gray-500">
+        <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
           <Info className="h-12 w-12 mb-3 opacity-20" />
           <p className="text-sm">No recent activity found.</p>
         </div>
@@ -698,7 +698,7 @@ export function NotificationFeed() {
             <div key={log.log_id} className="relative pl-6">
               {/* Timeline Dot */}
               <div className={cn(
-                "absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-white dark:border-gray-900",
+                "absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full border-2 border-background",
                 isError ? "bg-theme-red" : isStart ? "bg-theme-blue animate-pulse" : "bg-theme-green"
               )} />
               
@@ -732,7 +732,7 @@ export function NotificationFeed() {
   }
 
   return (
-    <div className="p-4">
+    <div className="p-3 sm:p-4">
       {/* Main Tab Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
         <div className="bg-theme-bg-secondary border border-theme-border-subtle rounded-theme-pill p-[3px] flex flex-wrap gap-1 w-fit sm:space-x-1">
@@ -794,7 +794,7 @@ export function NotificationFeed() {
             className="h-full pr-2"
           >
             <div className="flex items-center justify-between mb-6">
-              <h3 className="font-semibold text-foreground">Audit & System Activity</h3>
+              <h3 className="font-display text-lg font-semibold text-foreground">Audit & System Activity</h3>
               <div className="flex items-center gap-4 text-[0.7rem] text-theme-text-muted font-medium bg-theme-bg-surface px-3 py-1.5 rounded-full border border-theme-border-subtle">
                 <span className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-theme-blue animate-pulse"></span> Started
@@ -814,15 +814,15 @@ export function NotificationFeed() {
 
       {/* Notification Details Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-theme-bg-glass backdrop-blur-[16px] saturate-[180%] border border-theme-border-subtle/50 shadow-lg">
+        <DialogContent className="w-[95vw] max-w-2xl max-h-[85vh] overflow-y-auto p-4 sm:p-6 bg-theme-bg-glass backdrop-blur-[16px] saturate-[180%] border border-theme-border-subtle/50 shadow-lg">
           {selectedNotification && (
             <>
               <DialogHeader>
-                <div className="flex items-center gap-2">
-                  <div className="rounded-full p-1.5 bg-theme-bg-secondary">
+                <div className="flex flex-wrap items-center gap-2 pr-6">
+                  <div className="rounded-full p-1.5 bg-theme-bg-secondary shrink-0">
                     {renderNotificationIcon(selectedNotification)}
                   </div>
-                  <DialogTitle className="text-lg font-semibold text-theme-text-primary">{selectedNotification.title}</DialogTitle>
+                  <DialogTitle className="text-base sm:text-lg font-semibold text-theme-text-primary break-words min-w-0">{selectedNotification.title}</DialogTitle>
                   {selectedNotification.severity && (
                     <span className={cn(
                       "text-[0.65rem] font-[700] tracking-[0.05em] py-[2px] px-[8px] rounded-theme-pill border border-transparent",
@@ -836,7 +836,7 @@ export function NotificationFeed() {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-2 text-sm text-theme-text-muted">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-theme-text-muted">
                   {getTypeIcon(getNotificationType(selectedNotification))}
                   <span>{selectedNotification.created_at && safeDateFormat(selectedNotification.created_at) || "Unknown time"}</span>
                   <span>•</span>
@@ -865,7 +865,7 @@ export function NotificationFeed() {
                       {/* Sources */}
                       {citations?.sources && citations.sources.length > 0 && (
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-3">Sources ({citations.sources.length})</h4>
+                          <h4 className="font-medium text-foreground mb-3">Sources ({citations.sources.length})</h4>
                           <div className="space-y-2">
                             {citations.sources.map((source, idx) => (
                               <SourceBubble key={idx} source={source} />
@@ -877,26 +877,26 @@ export function NotificationFeed() {
                       {/* Risk Relationships */}
                       {citations?.relationships && citations.relationships.length > 0 && (
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-3">Risk Relationships ({citations.relationships.length})</h4>
+                          <h4 className="font-medium text-foreground mb-3">Risk Relationships ({citations.relationships.length})</h4>
                           <div className="space-y-3">
                             {citations.relationships.map((relationship, idx) => (
-                              <div key={idx} className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
+                              <div key={idx} className="bg-muted border border-border rounded-lg p-4">
                                 <div className="flex items-center gap-2 mb-2">
-                                  <div className="w-2 h-2 bg-black dark:bg-white rounded-full"></div>
-                                  <span className="font-medium text-black dark:text-white text-sm">
+                                  <div className="w-2 h-2 bg-foreground rounded-full"></div>
+                                  <span className="font-medium text-foreground text-sm">
                                     {Math.round(relationship.strength * 100)}% Impact Strength
                                   </span>
                                 </div>
                                 <div className="text-sm">
-                                  <span className="font-medium text-gray-900 dark:text-gray-100">{relationship.source}</span>
-                                  <span className="mx-2 text-gray-500">→</span>
-                                  <span className="font-medium text-gray-900 dark:text-gray-100">{relationship.target}</span>
+                                  <span className="font-medium text-foreground">{relationship.source}</span>
+                                  <span className="mx-2 text-muted-foreground">→</span>
+                                  <span className="font-medium text-foreground">{relationship.target}</span>
                                 </div>
-                                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                <div className="text-xs text-muted-foreground mt-1">
                                   Impact: {relationship.relationship}
                                 </div>
                                 {relationship.context && (
-                                  <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                                  <div className="text-xs text-muted-foreground mt-1">
                                     Context: {relationship.context}
                                   </div>
                                 )}
@@ -909,10 +909,10 @@ export function NotificationFeed() {
                       {/* Affected Entities */}
                       {citations?.affectedEntities && citations.affectedEntities.length > 0 && (
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-3">Affected Entities ({citations.affectedEntities.length})</h4>
+                          <h4 className="font-medium text-foreground mb-3">Affected Entities ({citations.affectedEntities.length})</h4>
                           <div className="flex flex-wrap gap-2">
                             {citations.affectedEntities.map((entity, idx) => (
-                              <div key={idx} className="inline-flex items-center px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-md border border-gray-200 dark:border-gray-700">
+                              <div key={idx} className="inline-flex items-center px-3 py-1.5 text-sm bg-muted text-foreground rounded-md border border-border">
                                 <MapPin className="w-3 h-3 mr-1" />
                                 {entity}
                               </div>
@@ -924,18 +924,18 @@ export function NotificationFeed() {
                       {/* Additional Details */}
                       {citations && (
                         <div>
-                          <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-3">Additional Information</h4>
-                          <div className="grid grid-cols-2 gap-4">
+                          <h4 className="font-medium text-foreground mb-3">Additional Information</h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                             {citations.category && (
-                              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-                                <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Category</div>
-                                <div className="text-sm text-gray-900 dark:text-gray-100 mt-1 capitalize">{citations.category.toLowerCase()}</div>
+                              <div className="bg-muted rounded-lg p-3">
+                                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Category</div>
+                                <div className="text-sm text-foreground mt-1 capitalize">{citations.category.toLowerCase()}</div>
                               </div>
                             )}
                             {citations.confidence && (
-                              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-                                <div className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">Confidence</div>
-                                <div className="text-sm text-gray-900 dark:text-gray-100 mt-1">{Math.round(citations.confidence * 100)}%</div>
+                              <div className="bg-muted rounded-lg p-3">
+                                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Confidence</div>
+                                <div className="text-sm text-foreground mt-1">{Math.round(citations.confidence * 100)}%</div>
                               </div>
                             )}
                           </div>
@@ -946,12 +946,12 @@ export function NotificationFeed() {
                 })()}
 
                 {/* --- AI IMPACT ANALYSIS SECTION --- */}
-                <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                   <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-3 flex items-center gap-2">
+                <div className="pt-4 border-t border-border">
+                   <h4 className="font-medium text-foreground mb-3 flex items-center gap-2">
                        <span className="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
                        AI Impact Simulation
                    </h4>
-                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                   <p className="text-xs text-muted-foreground mb-4">
                        Run this real-world event as a scenario against your supply chains to quantify the potential financial and operational fallout.
                    </p>
                    
@@ -966,19 +966,19 @@ export function NotificationFeed() {
                    )}
                    
                    {analyzingNews && (
-                       <div className="flex flex-col items-center justify-center p-6 space-y-3 bg-gray-50 dark:bg-gray-900 rounded-lg border border-dashed border-gray-300 dark:border-gray-700">
+                       <div className="flex flex-col items-center justify-center p-6 space-y-3 bg-muted rounded-lg border border-dashed border-border">
                            <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                           <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Running Multi-Agent Simulation...</p>
-                           <p className="text-xs text-gray-500 text-center">Converting news context to scenario parameters and calculating network cascading effects.</p>
+                           <p className="text-sm font-medium text-muted-foreground">Running Multi-Agent Simulation...</p>
+                           <p className="text-xs text-muted-foreground text-center">Converting news context to scenario parameters and calculating network cascading effects.</p>
                        </div>
                    )}
                    
                    {newsAnalysisResults.length > 0 && !analyzingNews && (
                        <div className="space-y-4">
                            {newsAnalysisResults.map((res, idx) => (
-                               <div key={idx} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg p-4 shadow-sm">
-                                   <div className="flex items-center justify-between mb-3 border-b border-gray-100 dark:border-gray-800 pb-2">
-                                       <h5 className="font-semibold text-sm text-gray-900 dark:text-gray-100">{res.supplyChainName}</h5>
+                               <div key={idx} className="bg-card border border-border rounded-lg p-4 shadow-sm">
+                                   <div className="flex items-center justify-between mb-3 border-b border-border pb-2">
+                                       <h5 className="font-semibold text-sm text-foreground">{res.supplyChainName}</h5>
                                        {res.error ? (
                                            <Badge variant="destructive" className="text-[10px]">Error</Badge>
                                        ) : (
@@ -992,20 +992,20 @@ export function NotificationFeed() {
                                         <div className="space-y-5">
                                             {/* Primary Metrics */}
                                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                                                <div className="bg-gray-50 dark:bg-gray-800 p-2.5 rounded-md border border-gray-100 dark:border-gray-700">
-                                                    <p className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 font-bold">Total Cost</p>
+                                                <div className="bg-muted p-2.5 rounded-md border border-border">
+                                                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1 font-bold">Total Cost</p>
                                                     <p className="text-sm font-bold text-red-600 dark:text-red-400">{res.impactMetrics.totalCostImpact}</p>
                                                 </div>
-                                                <div className="bg-gray-50 dark:bg-gray-800 p-2.5 rounded-md border border-gray-100 dark:border-gray-700">
-                                                    <p className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 font-bold">Delay</p>
+                                                <div className="bg-muted p-2.5 rounded-md border border-border">
+                                                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1 font-bold">Delay</p>
                                                     <p className="text-sm font-bold text-amber-600 dark:text-amber-400">{res.impactMetrics.averageDelay}</p>
                                                 </div>
-                                                <div className="bg-gray-50 dark:bg-gray-800 p-2.5 rounded-md border border-gray-100 dark:border-gray-700">
-                                                    <p className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 font-bold">Resilience</p>
+                                                <div className="bg-muted p-2.5 rounded-md border border-border">
+                                                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1 font-bold">Resilience</p>
                                                     <p className="text-sm font-bold text-blue-600 dark:text-blue-400">{res.impactMetrics.networkResilience}/100</p>
                                                 </div>
-                                                <div className="bg-gray-50 dark:bg-gray-800 p-2.5 rounded-md border border-gray-100 dark:border-gray-700">
-                                                    <p className="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1 font-bold">Recovery</p>
+                                                <div className="bg-muted p-2.5 rounded-md border border-border">
+                                                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1 font-bold">Recovery</p>
                                                     <p className="text-sm font-bold text-purple-600 dark:text-purple-400">{res.impactMetrics.recoveryTime}</p>
                                                 </div>
                                             </div>
@@ -1013,23 +1013,23 @@ export function NotificationFeed() {
                                             {/* Node Specific Impact */}
                                             {res.cascadingEffects && res.cascadingEffects.length > 0 && (
                                                 <div className="space-y-2">
-                                                    <h6 className="text-[11px] font-bold text-gray-900 dark:text-gray-100 uppercase tracking-widest flex items-center gap-1.5">
+                                                    <h6 className="text-[11px] font-bold text-foreground uppercase tracking-widest flex items-center gap-1.5">
                                                         <MapPin className="w-3 h-3 text-red-500" />
                                                         Primary Node Impact
                                                     </h6>
                                                     <div className="bg-red-50/50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-lg p-3">
                                                         <div className="flex items-center justify-between mb-2">
-                                                            <p className="text-xs font-bold text-gray-900 dark:text-gray-100">{res.cascadingEffects[0].affectedNode}</p>
+                                                            <p className="text-xs font-bold text-foreground">{res.cascadingEffects[0].affectedNode}</p>
                                                             <Badge className="text-[9px] h-4 bg-red-600 dark:bg-red-500 text-white border-none">{res.cascadingEffects[0].severity}</Badge>
                                                         </div>
                                                         <div className="grid grid-cols-2 gap-4">
                                                             <div>
-                                                                <p className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold">Direct Financial Hit</p>
+                                                                <p className="text-[9px] text-muted-foreground uppercase font-bold">Direct Financial Hit</p>
                                                                 <p className="text-xs font-semibold text-red-700 dark:text-red-400">{res.cascadingEffects[0].financialImpact}</p>
                                                             </div>
                                                             <div>
-                                                                <p className="text-[9px] text-gray-500 dark:text-gray-400 uppercase font-bold">Timeline</p>
-                                                                <p className="text-xs font-semibold text-gray-700 dark:text-gray-300">{res.cascadingEffects[0].timeline}</p>
+                                                                <p className="text-[9px] text-muted-foreground uppercase font-bold">Timeline</p>
+                                                                <p className="text-xs font-semibold text-foreground">{res.cascadingEffects[0].timeline}</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1039,11 +1039,11 @@ export function NotificationFeed() {
                                             {/* Key Findings */}
                                             {res.keyFindings && res.keyFindings.length > 0 && (
                                                 <div className="space-y-2">
-                                                    <h6 className="text-[11px] font-bold text-gray-900 dark:text-gray-100 uppercase tracking-widest">Strategic Findings</h6>
+                                                    <h6 className="text-[11px] font-bold text-foreground uppercase tracking-widest">Strategic Findings</h6>
                                                     <ul className="space-y-1.5">
                                                         {res.keyFindings.slice(0, 3).map((finding: string, idx: number) => (
-                                                            <li key={idx} className="text-[11px] text-gray-600 dark:text-gray-400 flex items-start gap-2">
-                                                                <span className="mt-1 w-1 h-1 rounded-full bg-gray-400 shrink-0"></span>
+                                                            <li key={idx} className="text-[11px] text-muted-foreground flex items-start gap-2">
+                                                                <span className="mt-1 w-1 h-1 rounded-full bg-muted-foreground shrink-0"></span>
                                                                 {finding}
                                                             </li>
                                                         ))}
@@ -1052,7 +1052,7 @@ export function NotificationFeed() {
                                             )}
                                         </div>
                                     ) : (
-                                        <p className="text-xs text-gray-500">No impact metrics generated.</p>
+                                        <p className="text-xs text-muted-foreground">No impact metrics generated.</p>
                                     )}
 
                                </div>
@@ -1062,8 +1062,8 @@ export function NotificationFeed() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
+                <div className="flex flex-wrap justify-between items-center gap-3 pt-4 border-t border-border">
+                  <div className="text-xs text-muted-foreground break-all min-w-0">
                     Notification ID: {selectedNotification.notification_id}
                   </div>
                   {!selectedNotification.read_status && (

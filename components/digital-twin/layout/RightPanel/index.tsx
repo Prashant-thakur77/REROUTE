@@ -183,7 +183,7 @@ const RightPanel: FC<RightPanelProps> = ({
   if (!selectedElement) {
     return (
       <motion.div 
-        className="border-l border-theme-border-subtle bg-theme-bg-surface flex flex-col h-full overflow-hidden w-[300px] flex-shrink-0 z-20 lg:relative absolute right-0 top-0 shadow-lg lg:shadow-none"
+        className="border-l border-theme-border-subtle bg-theme-bg-surface flex flex-col h-full overflow-hidden w-[300px] max-w-[85vw] lg:max-w-none flex-shrink-0 z-20 lg:relative absolute right-0 top-0 shadow-lg lg:shadow-none"
         variants={panelVariants}
         animate="expanded"
         initial={false}
@@ -228,7 +228,7 @@ const RightPanel: FC<RightPanelProps> = ({
 
   return (
     <motion.div 
-      className="border-l border-theme-border-subtle bg-theme-bg-surface flex flex-col h-full overflow-hidden w-[300px] flex-shrink-0 z-20 lg:relative absolute right-0 top-0 shadow-lg lg:shadow-none"
+      className="border-l border-theme-border-subtle bg-theme-bg-surface flex flex-col h-full overflow-hidden w-[300px] max-w-[85vw] lg:max-w-none flex-shrink-0 z-20 lg:relative absolute right-0 top-0 shadow-lg lg:shadow-none"
       variants={panelVariants}
       animate="expanded"
       initial={false}
@@ -375,7 +375,7 @@ const RightPanel: FC<RightPanelProps> = ({
                         <span>Risk Score</span>
                         <span>{Math.round(riskScore * 100)} / 100</span>
                       </div>
-                      <div className="w-full bg-[#EFEBE3] dark:bg-zinc-800 rounded-full h-2">
+                      <div className="w-full bg-secondary rounded-full h-2">
                         <div 
                           className="bg-[#B91C1C] h-2 rounded-full transition-all duration-300"
                           style={{ width: `${Math.round(riskScore * 100)}%` }}
@@ -387,7 +387,7 @@ const RightPanel: FC<RightPanelProps> = ({
                         max="100"
                         value={Math.round(riskScore * 100)}
                         onChange={(e) => handleInputChange('riskScore', parseFloat(e.target.value) / 100)}
-                        className="w-full h-1 bg-[#EFEBE3] dark:bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-black dark:accent-white"
+                        className="w-full h-1 bg-secondary rounded-lg appearance-none cursor-pointer accent-foreground"
                       />
                     </div>
                   </div>
@@ -439,12 +439,12 @@ const RightPanel: FC<RightPanelProps> = ({
                         {connections.map((conn, idx) => {
                           const ConnIcon = conn.icon;
                           return (
-                            <div key={idx} className="flex items-center justify-between p-2 bg-[#EFEBE3] dark:bg-[#191817] rounded-lg border border-theme-border-subtle text-xs font-semibold">
+                            <div key={idx} className="flex items-center justify-between p-2 bg-[#F1F5F9] dark:bg-[#131A28] rounded-lg border border-theme-border-subtle text-xs font-semibold">
                               <div className="flex items-center gap-2 truncate">
                                 <ConnIcon className="w-4 h-4" style={{ color: conn.colorHex }} />
                                 <span className="text-theme-text-primary truncate">{conn.label}</span>
                               </div>
-                              <span className="text-[9px] font-medium text-theme-text-secondary bg-white dark:bg-zinc-900 px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                              <span className="text-[9px] font-medium text-theme-text-secondary bg-muted px-1.5 py-0.5 rounded-full whitespace-nowrap">
                                 {conn.direction}
                               </span>
                             </div>
@@ -502,7 +502,7 @@ const RightPanel: FC<RightPanelProps> = ({
                   });
                 }
               }}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#EFEBE3] dark:bg-[#191817] hover:bg-[#D6CFC4] dark:hover:bg-[#2A2825] text-theme-text-primary text-xs font-semibold rounded-lg border border-theme-border-subtle transition-all"
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#F1F5F9] dark:bg-[#131A28] hover:bg-[#CBD5E1] dark:hover:bg-[#1B2434] text-theme-text-primary text-xs font-semibold rounded-lg border border-theme-border-subtle transition-all"
             >
               <Activity className="w-3.5 h-3.5" />
               Analyse this node
@@ -519,7 +519,7 @@ const RightPanel: FC<RightPanelProps> = ({
             ) : (
               <button
                 onClick={() => simulateDisruption(selectedElement.id)}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#EFEBE3] dark:bg-[#191817] hover:bg-[#D6CFC4] dark:hover:bg-[#2A2825] text-[#B91C1C] text-xs font-semibold rounded-lg border border-[#B91C1C]/20 hover:border-[#B91C1C]/40 transition-all"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#F1F5F9] dark:bg-[#131A28] hover:bg-[#CBD5E1] dark:hover:bg-[#1B2434] text-[#B91C1C] text-xs font-semibold rounded-lg border border-[#B91C1C]/20 hover:border-[#B91C1C]/40 transition-all"
               >
                 <ShieldAlert className="w-3.5 h-3.5" />
                 Simulate disruption

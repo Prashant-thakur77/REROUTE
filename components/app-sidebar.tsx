@@ -9,7 +9,6 @@ import {
   Settings,
   ShieldAlert,
   User,
-  Brain,
 } from "lucide-react"
 
 import { ThemeToggle } from "@/components/theme"
@@ -24,7 +23,6 @@ export function AppSidebar() {
     { href: "/dashboard", icon: Home, label: "Dashboard", isActive: pathname === "/dashboard" },
     { href: "/digital-twin", icon: Network, label: "Digital Twin", isActive: pathname === "/digital-twin" },
     { href: "/simulation", icon: LineChart, label: "Simulation", isActive: pathname === "/simulation" },
-    { href: "/risk-prediction", icon: Brain, label: "Risk ML", isActive: pathname === "/risk-prediction" },
   ]
 
   const footerItems = [
@@ -32,10 +30,10 @@ export function AppSidebar() {
   ]
 
   return (
-    <div className="w-full h-[52px] border-b border-theme-border-subtle bg-theme-bg-glass backdrop-blur-[16px] saturate-[180%] flex items-center justify-between px-4 sm:px-6 shrink-0 sticky top-0 z-[100]">
+    <div className="w-full h-[52px] border-b border-theme-border-subtle bg-theme-bg-glass backdrop-blur-[16px] saturate-[180%] flex items-center justify-between gap-2 px-3 sm:px-4 lg:px-6 shrink-0 sticky top-0 z-[100] min-w-0">
       {/* Left: Logo + Nav links */}
-      <div className="flex items-center gap-4">
-        <Link href="/" className="flex items-center gap-2 group">
+      <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 min-w-0">
+        <Link href="/" className="flex items-center gap-2 group shrink-0">
           <div className="relative">
             <div className="absolute inset-0 bg-theme-blue/10 rounded-xl blur-sm group-hover:blur-md transition-all" />
             <div className="relative bg-theme-blue p-1.5 rounded-xl shadow-sm">
@@ -47,9 +45,9 @@ export function AppSidebar() {
           </span>
         </Link>
 
-        <div className="h-5 w-px bg-theme-border-subtle hidden sm:block" />
+        <div className="h-5 w-px bg-theme-border-subtle hidden sm:block shrink-0" />
 
-        <nav className="flex items-center gap-1">
+        <nav className="flex items-center gap-0.5 sm:gap-1 min-w-0">
           {navigationItems.map((item) => {
             const Icon = item.icon
             return (
@@ -59,7 +57,7 @@ export function AppSidebar() {
                     <Link
                       href={item.href}
                       className={cn(
-                        "flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] text-[0.82rem] font-[500] transition-all duration-200 border border-transparent",
+                        "flex items-center justify-center gap-1.5 px-2.5 sm:px-3 min-h-[40px] md:min-h-0 py-1.5 rounded-[6px] text-[0.82rem] font-[500] transition-all duration-200 border border-transparent shrink-0",
                         item.isActive
                           ? "bg-theme-blue-soft text-theme-blue font-semibold"
                           : "text-theme-text-muted hover:bg-theme-bg-secondary hover:text-theme-text-primary"
@@ -80,7 +78,7 @@ export function AppSidebar() {
       </div>
 
       {/* Right: Notification + Theme + Profile */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 sm:gap-2 shrink-0">
         <NotificationDropdown />
         <ThemeToggle />
         {footerItems.map((item) => {
@@ -92,7 +90,7 @@ export function AppSidebar() {
                   <Link
                     href={item.href}
                     className={cn(
-                      "w-8 h-8 flex items-center justify-center rounded-full cursor-pointer bg-theme-bg-secondary border border-theme-border-subtle hover:bg-theme-bg-secondary/80 text-theme-text-primary transition-all duration-200 shrink-0",
+                      "w-10 h-10 md:w-8 md:h-8 flex items-center justify-center rounded-full cursor-pointer bg-theme-bg-secondary border border-theme-border-subtle hover:bg-theme-bg-secondary/80 text-theme-text-primary transition-all duration-200 shrink-0",
                       item.isActive && "ring-2 ring-theme-blue/50"
                     )}
                   >

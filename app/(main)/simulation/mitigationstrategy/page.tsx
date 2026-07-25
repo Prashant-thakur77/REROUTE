@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Shield, Target, Clock, TrendingUp, CheckCircle, AlertCircle, RefreshCw, Sparkles, Eye, Activity, FileCheck } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { PageHeader } from "@/components/ui/page-header"
+import { Reveal } from "@/components/motion"
 import { useState, useEffect, useMemo, useRef } from "react"
 import { ImplementationRoadmapPanel } from "@/components/simulation/ImplementationRoadmapPanel"
 import { FinalizeStrategyPanel } from "@/components/simulation/FinalizeStrategyPanel"
@@ -257,7 +259,7 @@ function StrategyCard({ strategy, index }: { strategy: ApiMitigationStrategy | M
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <Card className="p-4 sm:p-6 hover:shadow-md transition-all duration-300 group border border-gray-200 dark:border-gray-800 bg-white dark:bg-black">
+    <Card className="rounded-xl p-4 sm:p-6 hover:shadow-md transition-all duration-300 group border border-border bg-card">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <div className="w-8 h-8 bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0 border border-gray-200 dark:border-gray-700">
@@ -626,16 +628,16 @@ export default function MitigationStrategyPage() {
   // Loading State
   if (isLoading) {
     return (
-      <div className="relative min-h-full flex-1 bg-white dark:bg-black text-black dark:text-white">
-        <div className="relative z-10 p-6 px-4 sm:px-6 lg:px-10 max-w-7xl mx-auto">
+      <div className="relative min-h-full flex-1 bg-background text-foreground">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
           <div className="flex items-center justify-center min-h-[50vh]">
             <div className="text-center space-y-6">
               <div className="relative">
-                <Activity className="h-16 w-16 animate-spin mx-auto text-black dark:text-white" />
+                <Activity className="h-16 w-16 animate-spin mx-auto text-primary" />
               </div>
               <div className="space-y-2">
                 <p className="text-xl font-semibold">Loading strategy analysis...</p>
-                <p className="text-sm text-gray-500">Generating AI-powered mitigation strategies</p>
+                <p className="text-sm text-muted-foreground">Generating AI-powered mitigation strategies</p>
               </div>
             </div>
           </div>
@@ -647,7 +649,7 @@ export default function MitigationStrategyPage() {
   // Mobile roadmap section component
   const MobileRoadmapSection = () => (
     <div className="lg:hidden">
-      <Card className="p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+      <Card className="p-4 sm:p-6 rounded-xl border border-border bg-card shadow-sm">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center border border-gray-200 dark:border-gray-700">
             <TrendingUp className="h-5 w-5 text-black dark:text-white" />
@@ -686,7 +688,7 @@ export default function MitigationStrategyPage() {
   )
 
   return (
-    <div className="relative min-h-full flex-1 bg-white dark:bg-black text-black dark:text-white">
+    <div className="relative min-h-full flex-1 bg-background text-foreground">
 
       {/* Roadmap Side Panel (desktop) & Drawer (mobile) */}
       <ImplementationRoadmapPanel
@@ -746,122 +748,119 @@ export default function MitigationStrategyPage() {
       }`}>
         <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto space-y-8">
         {/* Header */}
-        <Card className="p-6 sm:p-8 mb-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="space-y-3 flex-1">
-              <div className="flex items-center gap-4">
-                <Button 
-                  variant="ghost" 
+        <div className="space-y-5">
+          {strategyData?.enhanced && (
+            <Reveal className="flex flex-wrap items-center gap-3">
+              <Badge className="flex items-center gap-2 border border-primary/20 bg-primary/10 px-3 py-1 text-primary">
+                <Sparkles className="h-3 w-3" />
+                AI Enhanced
+              </Badge>
+            </Reveal>
+          )}
+          <PageHeader
+            eyebrow="Resilience Planning"
+            title="Mitigation Strategy"
+            subtitle={`${strategyData ? 'AI-powered comprehensive action plan' : 'Comprehensive action plan'} to minimize disruption impact and enhance supply chain resilience`}
+            actions={
+              <>
+                <Button
+                  variant="ghost"
                   onClick={handleBackToResults}
-                  className="flex items-center gap-2 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2"
+                  className="flex items-center gap-2 rounded-full border border-border px-3 py-2 text-muted-foreground hover:text-foreground"
                   aria-label="Navigate back to simulation results"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   Back to Results
                 </Button>
-                {strategyData?.enhanced && (
-                  <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-800 flex items-center gap-2 px-3 py-1">
-                    <Sparkles className="h-3 w-3" />
-                    AI Enhanced
-                  </Badge>
-                )}
-              </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-black dark:text-white">
-                Mitigation Strategy
-              </h1>
-              <p className="text-gray-600 dark:text-gray-300 text-lg sm:text-xl leading-relaxed max-w-3xl">
-                {strategyData ? 'AI-powered comprehensive action plan' : 'Comprehensive action plan'} to minimize disruption impact and enhance supply chain resilience
-              </p>
-              {error && (
-                <div className="flex items-center gap-2 text-sm text-black dark:text-white bg-gray-100 dark:bg-gray-900 px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-800">
-                  <AlertCircle className="h-4 w-4" />
-                  {error}
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-              <Button 
-                onClick={() => setFinalizeOpen(true)}
-                className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 shadow-sm transition-all duration-300 rounded-xl"
-                aria-label="Finalize Strategy"
-              >
-                <FileCheck className="mr-2 h-4 w-4" />
-                Finalize Strategy
-              </Button>
-              <Button 
-                onClick={() => setRoadmapOpen(!roadmapOpen)}
-                variant="outline"
-                className="bg-white text-black border border-gray-200 hover:bg-gray-50 dark:bg-black dark:text-white dark:border-gray-800 dark:hover:bg-gray-900 shadow-sm transition-all duration-300 rounded-xl"
-                aria-label={roadmapOpen ? "Close Implementation Roadmap" : "Open Implementation Roadmap"}
-              >
-                <TrendingUp className="mr-2 h-4 w-4" />
-                {roadmapOpen ? 'Close Roadmap' : 'View Roadmap'}
-              </Button>
-              {simulationId && (
-                <Button 
-                  onClick={handleRefresh}
-                  disabled={isRefreshing}
-                  variant="outline"
-                  className="bg-white text-black border border-gray-200 hover:bg-gray-50 dark:bg-black dark:text-white dark:border-gray-800 dark:hover:bg-gray-900 shadow-sm transition-all duration-300 rounded-xl"
-                  aria-label="Refresh strategy analysis"
+                <Button
+                  onClick={() => setFinalizeOpen(true)}
+                  className="rounded-full shadow-sm transition-all duration-300"
+                  aria-label="Finalize Strategy"
                 >
-                  {isRefreshing ? (
-                    <>
-                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
-                      Refreshing...
-                    </>
-                  ) : (
-                    <>
-                      <RefreshCw className="mr-2 h-4 w-4" />
-                      Refresh
-                    </>
-                  )}
+                  <FileCheck className="mr-2 h-4 w-4" />
+                  Finalize Strategy
                 </Button>
-              )}
+                <Button
+                  onClick={() => setRoadmapOpen(!roadmapOpen)}
+                  variant="outline"
+                  className="rounded-full shadow-sm transition-all duration-300"
+                  aria-label={roadmapOpen ? "Close Implementation Roadmap" : "Open Implementation Roadmap"}
+                >
+                  <TrendingUp className="mr-2 h-4 w-4" />
+                  {roadmapOpen ? 'Close Roadmap' : 'View Roadmap'}
+                </Button>
+                {simulationId && (
+                  <Button
+                    onClick={handleRefresh}
+                    disabled={isRefreshing}
+                    variant="outline"
+                    className="rounded-full shadow-sm transition-all duration-300"
+                    aria-label="Refresh strategy analysis"
+                  >
+                    {isRefreshing ? (
+                      <>
+                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
+                        Refreshing...
+                      </>
+                    ) : (
+                      <>
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Refresh
+                      </>
+                    )}
+                  </Button>
+                )}
+              </>
+            }
+          />
+          {error && (
+            <div className="flex items-center gap-2 text-sm text-foreground bg-muted px-4 py-2 rounded-lg border border-border">
+              <AlertCircle className="h-4 w-4" />
+              {error}
             </div>
-          </div>
-        </Card>
+          )}
+        </div>
 
         {/* Mobile Roadmap Section */}
         <MobileRoadmapSection />
 
         {/* Risk Reduction Overview */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          <Card className="p-4 sm:p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+          <Card className="p-4 sm:p-6 rounded-xl border border-border bg-card shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500 mb-1">Current Risk</p>
-                <p className="text-xl sm:text-2xl font-bold text-black dark:text-white">{currentStrategies.riskMitigationMetrics.currentRisk}%</p>
+                <p className="font-display text-xl sm:text-2xl font-semibold text-foreground">{currentStrategies.riskMitigationMetrics.currentRisk}%</p>
               </div>
               <AlertCircle className="h-6 w-6 sm:h-8 sm:w-8 text-black dark:text-white" />
             </div>
           </Card>
 
-          <Card className="p-4 sm:p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+          <Card className="p-4 sm:p-6 rounded-xl border border-border bg-card shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500 mb-1">Target Risk</p>
-                <p className="text-xl sm:text-2xl font-bold text-black dark:text-white">{currentStrategies.riskMitigationMetrics.targetRisk}%</p>
+                <p className="font-display text-xl sm:text-2xl font-semibold text-foreground">{currentStrategies.riskMitigationMetrics.targetRisk}%</p>
               </div>
               <Target className="h-6 w-6 sm:h-8 sm:w-8 text-black dark:text-white" />
             </div>
           </Card>
 
-          <Card className="p-4 sm:p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+          <Card className="p-4 sm:p-6 rounded-xl border border-border bg-card shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500 mb-1">Expected ROI</p>
-                <p className="text-xl sm:text-2xl font-bold text-black dark:text-white">{currentStrategies.riskMitigationMetrics.expectedROI}</p>
+                <p className="font-display text-xl sm:text-2xl font-semibold text-foreground">{currentStrategies.riskMitigationMetrics.expectedROI}</p>
               </div>
               <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-black dark:text-white" />
             </div>
           </Card>
 
-          <Card className="p-4 sm:p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+          <Card className="p-4 sm:p-6 rounded-xl border border-border bg-card shadow-sm">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500 mb-1">Risk Reduction</p>
-                <p className="text-xl sm:text-2xl font-bold text-black dark:text-white">{currentStrategies.riskMitigationMetrics.riskReduction}</p>
+                <p className="font-display text-xl sm:text-2xl font-semibold text-foreground">{currentStrategies.riskMitigationMetrics.riskReduction}</p>
               </div>
               <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-black dark:text-white" />
             </div>
@@ -884,12 +883,12 @@ export default function MitigationStrategyPage() {
 
           <TabsContent value="immediate" className="space-y-6">
             <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center">
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <div className="w-8 h-8 bg-black dark:bg-white text-white dark:text-black rounded-full flex items-center justify-center flex-shrink-0">
                   <AlertCircle className="h-4 w-4" />
                 </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-black dark:text-white">Crisis Response (0-24 hours)</h2>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-white">Crisis Response (0-24 hours)</h2>
                   <p className="text-sm text-gray-500">Immediate actions to contain and minimize initial impact</p>
                 </div>
                 <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 border-gray-200 dark:border-gray-800 ml-auto">
@@ -906,12 +905,12 @@ export default function MitigationStrategyPage() {
 
           <TabsContent value="shortterm" className="space-y-6">
             <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-gray-800 dark:bg-gray-200 text-white dark:text-black rounded-full flex items-center justify-center">
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <div className="w-8 h-8 bg-gray-800 dark:bg-gray-200 text-white dark:text-black rounded-full flex items-center justify-center flex-shrink-0">
                   <Clock className="h-4 w-4" />
                 </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-black dark:text-white">Recovery Operations (1-30 days)</h2>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-white">Recovery Operations (1-30 days)</h2>
                   <p className="text-sm text-gray-500">Stabilization measures and restoration activities</p>
                 </div>
                 <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 border-gray-200 dark:border-gray-800 ml-auto">
@@ -928,12 +927,12 @@ export default function MitigationStrategyPage() {
 
           <TabsContent value="longterm" className="space-y-6">
             <div className="space-y-6">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-gray-600 dark:bg-gray-400 text-white dark:text-black rounded-full flex items-center justify-center">
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <div className="w-8 h-8 bg-gray-600 dark:bg-gray-400 text-white dark:text-black rounded-full flex items-center justify-center flex-shrink-0">
                   <Shield className="h-4 w-4" />
                 </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-black dark:text-white">Strategic Resilience (30+ days)</h2>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-lg sm:text-xl font-semibold text-black dark:text-white">Strategic Resilience (30+ days)</h2>
                   <p className="text-sm text-gray-500">Long-term improvements and future-proofing initiatives</p>
                 </div>
                 <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 border-gray-200 dark:border-gray-800 ml-auto">
@@ -954,7 +953,7 @@ export default function MitigationStrategyPage() {
           <div className="space-y-6">
             {/* Key Insights */}
             {currentStrategies.keyInsights.length > 0 && (
-              <Card className="p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+              <Card className="p-6 rounded-xl border border-border bg-card shadow-sm">
                 <CardHeader className="p-0 pb-6">
                   <CardTitle className="flex items-center gap-3 text-xl text-black dark:text-white">
                     <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center">
@@ -980,7 +979,7 @@ export default function MitigationStrategyPage() {
 
             {/* Best Practices */}
             {currentStrategies.bestPractices.length > 0 && (
-              <Card className="p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+              <Card className="p-6 rounded-xl border border-border bg-card shadow-sm">
                 <CardHeader className="p-0 pb-6">
                   <CardTitle className="flex items-center gap-3 text-xl text-black dark:text-white">
                     <div className="w-8 h-8 bg-black dark:bg-white rounded-full flex items-center justify-center">

@@ -142,14 +142,14 @@ export default function DigitalTwinDashboard() {
   if (userLoading || loading) {
     return (
       <div className="relative min-h-full flex-1 flex flex-col bg-theme-bg-primary overflow-x-hidden text-theme-text-primary">
-        <div className="border-b border-theme-border-subtle px-6 py-4 flex items-center justify-between">
-          <div className="space-y-1">
-            <div className="h-4 w-40 bg-theme-bg-secondary/40 rounded animate-pulse" />
-            <div className="h-3 w-64 bg-theme-bg-secondary/40 rounded animate-pulse" />
+        <div className="border-b border-theme-border-subtle px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+          <div className="space-y-1 min-w-0">
+            <div className="h-4 w-32 sm:w-40 max-w-full bg-theme-bg-secondary/40 rounded animate-pulse" />
+            <div className="h-3 w-48 sm:w-64 max-w-full bg-theme-bg-secondary/40 rounded animate-pulse" />
           </div>
-          <div className="h-8 w-28 bg-theme-bg-secondary/40 rounded animate-pulse" />
+          <div className="h-8 w-24 sm:w-28 shrink-0 bg-theme-bg-secondary/40 rounded animate-pulse" />
         </div>
-        <div className="flex-1 p-6 space-y-3">
+        <div className="flex-1 p-4 sm:p-6 space-y-3">
           {Array.from({ length: 6 }).map((_, i) => (
             <div key={i} className="h-12 bg-theme-bg-surface border border-theme-border-subtle rounded-theme-md animate-pulse" />
           ))}
@@ -160,28 +160,28 @@ export default function DigitalTwinDashboard() {
 
   if (error) {
     return (
-      <div className="relative min-h-full flex-1 flex flex-col bg-theme-bg-primary text-theme-text-primary">
-        <div className="border-b border-theme-border-subtle px-6 py-4 flex items-center justify-between">
-          <div>
+      <div className="relative min-h-full flex-1 flex flex-col bg-theme-bg-primary overflow-x-hidden text-theme-text-primary">
+        <div className="border-b border-theme-border-subtle px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
             <p className="text-[10.5px] uppercase tracking-[0.15em] text-theme-text-muted font-bold">Network Registry</p>
             <h1 className="text-base font-[700] text-theme-text-primary mt-1">Operation Network Graphs</h1>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 shrink-0">
             <button
               onClick={handleRefresh}
               disabled={refreshing}
-              className="flex items-center gap-2 px-3 py-1.5 text-xs border border-theme-border-subtle text-theme-text-secondary hover:text-theme-text-primary transition-colors rounded-theme-md bg-theme-bg-surface"
+              className="flex items-center gap-2 min-h-[40px] px-3 py-1.5 text-xs border border-theme-border-subtle text-theme-text-secondary hover:text-theme-text-primary transition-colors rounded-theme-md bg-theme-bg-surface"
             >
               <RefreshCWIcon className={`${refreshing ? 'animate-spin' : ''}`} size={12} />
               Retry
             </button>
-            <button onClick={() => setView('create')} className="flex items-center gap-2 px-3 py-1.5 text-xs bg-theme-text-primary text-theme-bg-primary hover:bg-theme-text-primary/90 rounded-theme-md font-semibold">
+            <button onClick={() => setView('create')} className="flex items-center gap-2 min-h-[40px] px-3 py-1.5 text-xs bg-theme-text-primary text-theme-bg-primary hover:bg-theme-text-primary/90 rounded-theme-md font-semibold">
               <PlusIcon size={12} />
               New Graph
             </button>
           </div>
         </div>
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           <Alert variant="destructive" className="border-theme-red/20 bg-theme-red/5 text-theme-red rounded-theme-md">
             <AlertCircle className="h-4 w-4 text-theme-red" />
             <AlertDescription className="font-semibold text-theme-red">{error}</AlertDescription>
@@ -195,42 +195,42 @@ export default function DigitalTwinDashboard() {
     <div className="relative min-h-screen bg-theme-bg-primary overflow-x-hidden text-theme-text-primary flex flex-col">
 
       {/* Top Action Bar */}
-      <div className="border-b border-theme-border-subtle px-6 py-4 flex items-center justify-between shrink-0 bg-theme-bg-surface/50 backdrop-blur-[8px]">
-        <div>
+      <div className="border-b border-theme-border-subtle px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-3 shrink-0 bg-theme-bg-surface/50 backdrop-blur-[8px]">
+        <div className="min-w-0">
           <p className="text-[10px] uppercase tracking-[0.18em] text-theme-text-muted font-[700]">Network Registry</p>
-          <h1 className="text-base font-bold text-theme-text-primary mt-1">
-            Operation Network Graphs
+          <h1 className="text-base font-bold text-theme-text-primary mt-1 flex flex-wrap items-center gap-2">
+            <span>Operation Network Graphs</span>
             {supplyChains.length > 0 && (
-              <span className="ml-2.5 text-[10px] font-semibold text-theme-text-muted border border-theme-border-subtle px-2 py-0.5 rounded-theme-pill bg-theme-bg-secondary/40">
+              <span className="text-[10px] font-semibold text-theme-text-muted border border-theme-border-subtle px-2 py-0.5 rounded-theme-pill bg-theme-bg-secondary/40">
                 {supplyChains.length} registered
               </span>
             )}
           </h1>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={handleRefresh}
             disabled={refreshing}
-            className="flex items-center gap-2 px-3 py-1.5 text-xs border border-theme-border-subtle text-theme-text-secondary hover:text-theme-text-primary dark:hover:text-white hover:border-theme-border-default transition-colors rounded-theme-md bg-theme-bg-surface"
+            className="flex items-center gap-2 min-h-[40px] px-3 py-1.5 text-xs border border-theme-border-subtle text-theme-text-secondary hover:text-theme-text-primary hover:border-theme-border-default transition-colors rounded-theme-md bg-theme-bg-surface"
           >
             <RefreshCWIcon className={`${refreshing ? 'animate-spin' : ''}`} size={12} />
             Sync
           </button>
           <button
             onClick={() => setView('create')}
-            className="flex items-center gap-2 px-3 py-1.5 text-xs bg-theme-text-primary text-theme-bg-primary hover:bg-theme-text-primary/90 transition-colors font-semibold rounded-theme-md shadow-sm"
+            className="flex items-center gap-2 min-h-[40px] px-3 py-1.5 text-xs bg-theme-text-primary text-theme-bg-primary hover:bg-theme-text-primary/90 transition-colors font-semibold rounded-theme-md shadow-sm"
           >
             <PlusIcon size={12} />
-            Register Graph
+            <span className="whitespace-nowrap">Register Graph</span>
           </button>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-8">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 sm:py-8">
         {supplyChains.length === 0 ? (
           <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
-            <div className="text-center max-w-sm p-10 border border-theme-border-subtle rounded-theme-lg bg-theme-bg-surface shadow-sm">
+            <div className="text-center w-full max-w-sm p-8 sm:p-10 border border-theme-border-subtle rounded-theme-lg bg-theme-bg-surface shadow-sm">
               <div className="w-12 h-12 border border-theme-border-subtle rounded-full bg-theme-bg-secondary/50 flex items-center justify-center mx-auto mb-4 text-theme-text-muted">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
@@ -242,7 +242,7 @@ export default function DigitalTwinDashboard() {
               </p>
               <button
                 onClick={() => setView('create')}
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs bg-theme-text-primary text-theme-bg-primary hover:bg-theme-text-primary/95 transition-colors font-semibold rounded-theme-md"
+                className="inline-flex items-center gap-2 min-h-[40px] px-4 py-2 text-xs bg-theme-text-primary text-theme-bg-primary hover:bg-theme-text-primary/95 transition-colors font-semibold rounded-theme-md"
               >
                 <PlusIcon size={12} />
                 Register First Graph
@@ -251,8 +251,8 @@ export default function DigitalTwinDashboard() {
           </div>
         ) : (
           <div className="border border-theme-border-subtle rounded-theme-lg bg-theme-bg-surface overflow-hidden shadow-sm">
-            {/* Table Header */}
-            <div className="grid grid-cols-[2fr_1fr_1fr_1fr_auto] items-center border-b border-theme-border-subtle px-6 py-3.5 text-[10px] uppercase tracking-wider text-theme-text-muted font-bold gap-4 bg-theme-bg-secondary/20">
+            {/* Table Header (desktop only) */}
+            <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr_auto] items-center border-b border-theme-border-subtle px-6 py-3.5 text-[10px] uppercase tracking-wider text-theme-text-muted font-bold gap-4 bg-theme-bg-secondary/20">
               <span>Graph Name</span>
               <span>Industry</span>
               <span>Exposure Profile</span>
@@ -272,55 +272,75 @@ export default function DigitalTwinDashboard() {
                 const edgeCount = chain.edges?.length || 0;
 
                 return (
-                  <div key={chain.supply_chain_id} className="group grid grid-cols-[2fr_1fr_1fr_1fr_auto] items-center px-6 py-4 gap-4 hover:bg-theme-bg-secondary/40 transition-colors">
-                    <button
-                      className="flex items-start gap-3 text-left min-w-0"
-                      onClick={() => {
-                        setTwinId(chain.supply_chain_id);
-                      }}
-                    >
-                      <div className="w-8 h-8 border border-theme-border-subtle bg-theme-bg-secondary rounded-theme-sm flex items-center justify-center shrink-0 text-[10.5px] font-bold text-theme-text-secondary mt-0.5 uppercase">
-                        {chain.name?.charAt(0) || '?'}
-                      </div>
-                      <div className="min-w-0 flex flex-col justify-center">
-                        <p className="text-sm font-semibold text-theme-text-primary truncate group-hover:underline underline-offset-2">
-                          {chain.name || 'Unnamed Network'}
-                        </p>
-                        <p className="text-[11px] text-theme-text-secondary truncate mt-0.5">
-                          {nodeCount} nodes · {edgeCount} connections
-                        </p>
-                      </div>
-                    </button>
+                  <div key={chain.supply_chain_id} className="group flex flex-col gap-3 px-4 py-4 sm:px-6 md:grid md:grid-cols-[2fr_1fr_1fr_1fr_auto] md:items-center md:gap-4 hover:bg-theme-bg-secondary/40 transition-colors">
+                    <div className="flex items-start gap-2 min-w-0">
+                      <button
+                        className="flex items-start gap-3 text-left min-w-0 flex-1"
+                        onClick={() => {
+                          setTwinId(chain.supply_chain_id);
+                        }}
+                      >
+                        <div className="w-9 h-9 md:w-8 md:h-8 border border-theme-border-subtle bg-theme-bg-secondary rounded-theme-sm flex items-center justify-center shrink-0 text-[10.5px] font-bold text-theme-text-secondary mt-0.5 uppercase">
+                          {chain.name?.charAt(0) || '?'}
+                        </div>
+                        <div className="min-w-0 flex flex-col justify-center">
+                          <p className="text-sm font-semibold text-theme-text-primary truncate group-hover:underline underline-offset-2">
+                            {chain.name || 'Unnamed Network'}
+                          </p>
+                          <p className="text-[11px] text-theme-text-secondary truncate mt-0.5">
+                            {nodeCount} nodes · {edgeCount} connections
+                          </p>
+                        </div>
+                      </button>
 
-                    <span className="text-xs text-theme-text-secondary truncate">{industry}</span>
+                      {/* Delete (mobile: inline top-right, always visible) */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="md:hidden h-10 w-10 p-0 shrink-0 hover:bg-theme-red/10 text-theme-text-secondary hover:text-theme-red rounded-theme-md"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleDelete(chain.supply_chain_id, chain.name);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
 
-                    <span className={`text-[11px] font-[700] tracking-wide inline-flex items-center gap-1.5`}>
-                      <span className={`w-2 h-2 rounded-full ${
-                        riskLevel === 'High' ? 'bg-theme-red animate-pulse' :
-                        riskLevel === 'Medium' ? 'bg-theme-amber' :
-                        'bg-theme-green'
-                      }`} />
-                      <span className={
-                        riskLevel === 'High' ? 'text-theme-red' :
-                        riskLevel === 'Medium' ? 'text-theme-amber' :
-                        'text-theme-green'
-                      }>{riskLevel} Risk</span>
-                    </span>
+                    {/* Meta group: inline row on mobile, grid cells on desktop */}
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 pl-11 md:pl-0 md:contents">
+                      <span className="text-xs text-theme-text-secondary truncate md:min-w-0">{industry}</span>
 
-                    <span className="text-xs text-theme-text-secondary">{date}</span>
+                      <span className={`text-[11px] font-[700] tracking-wide inline-flex items-center gap-1.5`}>
+                        <span className={`w-2 h-2 rounded-full ${
+                          riskLevel === 'High' ? 'bg-theme-red animate-pulse' :
+                          riskLevel === 'Medium' ? 'bg-theme-amber' :
+                          'bg-theme-green'
+                        }`} />
+                        <span className={
+                          riskLevel === 'High' ? 'text-theme-red' :
+                          riskLevel === 'Medium' ? 'text-theme-amber' :
+                          'text-theme-green'
+                        }>{riskLevel} Risk</span>
+                      </span>
 
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-all hover:bg-theme-red/10 text-theme-text-secondary hover:text-theme-red rounded-theme-md"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        handleDelete(chain.supply_chain_id, chain.name);
-                      }}
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </Button>
+                      <span className="text-xs text-theme-text-secondary">{date}</span>
+
+                      {/* Delete (desktop: hover-reveal grid cell) */}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="hidden md:inline-flex h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-all hover:bg-theme-red/10 text-theme-text-secondary hover:text-theme-red rounded-theme-md"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleDelete(chain.supply_chain_id, chain.name);
+                        }}
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </Button>
+                    </div>
                   </div>
                 );
               })}

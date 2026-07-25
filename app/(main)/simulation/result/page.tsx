@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { 
+import { PageHeader } from "@/components/ui/page-header"
+import { Reveal } from "@/components/motion"
+import {
   ArrowLeft, 
   Eye, 
   TrendingDown, 
@@ -377,14 +379,14 @@ export default function SimulationResultPage() {
     color: string;
     iconColor: string;
   }) => (
-    <Card className="p-5 border border-gray-200 dark:border-gray-800 shadow-sm transition-all duration-300">
+    <Card className="rounded-xl p-5 border border-border bg-card shadow-sm transition-all duration-300 hover:shadow-md">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500 mb-2">{label}</p>
-          <p className={`text-2xl font-bold text-black dark:text-white`}>{value}</p>
+          <p className="text-sm font-medium text-muted-foreground mb-2">{label}</p>
+          <p className="font-display text-2xl font-semibold text-foreground">{value}</p>
         </div>
         <div className="relative">
-          <Icon className={`h-7 w-7 text-gray-400 dark:text-gray-500 relative z-10`} />
+          <Icon className="h-7 w-7 text-muted-foreground relative z-10" />
         </div>
       </div>
     </Card>
@@ -437,17 +439,17 @@ export default function SimulationResultPage() {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="relative min-h-full flex-1 bg-white dark:bg-black text-black dark:text-white">
-        <div className="relative z-10 p-6 px-10">
+      <div className="relative min-h-full flex-1 bg-background text-foreground">
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center justify-center min-h-[50vh]">
               <div className="text-center space-y-6">
                 <div className="relative">
-                  <Activity className="h-16 w-16 animate-spin mx-auto text-black dark:text-white" />
+                  <Activity className="h-16 w-16 animate-spin mx-auto text-primary" />
                 </div>
                 <div className="space-y-2">
                   <p className="text-xl font-semibold">Loading simulation results...</p>
-                  <p className="text-sm text-gray-500">Please wait while we prepare your analysis</p>
+                  <p className="text-sm text-muted-foreground">Please wait while we prepare your analysis</p>
                 </div>
               </div>
             </div>
@@ -458,98 +460,88 @@ export default function SimulationResultPage() {
   }
 
   return (
-    <div className="relative min-h-full flex-1 bg-white dark:bg-black text-black dark:text-white">
+    <div className="relative min-h-full flex-1 bg-background text-foreground">
 
-      <div className="relative z-10 p-6 px-10">
-        <div className="max-w-7xl mx-auto">
-          {/* Elegant Header */}
-          <Card className="p-8 mb-10 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
-            <div className="flex items-start justify-between">
-              <div className="space-y-6">
-                <div className="flex items-center gap-3">
-                  <Button 
-                    variant="ghost" 
-                    onClick={handleBackToSimulation}
-                    className="flex items-center gap-2 text-gray-500 hover:text-black dark:text-gray-400 dark:hover:text-white border border-gray-200 dark:border-gray-800 rounded-lg px-3 py-2"
-                    aria-label="Navigate back to simulation page"
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8 space-y-6 sm:space-y-8">
+        <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8">
+          {/* Header */}
+          <div className="space-y-5">
+            <Reveal className="flex flex-wrap items-center gap-3">
+              <Button
+                variant="ghost"
+                onClick={handleBackToSimulation}
+                className="flex items-center gap-2 rounded-full border border-border px-3 py-2 text-muted-foreground hover:text-foreground"
+                aria-label="Navigate back to simulation page"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back to Simulation
+              </Button>
+              <Badge className="flex items-center gap-2 border border-border bg-muted px-3 py-1 text-muted-foreground">
+                <CheckCircle className="h-3 w-3" />
+                {simulationResults.status.toUpperCase()}
+              </Badge>
+              {isEnhancedAnalysis && (
+                <Badge className="flex items-center gap-2 border border-primary/20 bg-primary/10 px-3 py-1 text-primary">
+                  <Sparkles className="h-3 w-3" />
+                  AI Enhanced
+                </Badge>
+              )}
+            </Reveal>
+
+            <PageHeader
+              eyebrow="Scenario Analysis"
+              title="Simulation Results"
+              subtitle={
+                <>
+                  <span className="font-semibold text-foreground">{simulationResults.scenarioName}</span>
+                  {"  ·  Completed "}
+                  {formattedDate}
+                  {"  ·  "}
+                  {simulationResults.scenarioType}
+                </>
+              }
+              actions={
+                <>
+                  {simulationId && !isEnhancedAnalysis && (
+                    <Button
+                      onClick={handleGenerateImpactAssessment}
+                      disabled={isGeneratingImpact}
+                      variant="outline"
+                      className="rounded-full shadow-sm transition-all duration-300"
+                      aria-label="Generate comprehensive AI impact assessment"
+                    >
+                      {isGeneratingImpact ? (
+                        <>
+                          <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent" />
+                          Analyzing...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="mr-2 h-4 w-4" />
+                          AI Analysis
+                        </>
+                      )}
+                    </Button>
+                  )}
+                  <Button
+                    onClick={handleViewMitigationStrategy}
+                    className="rounded-full shadow-sm transition-all duration-300"
+                    aria-label="View detailed mitigation strategy"
                   >
-                    <ArrowLeft className="h-4 w-4" />
-                    Back to Simulation
+                    <Eye className="mr-2 h-4 w-4" />
+                    View Strategy
                   </Button>
-                  <div className="flex items-center gap-2">
-                    <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-800 flex items-center gap-2 px-3 py-1">
-                      <CheckCircle className="h-3 w-3 border-gray-800 dark:border-gray-200" />
-                      {simulationResults.status.toUpperCase()}
-                    </Badge>
-                    {isEnhancedAnalysis && (
-                      <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200 border border-gray-200 dark:border-gray-800 flex items-center gap-2 px-3 py-1">
-                        <Sparkles className="h-3 w-3" />
-                        AI Enhanced
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="space-y-3">
-                  <h1 className="text-3xl font-bold tracking-tight text-black dark:text-white">
-                    Simulation Results
-                  </h1>
-                  <p className="text-gray-600 dark:text-gray-300 text-base font-semibold">
-                    {simulationResults.scenarioName}
-                  </p>
-                  <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-2 text-gray-500 font-medium">
-                      <div className="w-2 h-2 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
-                      Completed {formattedDate}
-                    </div>
-                    <div className="text-gray-500 font-medium">
-                      {simulationResults.scenarioType}
-                    </div>
-                  </div>
-                </div>
-                
-                {error && (
-                  <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-50/50 dark:bg-amber-950/20 px-4 py-2 rounded-lg border border-amber-200/30 dark:border-amber-800/30">
-                    <AlertTriangle className="h-4 w-4" />
-                    {error}
-                  </div>
-                )}
-              </div>
-              
-              <div className="flex gap-3">
-                {simulationId && !isEnhancedAnalysis && (
-                  <Button 
-                    onClick={handleGenerateImpactAssessment}
-                    disabled={isGeneratingImpact}
-                    className="bg-white text-black border border-gray-200 hover:bg-gray-50 dark:bg-black dark:text-white dark:border-gray-800 dark:hover:bg-gray-900 shadow-sm transition-all duration-300 rounded-xl"
-                    aria-label="Generate comprehensive AI impact assessment"
-                  >
-                    {isGeneratingImpact ? (
-                      <>
-                        <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-black border-r-transparent dark:border-white" />
-                        Analyzing...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="mr-2 h-4 w-4" />
-                        AI Analysis
-                      </>
-                    )}
-                  </Button>
-                )}
-                <Button 
-                  onClick={handleViewMitigationStrategy}
-                  className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 shadow-sm transition-all duration-300 rounded-xl"
-                  aria-label="View detailed mitigation strategy"
-                >
-                  <Eye className="mr-2 h-4 w-4" />
-                  View Strategy
-                </Button>
-              </div>
-            </div>
-          </Card>
+                </>
+              }
+            />
 
-
+            {error && (
+              <div className="flex items-center gap-2 text-sm text-amber-600 dark:text-amber-400 bg-amber-50/50 dark:bg-amber-950/20 px-4 py-2 rounded-lg border border-amber-200/30 dark:border-amber-800/30">
+                <AlertTriangle className="h-4 w-4" />
+                {error}
+              </div>
+            )}
+          </div>
 
           {/* Key Performance Metrics */}
           <section aria-labelledby="metrics-title" className="mb-8">
@@ -565,7 +557,7 @@ export default function SimulationResultPage() {
           <section aria-labelledby="overview-title" className="mb-8">
             <h2 id="overview-title" className="sr-only">Scenario Overview and Risk Assessment</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+              <Card className="p-4 sm:p-6 rounded-xl border border-border bg-card shadow-sm">
                 <CardHeader className="p-0 pb-4">
                   <CardTitle className="flex items-center gap-3 text-xl text-black dark:text-white">
                     <TrendingDown className="h-5 w-5 text-gray-400" />
@@ -590,7 +582,7 @@ export default function SimulationResultPage() {
                 </CardContent>
               </Card>
 
-              <Card className="p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+              <Card className="p-4 sm:p-6 rounded-xl border border-border bg-card shadow-sm">
                 <CardHeader className="p-0 pb-4">
                   <CardTitle className="flex items-center gap-3 text-xl text-black dark:text-white">
                     <AlertTriangle className="h-5 w-5 text-gray-400" />
@@ -624,9 +616,9 @@ export default function SimulationResultPage() {
 
           {/* Tabbed Analysis - Key Findings, Financial Impact, and Total Cost Impact */}
           <section aria-labelledby="analysis-title">
-            <Card className="p-6 mb-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+            <Card className="p-4 sm:p-6 mb-8 rounded-xl border border-border bg-card shadow-sm">
               <CardHeader className="p-0 pb-6">
-                <CardTitle className="text-2xl font-bold text-black dark:text-white" id="analysis-title">
+                <CardTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white" id="analysis-title">
                   Analysis & Impact Assessment
                 </CardTitle>
                 <CardDescription className="text-base text-gray-500 dark:text-gray-400">
@@ -647,26 +639,26 @@ export default function SimulationResultPage() {
               </CardHeader>
               <CardContent className="p-0">
                 <Tabs defaultValue="key-findings" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3 mb-6 bg-gray-100 dark:bg-gray-900 rounded-lg p-1">
-                    <TabsTrigger 
-                      value="key-findings" 
-                      className="flex items-center gap-2 rounded-md data-[state=active]:bg-white data-[state=active]:text-black dark:data-[state=active]:bg-black dark:data-[state=active]:text-white data-[state=active]:shadow-sm text-sm"
+                  <TabsList className="grid w-full grid-cols-3 mb-6 h-auto bg-gray-100 dark:bg-gray-900 rounded-lg p-1 gap-1">
+                    <TabsTrigger
+                      value="key-findings"
+                      className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 h-auto min-h-[40px] py-2 px-1 sm:px-3 rounded-md data-[state=active]:bg-white data-[state=active]:text-black dark:data-[state=active]:bg-black dark:data-[state=active]:text-white data-[state=active]:shadow-sm text-[11px] sm:text-sm whitespace-normal text-center leading-tight"
                     >
-                      <FileText className="h-4 w-4" />
+                      <FileText className="h-4 w-4 shrink-0" />
                       Key Findings
                     </TabsTrigger>
-                    <TabsTrigger 
-                      value="financial-impact" 
-                      className="flex items-center gap-2 rounded-md data-[state=active]:bg-white data-[state=active]:text-black dark:data-[state=active]:bg-black dark:data-[state=active]:text-white data-[state=active]:shadow-sm text-sm"
+                    <TabsTrigger
+                      value="financial-impact"
+                      className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 h-auto min-h-[40px] py-2 px-1 sm:px-3 rounded-md data-[state=active]:bg-white data-[state=active]:text-black dark:data-[state=active]:bg-black dark:data-[state=active]:text-white data-[state=active]:shadow-sm text-[11px] sm:text-sm whitespace-normal text-center leading-tight"
                     >
-                      <BarChart3 className="h-4 w-4" />
+                      <BarChart3 className="h-4 w-4 shrink-0" />
                       Financial Impact
                     </TabsTrigger>
-                    <TabsTrigger 
-                      value="total-cost" 
-                      className="flex items-center gap-2 rounded-md data-[state=active]:bg-white data-[state=active]:text-black dark:data-[state=active]:bg-black dark:data-[state=active]:text-white data-[state=active]:shadow-sm text-sm"
+                    <TabsTrigger
+                      value="total-cost"
+                      className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 h-auto min-h-[40px] py-2 px-1 sm:px-3 rounded-md data-[state=active]:bg-white data-[state=active]:text-black dark:data-[state=active]:bg-black dark:data-[state=active]:text-white data-[state=active]:shadow-sm text-[11px] sm:text-sm whitespace-normal text-center leading-tight"
                     >
-                      <Target className="h-4 w-4" />
+                      <Target className="h-4 w-4 shrink-0" />
                       Total Cost Impact
                     </TabsTrigger>
                   </TabsList>
@@ -1111,9 +1103,9 @@ export default function SimulationResultPage() {
           {/* Cascading Effects Analysis - Show whenever cascading effects exist */}
           {simulationResults.cascadingEffects && simulationResults.cascadingEffects.length > 0 && (
             <section aria-labelledby="cascading-title">
-              <Card className="p-6 mb-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+              <Card className="p-4 sm:p-6 mb-8 rounded-xl border border-border bg-card shadow-sm">
                 <CardHeader className="p-0 pb-6">
-                  <CardTitle className="text-2xl font-bold text-black dark:text-white" id="cascading-title">
+                  <CardTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white" id="cascading-title">
                     Cascading Effects Analysis
                   </CardTitle>
                   <CardDescription className="text-base text-gray-500 dark:text-gray-400">
@@ -1166,9 +1158,9 @@ export default function SimulationResultPage() {
           {/* Mitigation Strategies - Show whenever strategies exist */}
           {simulationResults.mitigationStrategies && simulationResults.mitigationStrategies.length > 0 && (
             <section aria-labelledby="mitigation-title">
-              <Card className="p-6 mb-8 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+              <Card className="p-4 sm:p-6 mb-8 rounded-xl border border-border bg-card shadow-sm">
                 <CardHeader className="p-0 pb-6">
-                  <CardTitle className="text-2xl font-bold text-black dark:text-white" id="mitigation-title">
+                  <CardTitle className="text-xl sm:text-2xl font-bold text-black dark:text-white" id="mitigation-title">
                     AI-Recommended Mitigation Strategies
                   </CardTitle>
                   <CardDescription className="text-base text-gray-500 dark:text-gray-400">
@@ -1226,7 +1218,7 @@ export default function SimulationResultPage() {
 
           {/* Node Analysis Section */}
           {/* <section aria-labelledby="node-analysis-title">
-            <Card className="p-6 border border-gray-200 dark:border-gray-800 bg-white dark:bg-black shadow-sm">
+            <Card className="p-6 rounded-xl border border-border bg-card shadow-sm">
               <CardHeader className="p-0 pb-6">
                 <CardTitle className="text-2xl font-bold text-black dark:text-white" id="node-analysis-title">
                   Supply Chain Node Analysis

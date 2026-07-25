@@ -53,11 +53,10 @@ export default function MainLayout({
 
         // Only redirect if critical fields are completely missing
         // Skip profile check for main dashboard during development
-        const skipProfileCheck = pathname.includes('/dashboard') || 
+        const skipProfileCheck = pathname.includes('/dashboard') ||
                                 pathname.includes('/digital-twin') ||
                                 pathname.includes('/simulation') ||
-                                pathname.includes('/orchestrator') ||
-                                pathname.includes('/risk-prediction')
+                                pathname.includes('/orchestrator')
         
         if (userData && !skipProfileCheck && (
           !userData.organisation_name || userData.organisation_name.trim() === ''
@@ -95,8 +94,13 @@ export default function MainLayout({
 
   if (isLoading) {
     return (
-      <div className="h-screen w-full flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      <div className="h-screen w-full flex flex-col items-center justify-center gap-4 bg-background px-6 text-center">
+        <div
+          className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-2 border-border border-t-primary"
+          role="status"
+          aria-label="Loading"
+        />
+        <p className="text-sm text-muted-foreground">Loading your workspace…</p>
       </div>
     )
   }
@@ -109,7 +113,15 @@ export default function MainLayout({
         <SidebarProvider>
           <div className="flex flex-col h-screen w-full overflow-hidden">
             <AppSidebar />
-            <main className="flex-1 min-h-0 flex flex-col overflow-auto bg-background">
+            <main className="relative flex-1 min-w-0 min-h-0 flex flex-col overflow-y-auto overflow-x-hidden bg-background">
+              {/* Subtle ambient glow — dark mode only, non-interactive, top-anchored */}
+              <div
+                className="pointer-events-none absolute inset-x-0 top-0 h-[420px] max-w-full hidden dark:block"
+                style={{
+                  background:
+                    "radial-gradient(ellipse 90% 100% at 50% -20%, rgba(90,120,255,0.07) 0%, transparent 65%)",
+                }}
+              />
               {children}
             </main>
           </div>

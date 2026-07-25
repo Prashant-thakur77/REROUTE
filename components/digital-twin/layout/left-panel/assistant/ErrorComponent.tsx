@@ -37,7 +37,7 @@ const getErrorIcon = (errorType: ChatError['type']) => {
 
 const getErrorColor = (errorType: ChatError['type']) => {
   // More subtle gray-based colors
-  return 'border-gray-200 bg-gray-50 text-gray-600';
+  return 'border-border bg-muted text-muted-foreground';
 };
 
 export const ErrorComponent: React.FC<ErrorComponentProps> = ({
@@ -81,9 +81,9 @@ export const ErrorComponent: React.FC<ErrorComponentProps> = ({
           </TooltipTrigger>
           <TooltipContent side="top" className="max-w-xs text-xs p-2">
             <div className="space-y-1">
-              <p className="text-gray-700 font-medium">{getErrorTitle(error.type)}</p>
+              <p className="text-foreground font-medium">{getErrorTitle(error.type)}</p>
               {error.code && (
-                <p className="text-gray-500 font-mono text-[10px]">{error.code}</p>
+                <p className="text-muted-foreground font-mono text-[10px]">{error.code}</p>
               )}
             </div>
           </TooltipContent>
@@ -93,22 +93,22 @@ export const ErrorComponent: React.FC<ErrorComponentProps> = ({
         <Tooltip>
           <TooltipTrigger asChild>
             <div className="flex-1 min-w-0">
-              <p className="text-[10px] text-gray-500 truncate">
+              <p className="text-[10px] text-muted-foreground truncate">
                 {getShortMessage(error.message)}
               </p>
             </div>
           </TooltipTrigger>
           <TooltipContent side="top" className="max-w-sm text-xs p-2">
             <div className="space-y-1">
-              <p className="text-gray-700 font-medium text-[10px]">{getErrorTitle(error.type)}</p>
-              <p className="text-gray-600 text-[10px] leading-tight">{error.message}</p>
+              <p className="text-foreground font-medium text-[10px]">{getErrorTitle(error.type)}</p>
+              <p className="text-muted-foreground text-[10px] leading-tight">{error.message}</p>
               {retryCount > 0 && (
-                <p className="text-gray-500 text-[10px]">
+                <p className="text-muted-foreground text-[10px]">
                   Retry: {retryCount}/3
                 </p>
               )}
               {error.code && (
-                <p className="text-gray-500 font-mono text-[9px] bg-gray-100 px-1 py-0.5 rounded">
+                <p className="text-muted-foreground font-mono text-[9px] bg-muted px-1 py-0.5 rounded">
                   {error.code}
                 </p>
               )}
@@ -125,13 +125,13 @@ export const ErrorComponent: React.FC<ErrorComponentProps> = ({
                   onClick={onRetry}
                   size="sm"
                   variant="ghost"
-                  className="h-6 w-6 p-0 hover:bg-white/50"
+                  className="h-6 w-6 p-0 hover:bg-accent"
                 >
                   <RefreshCw className="h-3 w-3" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="text-[10px] p-1">
-                <p className="text-gray-600">Retry ({3 - retryCount} left)</p>
+                <p className="text-muted-foreground">Retry ({3 - retryCount} left)</p>
               </TooltipContent>
             </Tooltip>
           )}
@@ -142,13 +142,13 @@ export const ErrorComponent: React.FC<ErrorComponentProps> = ({
                 onClick={onDismiss}
                 size="sm"
                 variant="ghost"
-                className="h-6 w-6 p-0 hover:bg-white/50"
+                className="h-6 w-6 p-0 hover:bg-accent"
               >
                 <X className="h-3 w-3" />
               </Button>
             </TooltipTrigger>
             <TooltipContent className="text-[10px] p-1">
-              <p className="text-gray-600">Dismiss</p>
+              <p className="text-muted-foreground">Dismiss</p>
             </TooltipContent>
           </Tooltip>
         </div>

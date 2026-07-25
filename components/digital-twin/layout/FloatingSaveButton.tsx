@@ -31,16 +31,16 @@ const FloatingSaveButton: FC<FloatingSaveButtonProps> = ({
           onClick={onSave}
           disabled={disabled || isLoading}
           className={`
-            relative flex items-center justify-center gap-2 px-6 py-3 
-            bg-black dark:bg-white
-            hover:bg-slate-800 dark:hover:bg-slate-100
-            text-white dark:text-black font-medium text-sm
+            relative flex items-center justify-center gap-2 px-6 py-3
+            bg-foreground
+            hover:bg-foreground/90
+            text-background font-medium text-sm
             rounded-none shadow-none
             transition-all duration-200 ease-out
             transform hover:scale-105 active:scale-95
             disabled:opacity-40 disabled:cursor-not-allowed disabled:transform-none
             min-w-[120px]
-            border border-black dark:border-white
+            border border-foreground
           `}
         >
           {/* No blur overlay needed for flat button */}
@@ -49,7 +49,7 @@ const FloatingSaveButton: FC<FloatingSaveButtonProps> = ({
           <div className="relative flex items-center gap-2">
             {isLoading ? (
               <>
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <div className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin"></div>
                 <span>Saving...</span>
               </>
             ) : (
@@ -62,12 +62,12 @@ const FloatingSaveButton: FC<FloatingSaveButtonProps> = ({
 
           {/* Hover indicator */}
           <div className={`
-            absolute -bottom-1 -right-1 w-3 h-3 
-            bg-white/20 rounded-full
+            absolute -bottom-1 -right-1 w-3 h-3
+            bg-background/20 rounded-full
             transition-all duration-200
             ${isHovered ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}
           `}>
-            <ChevronDown className="w-3 h-3 text-white/70" />
+            <ChevronDown className="w-3 h-3 text-background/70" />
           </div>
         </button>
       </div>
@@ -75,14 +75,14 @@ const FloatingSaveButton: FC<FloatingSaveButtonProps> = ({
       {/* Tooltip */}
       <div className={`
         absolute top-full right-0 mt-2 px-3 py-1.5
-        bg-gray-900 text-white text-xs rounded-md
+        bg-popover text-popover-foreground border border-border text-xs rounded-md
         transform transition-all duration-200 ease-out
         ${isHovered ? 'translate-y-0 opacity-100' : '-translate-y-1 opacity-0 pointer-events-none'}
         whitespace-nowrap
         shadow-lg
       `}>
         Save your supply chain configuration
-        <div className="absolute -top-1 right-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+        <div className="absolute -top-1 right-4 w-2 h-2 bg-popover border-l border-t border-border transform rotate-45"></div>
       </div>
 
 

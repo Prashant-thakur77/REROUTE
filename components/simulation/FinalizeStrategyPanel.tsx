@@ -224,23 +224,23 @@ export const FinalizeStrategyPanel: React.FC<FinalizeStrategyPanelProps> = ({
     return (
       <Drawer open={open} onOpenChange={onClose}>
         <DrawerContent className="max-h-[90vh] border-t border-gray-200/60 dark:border-gray-700/60">
-          <DrawerHeader className="flex items-center justify-between p-8 border-b border-gray-200/50 dark:border-gray-700/50">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30">
+          <DrawerHeader className="flex items-center justify-between p-5 sm:p-8 border-b border-gray-200/50 dark:border-gray-700/50">
+            <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30 flex-shrink-0">
                 <CheckCircle className="h-5 w-5 text-white" />
               </div>
-              <DrawerTitle className="text-xl font-bold text-gray-900 dark:text-white">Finalize Strategy</DrawerTitle>
+              <DrawerTitle className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate">Finalize Strategy</DrawerTitle>
             </div>
             <DrawerClose asChild>
-              <button 
-                className="p-3 rounded-xl hover:bg-muted/60 transition-all duration-200"
+              <button
+                className="p-3 rounded-xl hover:bg-muted/60 transition-all duration-200 flex-shrink-0"
                 aria-label="Close finalize drawer"
               >
                 <X className="h-5 w-5 text-muted-foreground" />
               </button>
             </DrawerClose>
           </DrawerHeader>
-          <div className="p-8 overflow-y-auto">
+          <div className="p-5 sm:p-8 overflow-y-auto">
             <FinalizeContent />
           </div>
         </DrawerContent>

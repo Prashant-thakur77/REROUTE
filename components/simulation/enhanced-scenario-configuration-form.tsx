@@ -87,14 +87,14 @@ export function ScenarioConfigurationForm() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Basic Configuration Card - Left Side */}
           <Card className="border border-theme-border-subtle bg-theme-bg-surface text-theme-text-primary shadow-sm rounded-theme-lg transition-all duration-300 hover:shadow-md">
-            <CardHeader className="pb-4 border-b border-theme-border-subtle/50">
+            <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6 pb-4 border-b border-theme-border-subtle/50">
               <CardTitle className="flex items-center gap-2 text-base text-theme-text-primary font-bold">
                 <CogIcon size={18} className="text-theme-blue" />
                 Basic Configuration
               </CardTitle>
               <CardDescription className="text-xs text-theme-text-secondary">Configure your core scenario parameters</CardDescription>
             </CardHeader>
-            <CardContent className="p-6 space-y-5">
+            <CardContent className="p-4 sm:p-6 space-y-5">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 <div className="space-y-2.5">
                   <LabelWithTooltip 
@@ -179,14 +179,14 @@ export function ScenarioConfigurationForm() {
 
           {/* Description and Impact Parameters Card - Right Side */}
           <Card className="border border-theme-border-subtle bg-theme-bg-surface text-theme-text-primary shadow-sm rounded-theme-lg transition-all duration-300 hover:shadow-md">
-            <CardHeader className="pb-4 border-b border-theme-border-subtle/50">
+            <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6 pb-4 border-b border-theme-border-subtle/50">
               <CardTitle className="flex items-center gap-2 text-base text-theme-text-primary font-bold">
                 <FileTextIcon size={18} className="text-theme-green" />
                 Description & Impact Parameters
               </CardTitle>
               <CardDescription className="text-xs text-theme-text-secondary">Describe your scenario and set disruption parameters</CardDescription>
             </CardHeader>
-            <CardContent className="p-6 space-y-5">
+            <CardContent className="p-4 sm:p-6 space-y-5">
               <div className="space-y-2.5">
                 <LabelWithTooltip 
                   tooltip="Provide a detailed description of your scenario including the cause, scope, and expected impact. This helps contextualize your simulation results and aids in interpretation."
@@ -248,14 +248,14 @@ export function ScenarioConfigurationForm() {
 
         {/* Advanced Settings Card */}
         <Card className="border border-theme-border-subtle bg-theme-bg-surface text-theme-text-primary shadow-sm rounded-theme-lg transition-all duration-300 hover:shadow-md">
-          <CardHeader className="pb-4 border-b border-theme-border-subtle/50">
+          <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6 pb-4 border-b border-theme-border-subtle/50">
             <CardTitle className="flex items-center gap-2 text-base text-theme-text-primary font-bold">
               <SettingsIcon size={18} className="text-theme-blue" />
               Advanced Settings
             </CardTitle>
             <CardDescription className="text-xs text-theme-text-secondary">Configure advanced simulation parameters</CardDescription>
           </CardHeader>
-          <CardContent className="p-6 space-y-6">
+          <CardContent className="p-4 sm:p-6 space-y-6">
             <div className="space-y-6">
               {/* Simulation Parameters Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">

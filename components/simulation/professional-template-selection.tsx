@@ -326,7 +326,7 @@ export function ProfessionalTemplateSelection({
       case 'medium': return 'bg-[#E6AD12]/10 text-[#E6AD12] border border-[#E6AD12]/20 font-bold'
       case 'high': return 'bg-[#D95D39]/10 text-[#D95D39] border border-[#D95D39]/20 font-bold'
       case 'critical': return 'bg-[#D95D39]/20 text-[#D95D39] border border-[#D95D39]/30 font-bold'
-      default: return 'bg-[#A09A94]/10 text-[#6B6560] border border-[#E8E3DC] font-bold'
+      default: return 'bg-[#A09A94]/10 text-[#6B7688] border border-[#E8E3DC] font-bold'
     }
   }
 
@@ -335,7 +335,7 @@ export function ProfessionalTemplateSelection({
       case 'simple': return 'bg-[#2B4FE8]/10 text-[#2B4FE8] border border-[#2B4FE8]/20 font-bold'
       case 'moderate': return 'bg-[#9A348E]/10 text-[#9A348E] border border-[#9A348E]/20 font-bold'
       case 'complex': return 'bg-[#4B0082]/10 text-[#4B0082] border border-[#4B0082]/20 font-bold'
-      default: return 'bg-[#A09A94]/10 text-[#6B6560] border border-[#E8E3DC] font-bold'
+      default: return 'bg-[#A09A94]/10 text-[#6B7688] border border-[#E8E3DC] font-bold'
     }
   }
 
@@ -376,9 +376,9 @@ export function ProfessionalTemplateSelection({
   }
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-6 sm:space-y-10">
       {/* Two Action Cards — AI Scenarios + Custom Scenario */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
 
         <MinimalCard className="group transition-all duration-300" onClick={onAIScenarios}>
           <CardHeader className="text-center pb-6">

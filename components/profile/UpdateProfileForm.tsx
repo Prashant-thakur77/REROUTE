@@ -134,10 +134,10 @@ export function UpdateProfileForm({ isOpen, onClose, currentProfile = {}, mandat
 
   return (
     <Dialog open={isOpen} onOpenChange={mandatory ? undefined : onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="w-[95vw] max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-bold">
+            <DialogTitle className="font-display text-xl font-semibold tracking-tight">
               {mandatory ? "Complete Your Profile" : "Update Organization Profile"}
             </DialogTitle>
             {!mandatory && (
@@ -156,33 +156,31 @@ export function UpdateProfileForm({ isOpen, onClose, currentProfile = {}, mandat
         <form onSubmit={handleSubmit} className="space-y-6 py-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="organization_name">Organization Name</Label>
+              <Label htmlFor="organization_name" className="text-sm text-muted-foreground">Organization Name</Label>
               <Input
                 id="organization_name"
                 name="organization_name"
                 value={formData.organization_name}
                 onChange={handleChange}
                 placeholder="ACME Corporation"
-                className="shadow-md"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location" className="text-sm text-muted-foreground">Location</Label>
               <Input
                 id="location"
                 name="location"
                 value={formData.location}
                 onChange={handleChange}
                 placeholder="City, Country"
-                className="shadow-md"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="employee_count">Employee Count</Label>
+              <Label htmlFor="employee_count" className="text-sm text-muted-foreground">Employee Count</Label>
               <Input
                 id="employee_count"
                 name="employee_count"
@@ -190,18 +188,17 @@ export function UpdateProfileForm({ isOpen, onClose, currentProfile = {}, mandat
                 value={formData.employee_count}
                 onChange={handleChange}
                 placeholder="100"
-                className="shadow-md"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="industry_category">Industry Category</Label>
+              <Label htmlFor="industry_category" className="text-sm text-muted-foreground">Industry Category</Label>
               <Select
                 value={formData.industry_category?.toString()}
                 onValueChange={handleCategoryChange}
               >
-                <SelectTrigger id="industry_category" className="shadow-md">
+                <SelectTrigger id="industry_category">
                   <SelectValue placeholder="Select Category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -215,13 +212,13 @@ export function UpdateProfileForm({ isOpen, onClose, currentProfile = {}, mandat
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="industry_subcategory">Industry Subcategory</Label>
+              <Label htmlFor="industry_subcategory" className="text-sm text-muted-foreground">Industry Subcategory</Label>
               <Select
                 value={formData.industry_subcategory?.toString()}
                 onValueChange={handleSubcategoryChange}
                 disabled={!category}
               >
-                <SelectTrigger id="industry_subcategory" className="shadow-md">
+                <SelectTrigger id="industry_subcategory">
                   <SelectValue placeholder="Select Subcategory" />
                 </SelectTrigger>
                 <SelectContent>
@@ -236,14 +233,14 @@ export function UpdateProfileForm({ isOpen, onClose, currentProfile = {}, mandat
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Company Description</Label>
+            <Label htmlFor="description" className="text-sm text-muted-foreground">Company Description</Label>
             <Textarea
               id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}
               placeholder="Brief description of your organization"
-              className="h-32 shadow-md"
+              className="h-32"
             />
           </div>
 
@@ -253,12 +250,14 @@ export function UpdateProfileForm({ isOpen, onClose, currentProfile = {}, mandat
               variant="outline"
               onClick={onClose}
               disabled={isSubmitting}
+              className="w-full rounded-full sm:w-auto"
             >
               Cancel
             </Button>
             <Button
               type="submit"
               disabled={isSubmitting}
+              className="w-full rounded-full sm:w-auto"
             >
               {isSubmitting ? "Saving..." : "Save Changes"}
             </Button>

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { toast } from 'sonner'
 
 import { Card } from "@/components/ui/card"
+import { PageHeader } from "@/components/ui/page-header"
 
 import { SimulationLoader } from "@/components/simulation/test/simulation-loader"
 import { AIScenarioSuggestions } from "@/components/simulation/test/ai-scenario-suggestions"
@@ -377,12 +378,12 @@ function SimulationPageContent() {
       <style dangerouslySetInnerHTML={{__html: `
         /* PROBE WORKFLOW SIDEBAR */
         .probe-sidebar {
-          width: 218px; min-width: 218px; background: #F6F3EE; border-right: 1px solid #E5DFD6;
+          width: 218px; min-width: 218px; background: #F8FAFC; border-right: 1px solid #E2E8F0;
           padding: 24px 16px 20px; display: flex; flex-direction: column;
         }
         .probe-label {
           font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
-          letter-spacing: 0.12em; color: #9C9489; margin-bottom: 20px;
+          letter-spacing: 0.12em; color: #64748B; margin-bottom: 20px;
         }
         .probe-steps { display: flex; flex-direction: column; gap: 0; flex: 1; }
         .probe-step { display: flex; align-items: flex-start; gap: 12px; position: relative; padding-bottom: 28px; text-align: left; }
@@ -391,7 +392,7 @@ function SimulationPageContent() {
         .probe-step:not(:last-child)::after {
           content: ''; position: absolute; left: 13px; top: 27px;
           width: 1.5px; height: calc(100% - 27px);
-          background: #E5DFD6;
+          background: #E2E8F0;
         }
         .step-circle {
           width: 27px; height: 27px; border-radius: 50%; flex-shrink: 0;
@@ -401,11 +402,11 @@ function SimulationPageContent() {
         .step-circle.active { background: #2748E8; color: #fff; }
         .step-circle.done { background: #EDFAF3; border: 1.5px solid #1A7F4B; color: #1A7F4B; }
         .step-circle.pending {
-          background: #F6F3EE; border: 1.5px solid #D6CFC4; color: #9C9489;
+          background: #F8FAFC; border: 1.5px solid #CBD5E1; color: #64748B;
         }
         .step-text { padding-top: 3px; }
-        .step-title { font-size: 0.82rem; font-weight: 600; color: #18160F; }
-        .step-title.muted { color: #9C9489; font-weight: 500; }
+        .step-title { font-size: 0.82rem; font-weight: 600; color: #0F172A; }
+        .step-title.muted { color: #64748B; font-weight: 500; }
 
         /* Issues badge in sidebar */
         .issues-badge-sidebar {
@@ -427,32 +428,56 @@ function SimulationPageContent() {
         .ph-left { display: flex; flex-direction: column; gap: 6px; }
         .ph-eyebrow {
           font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
-          letter-spacing: 0.12em; color: #9C9489;
+          letter-spacing: 0.12em; color: #64748B;
         }
-        .ph-title { font-size: 1.55rem; font-weight: 800; color: #18160F; letter-spacing: -0.03em; }
-        .ph-desc { font-size: 0.82rem; color: #5C5850; line-height: 1.65; max-width: 540px; margin-top: 2px; }
+        .ph-title { font-size: 1.55rem; font-weight: 800; color: #0F172A; letter-spacing: -0.03em; }
+        .ph-desc { font-size: 0.82rem; color: #475569; line-height: 1.65; max-width: 540px; margin-top: 2px; }
         .step-badge {
-          font-size: 0.72rem; font-weight: 600; color: #5C5850;
-          background: #EFEBE3; border: 1px solid #E5DFD6; border-radius: 8px;
+          font-size: 0.72rem; font-weight: 600; color: #475569;
+          background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 8px;
           padding: 5px 12px; white-space: nowrap; margin-top: 4px;
         }
 
-        .page-divider { height: 1px; background: #E5DFD6; }
+        .page-divider { height: 1px; background: #E2E8F0; }
 
         /* Dark Mode support */
-        .dark .probe-sidebar { background: #111010; border-right-color: #2A2825; }
-        .dark .probe-step:not(:last-child)::after { background: #2A2825; }
-        .dark .step-circle.pending { background: #111010; border-color: #353330; color: #6B6560; }
-        .dark .step-title { color: #F0EDE7; }
-        .dark .step-title.muted { color: #6B6560; }
+        .dark .probe-sidebar { background: #0B0F19; border-right-color: #1B2434; }
+        .dark .probe-step:not(:last-child)::after { background: #1B2434; }
+        .dark .step-circle.pending { background: #0B0F19; border-color: #283449; color: #6B7688; }
+        .dark .step-title { color: #E5EAF2; }
+        .dark .step-title.muted { color: #6B7688; }
         .dark .issues-badge-sidebar { background: #1A1212; border-color: rgba(220,38,38,0.2); color: #ef4444; }
-        .dark .ph-title { color: #F0EDE7; }
-        .dark .ph-desc { color: #A09890; }
-        .dark .step-badge { background: #191817; border-color: #2A2825; color: #A09890; }
-        .dark .page-divider { background: #2A2825; }
+        .dark .ph-title { color: #E5EAF2; }
+        .dark .ph-desc { color: #94A3B8; }
+        .dark .step-badge { background: #131A28; border-color: #1B2434; color: #94A3B8; }
+        .dark .page-divider { background: #1B2434; }
+
+        /* RESPONSIVE — stack the probe sidebar above content on tablet/mobile */
+        @media (max-width: 900px) {
+          .sim-shell { flex-direction: column; }
+          .probe-sidebar {
+            width: 100%; min-width: 0;
+            border-right: none; border-bottom: 1px solid #E2E8F0;
+            padding: 14px 20px; flex-direction: row; align-items: center;
+            flex-wrap: wrap; gap: 10px 20px;
+          }
+          .probe-label { margin-bottom: 0; }
+          .probe-steps { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 18px; flex: 1 1 auto; }
+          .probe-step { padding-bottom: 0; align-items: center; }
+          .probe-step:not(:last-child)::after { display: none; }
+          .step-text { padding-top: 0; }
+          .issues-badge-sidebar { margin-top: 0; margin-left: auto; }
+          .main-content { padding: 20px 20px 32px; gap: 22px; }
+          .dark .probe-sidebar { border-bottom-color: #1B2434; }
+        }
+        @media (max-width: 480px) {
+          .probe-sidebar { padding: 12px 14px; gap: 10px 14px; }
+          .main-content { padding: 16px 14px 28px; gap: 18px; }
+          .ph-title { font-size: 1.3rem; }
+        }
       `}} />
 
-      <div className="flex h-full w-full">
+      <div className="sim-shell flex h-full w-full">
         {/* Left Rail — Workflow Steps */}
         <aside className="probe-sidebar">
           <div className="probe-label">Probe Workflow</div>
@@ -521,18 +546,12 @@ function SimulationPageContent() {
           <div className="main-content">
             {view === "templates" && (
               <>
-                <div className="page-header">
-                  <div className="ph-left">
-                    <div className="ph-eyebrow">Fault Injection Blueprint</div>
-                    <h1 className="ph-title">Select an Event Vector</h1>
-                    <p className="ph-desc">
-                      Choose from pre-calibrated disruption presets, or define a custom fault scenario for your network graph.
-                    </p>
-                  </div>
-                  <div className="step-badge">STEP 1 / 3</div>
-                </div>
-
-                <div className="page-divider" />
+                <PageHeader
+                  eyebrow="Fault Injection Blueprint"
+                  title="Select an Event Vector"
+                  subtitle="Choose from pre-calibrated disruption presets, or define a custom fault scenario for your network graph."
+                  actions={<span className="step-badge">STEP 1 / 3</span>}
+                />
 
                 <ProfessionalTemplateSelection
                    onTemplateSelect={handleTemplateSelect}
@@ -545,26 +564,22 @@ function SimulationPageContent() {
 
             {view === "form" && (
               <>
-                <div className="page-header">
-                  <div className="ph-left">
-                    <div className="ph-eyebrow">Parameter Configuration</div>
-                    <h1 className="ph-title">Fault Vector Parameters</h1>
-                    <p className="ph-desc">
-                      Define the scope and intensity of your probe — affected origin nodes, cascade probability, and fault depth.
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <button
-                      onClick={() => setView("templates")}
-                      className="flex items-center gap-1.5 text-xs border border-theme-border-subtle bg-theme-bg-surface px-3 py-1.5 text-theme-text-secondary hover:text-theme-text-primary hover:border-theme-border-default rounded-theme-md transition-all font-semibold"
-                    >
-                      ← Presets
-                    </button>
-                    <div className="step-badge">STEP 2 / 3</div>
-                  </div>
-                </div>
-
-                <div className="page-divider" />
+                <PageHeader
+                  eyebrow="Parameter Configuration"
+                  title="Fault Vector Parameters"
+                  subtitle="Define the scope and intensity of your probe — affected origin nodes, cascade probability, and fault depth."
+                  actions={
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        onClick={() => setView("templates")}
+                        className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-2 text-xs font-semibold text-muted-foreground transition-all hover:border-foreground/30 hover:text-foreground"
+                      >
+                        ← Presets
+                      </button>
+                      <span className="step-badge">STEP 2 / 3</span>
+                    </div>
+                  }
+                />
 
                 <ScenarioConfigurationForm />
 
@@ -579,7 +594,7 @@ function SimulationPageContent() {
             {view === "simulation" && simulationRunning && (
               <div className="flex items-center justify-center min-h-[calc(100vh-10rem)]">
                 <div className="w-full max-w-2xl mx-auto p-4">
-                  <div className="border border-theme-border-subtle bg-theme-bg-surface rounded-theme-lg shadow-lg p-10">
+                  <div className="rounded-xl border border-border bg-card p-10 shadow-sm">
                     <SimulationLoader progress={progress} />
                   </div>
                 </div>

@@ -17,7 +17,7 @@ import {
 import DigitalTwinEditSkeleton from '@/components/digital-twin/display/DigitalTwinEditSkeleton';
 import { supabaseClient } from '@/lib/supabase/client';
 import dynamic from "next/dynamic";
-const SupplyChainGlobe = dynamic(() => import("@/components/supply-chain"), { ssr: false });
+const SupplyChainView = dynamic(() => import("@/components/supply-chain"), { ssr: false });
 
 export default function DigitalTwinClientPage() {
   const [twinId, setTwinId] = useQueryState('twinId', parseAsString);
@@ -26,7 +26,9 @@ export default function DigitalTwinClientPage() {
   const [formParam] = useQueryState('form', parseAsString);
   const [activeTwinData, setActiveTwinData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-  type ViewMode = "graph" | "globe" | "map";
+  // True only after a load attempt for the current twinId completes with no data.
+  const [notFound, setNotFound] = useState(false);
+  type ViewMode = "graph" | "map";
   const [viewMode, setViewMode] = useState<ViewMode>("graph");
 
   // URL state for form data - to recreate twin from URL parameters
@@ -63,6 +65,8 @@ export default function DigitalTwinClientPage() {
   // Load twin data when twinId changes
   useEffect(() => {
     if (twinId) {
+      // Clear any stale "not found" from a previous twinId before we start loading.
+      setNotFound(false);
       // Only set loading state if we don't already have some twin data (prevents unmounting canvass during save)
       if (!activeTwinData) {
         setIsLoading(true);
@@ -162,6 +166,7 @@ export default function DigitalTwinClientPage() {
             if (scErr || !scData) {
               console.error('Supply chain not found in DB:', scErr?.message);
               setActiveTwinData(null);
+              setNotFound(true);
               setIsLoading(false);
               return;
             }
@@ -227,6 +232,7 @@ export default function DigitalTwinClientPage() {
           } catch (dbErr: any) {
             console.error('Error fetching supply chain from DB:', dbErr.message);
             setActiveTwinData(null);
+            setNotFound(true);
             setIsLoading(false);
           }
         };
@@ -236,10 +242,11 @@ export default function DigitalTwinClientPage() {
         // When arch param exists, set minimal twin data to indicate we have a twin
         // but let the canvas handle the actual node/edge state from the URL
         setActiveTwinData({ hasArchData: true });
+        setIsLoading(false);
       }
-      if (!activeTwinData) setIsLoading(false);
     } else {
       setActiveTwinData(null);
+      setNotFound(false);
       setIsLoading(false);
     }
   }, [twinId, archParam, formParam, industryParam, productCharacteristicsParam, supplierTiersParam, operationsLocationParam, currencyParam, shippingMethodsParam, annualVolumeTypeParam, annualVolumeValueParam, risksParam]);
@@ -299,7 +306,25 @@ export default function DigitalTwinClientPage() {
 
   // If a twinId is present, we would show the canvas/details view.
   if (twinId) {
-    if (isLoading) {
+    // Show the real "not found" state only after a load attempt has confirmed it.
+    // Any other state while a twin is selected (loading, or the transient frame
+    // right after twinId changes) shows the skeleton — never the empty/not-found flash.
+    if (!activeTwinData) {
+      if (notFound) {
+        return (
+          <div className="flex items-center justify-center h-full flex-1 p-4 sm:p-6">
+            <div className="text-center w-full max-w-md">
+              <p className="text-base sm:text-lg text-muted-foreground">Digital twin not found.</p>
+              <button
+                onClick={() => setTwinId(null)}
+                className="mt-4 inline-flex items-center justify-center min-h-[40px] px-4 py-2 bg-primary text-primary-foreground rounded-full hover:opacity-90 transition-opacity"
+              >
+                Back to Dashboard
+              </button>
+            </div>
+          </div>
+        );
+      }
       return <DigitalTwinEditSkeleton />;
     }
 
@@ -307,27 +332,24 @@ export default function DigitalTwinClientPage() {
       return (
         <div className="relative w-full h-full flex flex-col flex-1">
           {/* View toggle */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-1.5 rounded-full p-1.5 shadow-2xl"
-            style={{ background: "rgba(6, 10, 24, 0.85)", backdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.15)" }}
-          >
+          <div className="absolute bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:bottom-8 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-1 rounded-full border border-white/10 bg-black/70 p-1.5 shadow-2xl backdrop-blur-xl max-w-[calc(100vw-1.5rem)]">
             <button
               onClick={() => setViewMode("graph")}
-              className="px-4 py-2 rounded-full text-sm font-medium transition-all"
-              style={{ background: viewMode === "graph" ? "#4B6EFF" : "transparent", color: viewMode === "graph" ? "#fff" : "#9ca3af" }}
+              className={`rounded-full px-3.5 sm:px-4 py-2 min-h-[40px] text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
+                viewMode === "graph"
+                  ? "bg-primary text-primary-foreground shadow-[0_2px_12px_hsl(var(--primary)/0.5)]"
+                  : "text-white/60 hover:text-white"
+              }`}
             >
               Graph View
             </button>
             <button
-              onClick={() => setViewMode("globe")}
-              className="px-4 py-2 rounded-full text-sm font-medium transition-all"
-              style={{ background: viewMode === "globe" ? "#4B6EFF" : "transparent", color: viewMode === "globe" ? "#fff" : "#9ca3af" }}
-            >
-              🌐 Globe
-            </button>
-            <button
               onClick={() => setViewMode("map")}
-              className="px-4 py-2 rounded-full text-sm font-medium transition-all"
-              style={{ background: viewMode === "map" ? "#4B6EFF" : "transparent", color: viewMode === "map" ? "#fff" : "#9ca3af" }}
+              className={`rounded-full px-3.5 sm:px-4 py-2 min-h-[40px] text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
+                viewMode === "map"
+                  ? "bg-primary text-primary-foreground shadow-[0_2px_12px_hsl(var(--primary)/0.5)]"
+                  : "text-white/60 hover:text-white"
+              }`}
             >
               🗺️ Map
             </button>
@@ -344,30 +366,16 @@ export default function DigitalTwinClientPage() {
             )
           )}
           
-          {(viewMode === "globe" || viewMode === "map") && (
-            <div className="absolute inset-0 z-0 bg-[#060a18] rounded-xl overflow-hidden"
+          {viewMode === "map" && (
+            <div className="absolute inset-0 z-0 bg-[color:var(--map-bg)] rounded-xl overflow-hidden"
               style={{ top: 0, left: 0, right: 0, bottom: 0, display: "flex", flexDirection: "column" }}
             >
-              <SupplyChainGlobe twinId={twinId} mode={viewMode} />
+              <SupplyChainView twinId={twinId} mode={viewMode} />
             </div>
           )}
         </div>
       );
     }
-
-    return (
-      <div className="flex items-center justify-center h-full flex-1">
-        <div className="text-center">
-          <p className="text-lg text-gray-600">Digital twin not found.</p>
-          <button
-            onClick={() => setTwinId(null)}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Back to Dashboard
-          </button>
-        </div>
-      </div>
-    );
   }
 
   // The dashboard is always rendered, and the dialog is overlaid on top.

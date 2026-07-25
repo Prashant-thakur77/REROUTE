@@ -59,7 +59,7 @@ const ViewModeHeader: FC<ViewModeHeaderProps> = ({ title = 'Supply Chain View', 
             variant="ghost"
             size="sm"
             onClick={() => router.push('/dashboard')}
-            className="flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all duration-200"
+            className="flex items-center gap-2 text-muted-foreground hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all duration-200"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="text-sm font-semibold whitespace-nowrap">{title}</span>

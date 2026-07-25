@@ -311,18 +311,18 @@ export function ScenarioTemplateSelection({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
+      <div className="text-center space-y-3 sm:space-y-4">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
           Choose Your Scenario Template
         </h1>
-        <p className="text-slate-600 dark:text-slate-300 text-lg max-w-2xl mx-auto">
+        <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg max-w-2xl mx-auto">
           Select a pre-configured scenario template to get started quickly, or create a custom scenario from scratch
         </p>
       </div>
 
       {/* Category Filter */}
       <div className="flex justify-center">
-        <div className="flex items-center gap-2 p-1 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-xl border border-white/30 dark:border-slate-700/10">
+        <div className="flex flex-wrap justify-center items-center gap-2 p-1 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-xl border border-white/30 dark:border-slate-700/10">
           {[
             { key: 'all', label: 'All Templates' },
             { key: 'common', label: 'Common Scenarios' },

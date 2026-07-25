@@ -72,7 +72,7 @@ export default function DigitalTwinViewPage() {
           className="w-full max-w-md"
         >
           <Card className="shadow-md border-0 bg-card/90 backdrop-blur-sm">
-            <CardContent className="text-center p-8">
+            <CardContent className="text-center p-6 sm:p-8">
               <motion.div
                 initial={{ scale: 0.8 }}
                 animate={{ scale: 1 }}
@@ -165,7 +165,7 @@ export default function DigitalTwinViewPage() {
             />
 
             {/* Center - Digital Twin Canvas */}
-            <div className="flex-1 relative">
+            <div className="flex-1 relative min-w-0">
               <DigitalTwinCanvas 
                 initialNodes={arch.nodes}
                 initialEdges={arch.edges}

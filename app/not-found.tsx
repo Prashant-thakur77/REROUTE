@@ -15,7 +15,7 @@ export default function NotFound() {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 p-4">
+    <div className="min-h-screen flex items-center justify-center overflow-x-hidden bg-gradient-to-br from-background via-background to-muted/20 text-foreground p-6 sm:p-8">
       <div className="max-w-5xl w-full">
         {/* Animated Container */}
         <motion.div
@@ -48,10 +48,10 @@ export default function NotFound() {
               transition={{ delay: 0.4, duration: 0.6 }}
               className="space-y-4"
             >
-              <h1 className="text-4xl md:text-5xl font-bold text-foreground">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground text-balance">
                 Page Not Found
               </h1>
-              <p className="text-lg text-muted-foreground max-w-md md:mx-0 mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-md md:mx-0 mx-auto leading-relaxed">
                 The page you're looking for doesn't exist or has been moved. 
                 Let's get you back to your supply chain dashboard.
               </p>
@@ -62,22 +62,22 @@ export default function NotFound() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center md:justify-start items-stretch sm:items-center"
             >
-              <Button asChild size="lg" className="shadow-md">
-                <Link href="/" className="flex items-center gap-2">
+              <Button asChild size="lg" className="w-full sm:w-auto shadow-md">
+                <Link href="/" className="flex items-center justify-center gap-2">
                   <Home className="w-4 h-4" />
                   Go Home
                 </Link>
               </Button>
-              
-              <Button 
-                asChild 
-                variant="outline" 
-                size="lg" 
-                className="shadow-sm hover:shadow-md transition-shadow"
+
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto shadow-sm hover:shadow-md transition-shadow"
               >
-                <Link href="/dashboard" className="flex items-center gap-2">
+                <Link href="/dashboard" className="flex items-center justify-center gap-2">
                   <ArrowLeft className="w-4 h-4" />
                   Back to Dashboard
                 </Link>

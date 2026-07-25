@@ -22,7 +22,7 @@ const TemplateGroupConfiguration: FC<TemplateGroupConfigurationProps> = ({ node,
       className="space-y-4"
     >
       {/* Header Card */}
-      <Card className="shadow-md border-l-4 border-l-blue-500 dark:bg-gray-950">
+      <Card className="shadow-md border-l-4 border-l-blue-500">
         <CardHeader className="pb-3">
           <CardTitle className="flex items-center space-x-2 text-lg">
             <Blocks className="h-5 w-5 text-blue-500" />

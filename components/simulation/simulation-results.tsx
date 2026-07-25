@@ -65,9 +65,9 @@ export function SimulationResults({ simulationId }: SimulationResultsProps) {
 
   if (loading) {
     return (
-      <GlassmorphicCard className="flex items-center justify-center h-64 p-8">
+      <GlassmorphicCard className="flex flex-col sm:flex-row items-center justify-center gap-4 h-64 p-6 sm:p-8 text-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        <div className="ml-4 text-slate-700 dark:text-slate-300">Loading simulation results...</div>
+        <div className="text-slate-700 dark:text-slate-300">Loading simulation results...</div>
       </GlassmorphicCard>
     )
   }

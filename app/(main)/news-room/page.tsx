@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { formatDistanceToNow, format } from 'date-fns'
 import { NewsRoomHeader, TimelineEventCard, AlertDetailsSheet } from '@/components/news-room'
+import { Reveal } from '@/components/motion'
 import {
   TimelineBatch,
   SupplyChainTimelineData,
@@ -47,7 +48,7 @@ const TimelineSkeleton = () => (
         </div>
         <div className="ml-16 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(3)].map((_, j) => (
-            <div key={j} className="p-4 rounded-lg border border-gray-200/50 dark:border-slate-700/50 space-y-3">
+            <div key={j} className="p-4 rounded-xl border border-border bg-card space-y-3">
               <Skeleton className="h-4 w-3/4" />
               <Skeleton className="h-3 w-1/2" />
               <Skeleton className="h-8 w-full" />
@@ -287,36 +288,30 @@ export default function NewsRoomPage() {
   }
 
   return (
-    <div className="relative min-h-full flex-1 bg-gradient-to-br from-indigo-100 via-purple-50 to-cyan-100 dark:from-gray-900 dark:to-slate-900 overflow-x-hidden">
-      {/* Enhanced background blurred elements */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 dark:from-purple-900 dark:to-pink-900 opacity-30 blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-1/3 right-1/3 w-96 h-96 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 dark:from-blue-900 dark:to-cyan-900 opacity-25 blur-3xl"></div>
-      <div className="absolute top-1/2 right-1/4 w-48 h-48 rounded-full bg-gradient-to-br from-emerald-300 to-teal-400 dark:from-emerald-900 dark:to-teal-900 opacity-20 blur-2xl"></div>
-      <div className="absolute bottom-1/4 left-1/3 w-72 h-72 rounded-full bg-gradient-to-br from-orange-300 to-amber-400 dark:from-orange-900 dark:to-amber-900 opacity-15 blur-3xl animate-pulse"></div>
-      
+    <div className="relative min-h-full flex-1 bg-background overflow-x-hidden">
       {/* Header */}
       <NewsRoomHeader 
         alertCount={newAlertCount} 
       />
 
       {/* Search and Filters */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+      <div className="relative mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
+        <div className="flex flex-col gap-4 mb-8 lg:flex-row">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search supply chains, alerts, or nodes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-white/60 dark:bg-slate-900/20 border-white/20 dark:border-slate-700/20 backdrop-blur-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 shadow-sm"
+              className="pl-10 bg-card border-border text-foreground placeholder:text-muted-foreground shadow-sm"
             />
           </div>
-          
-          <div className="flex gap-2">
+
+          <div className="flex flex-wrap gap-2">
             {/* Time Filter */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2 bg-white/50 dark:bg-slate-800/50 border-white/20 dark:border-slate-700/20 backdrop-blur-sm text-gray-700 dark:text-gray-200 shadow-sm">
+                <Button variant="outline" className="flex items-center gap-2 bg-card border-border text-foreground shadow-sm">
                   <Clock className="h-4 w-4" />
                   {timelineFilter === 'all' && 'All Time'}
                   {timelineFilter === 'today' && 'Today'}
@@ -324,9 +319,9 @@ export default function NewsRoomPage() {
                   {timelineFilter === 'month' && 'This Month'}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-white/20 dark:border-slate-700/20">
-                <DropdownMenuLabel className="text-gray-900 dark:text-gray-100">Filter by Time</DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-gray-200/50 dark:bg-gray-700/50" />
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel className="text-foreground">Filter by Time</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 {[
                   { key: 'all', label: 'All Time', icon: TrendingUp },
                   { key: 'today', label: 'Today', icon: Clock },
@@ -336,8 +331,8 @@ export default function NewsRoomPage() {
                   <DropdownMenuItem
                     key={key}
                     onClick={() => setTimelineFilter(key as any)}
-                    className={`cursor-pointer text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-800/50 ${
-                      timelineFilter === key ? 'bg-blue-50 dark:bg-blue-950/30 text-blue-700 dark:text-blue-300' : ''
+                    className={`cursor-pointer ${
+                      timelineFilter === key ? 'bg-primary/10 text-primary' : ''
                     }`}
                   >
                     <Icon className="mr-2 h-4 w-4" />
@@ -349,19 +344,19 @@ export default function NewsRoomPage() {
             {/* Supply Chain Filter */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2 bg-white/50 dark:bg-slate-800/50 border-white/20 dark:border-slate-700/20 backdrop-blur-sm text-gray-700 dark:text-gray-200 shadow-sm">
+                <Button variant="outline" className="flex items-center gap-2 bg-card border-border text-foreground shadow-sm">
                   <Filter className="h-4 w-4" />
                   Supply Chain
                   {selectedSupplyChains.length > 0 && (
-                    <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+                    <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-primary/10 text-primary">
                       {selectedSupplyChains.length}
                     </Badge>
                   )}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-white/20 dark:border-slate-700/20">
-                <DropdownMenuLabel className="text-gray-900 dark:text-gray-100">Filter by Supply Chain</DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-gray-200/50 dark:bg-gray-700/50" />
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel className="text-foreground">Filter by Supply Chain</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 {uniqueSupplyChains.map((chainName) => (
                   <DropdownMenuCheckboxItem
                     key={chainName}
@@ -373,7 +368,6 @@ export default function NewsRoomPage() {
                           : prev.filter(c => c !== chainName)
                       )
                     }}
-                    className="text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-800/50"
                   >
                     {chainName}
                   </DropdownMenuCheckboxItem>
@@ -384,19 +378,19 @@ export default function NewsRoomPage() {
             {/* Category Filter */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2 bg-white/50 dark:bg-slate-800/50 border-white/20 dark:border-slate-700/20 backdrop-blur-sm text-gray-700 dark:text-gray-200 shadow-sm">
+                <Button variant="outline" className="flex items-center gap-2 bg-card border-border text-foreground shadow-sm">
                   <Filter className="h-4 w-4" />
                   Category
                   {selectedCategories.length > 0 && (
-                    <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+                    <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-primary/10 text-primary">
                       {selectedCategories.length}
                     </Badge>
                   )}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-white/20 dark:border-slate-700/20">
-                <DropdownMenuLabel className="text-gray-900 dark:text-gray-100">Filter by Category</DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-gray-200/50 dark:bg-gray-700/50" />
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel className="text-foreground">Filter by Category</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 {categories.map((category) => (
                   <DropdownMenuCheckboxItem
                     key={category}
@@ -408,7 +402,6 @@ export default function NewsRoomPage() {
                           : prev.filter(c => c !== category)
                       )
                     }}
-                    className="text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-800/50"
                   >
                     <span className="mr-2">{getCategoryIcon(category)}</span>
                     {category}
@@ -420,19 +413,19 @@ export default function NewsRoomPage() {
             {/* Impact Filter */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2 bg-white/50 dark:bg-slate-800/50 border-white/20 dark:border-slate-700/20 backdrop-blur-sm text-gray-700 dark:text-gray-200 shadow-sm">
+                <Button variant="outline" className="flex items-center gap-2 bg-card border-border text-foreground shadow-sm">
                   <AlertTriangle className="h-4 w-4" />
                   Impact
                   {selectedImpacts.length > 0 && (
-                    <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+                    <Badge variant="secondary" className="ml-1 h-5 w-5 p-0 flex items-center justify-center text-xs bg-primary/10 text-primary">
                       {selectedImpacts.length}
                     </Badge>
                   )}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-white/20 dark:border-slate-700/20">
-                <DropdownMenuLabel className="text-gray-900 dark:text-gray-100">Filter by Impact</DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-gray-200/50 dark:bg-gray-700/50" />
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel className="text-foreground">Filter by Impact</DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 {impacts.map((impact) => (
                   <DropdownMenuCheckboxItem
                     key={impact}
@@ -444,7 +437,6 @@ export default function NewsRoomPage() {
                           : prev.filter(i => i !== impact)
                       )
                     }}
-                    className="text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-800/50"
                   >
                     {impact} Impact
                   </DropdownMenuCheckboxItem>
@@ -459,14 +451,14 @@ export default function NewsRoomPage() {
           <TimelineSkeleton />
         ) : error ? (
            <div className="text-center py-12">
-            <div className="h-12 w-12 text-red-400 dark:text-red-600 mx-auto mb-4 flex items-center justify-center">
+            <div className="h-12 w-12 text-destructive mx-auto mb-4 flex items-center justify-center">
               <AlertTriangle size={48} />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">Error loading data</h3>
-            <p className="text-gray-500 dark:text-gray-400">{error}</p>
+            <h3 className="text-lg font-medium text-foreground mb-2">Error loading data</h3>
+            <p className="text-muted-foreground">{error}</p>
           </div>
         ) : (
-        <div className="space-y-8">
+        <Reveal className="space-y-8">
           {filteredTimelineEntries.map((entry, index) => {
             const entryId = `${entry.supplyChainId}-${entry.batch.batchTimestamp}`
             const isExpanded = expandedEntries.has(entryId)
@@ -485,26 +477,26 @@ export default function NewsRoomPage() {
               >
                 {/* Timeline Connector */}
                 {index > 0 && (
-                  <div className="absolute left-6 -top-4 w-0.5 h-4 bg-gradient-to-b from-gray-300 to-transparent dark:from-gray-600"></div>
+                  <div className="absolute left-6 -top-4 w-0.5 h-4 bg-gradient-to-b from-border to-transparent"></div>
                 )}
-                
+
                 {/* Timeline Header */}
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white shadow-lg">
-                    <Workflow className="w-6 h-6" />
+                <div className="flex items-center gap-3 mb-4 sm:gap-4">
+                  <div className="w-10 h-10 shrink-0 rounded-full bg-primary flex items-center justify-center text-primary-foreground shadow-sm sm:w-12 sm:h-12">
+                    <Workflow className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="truncate font-display text-base font-semibold text-foreground sm:text-lg">
                       {entry.supplyChainName}
                     </h3>
-                    <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground sm:text-sm">
                       <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
+                        <Clock className="h-4 w-4 shrink-0" />
                         <span>{formatTimeAgo(entry.batch.batchTimestamp)}</span>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{format(new Date(entry.batch.batchTimestamp), 'PPp')}</span>
+                      <div className="flex min-w-0 items-center gap-1">
+                        <Calendar className="h-4 w-4 shrink-0" />
+                        <span className="truncate">{format(new Date(entry.batch.batchTimestamp), 'PPp')}</span>
                       </div>
                       <Badge variant="secondary" className="text-xs">
                         {entry.events.length} alerts
@@ -515,7 +507,7 @@ export default function NewsRoomPage() {
 
                 {/* Timeline Content */}
                 {entry.events.length > 0 ? (
-                  <div className="ml-16 space-y-4">
+                  <div className="ml-4 space-y-4 sm:ml-16">
                     {/* Visible Events Grid */}
                     <motion.div layout className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                       <AnimatePresence>
@@ -543,15 +535,15 @@ export default function NewsRoomPage() {
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.9 }}
                             onClick={() => toggleEntryExpansion(entryId)}
-                            className="relative cursor-pointer group rounded-lg h-full min-h-[160px] "
+                            className="relative cursor-pointer group rounded-xl h-full min-h-[160px] "
                           >
-                            <div className="absolute inset-0 bg-white/50 dark:bg-slate-700/20 rounded-lg transform-gpu transition-transform duration-300 group-hover:scale-105 blur-sm" style={{ transform: 'rotate(6deg)' }}></div>
-                            <div className="absolute inset-0 bg-white/50 dark:bg-slate-700/20 rounded-lg transform-gpu transition-transform duration-300 group-hover:scale-105" style={{ transform: 'rotate(2deg)' }}></div>
-                            <div className="relative w-full h-full p-4 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md rounded-lg border border-gray-200/50 dark:border-slate-700/50 flex flex-col items-center justify-center text-center">
-                              <h4 className="text-gray-900 dark:text-gray-100 font-semibold text-lg">
+                            <div className="absolute inset-0 bg-muted rounded-xl transform-gpu transition-transform duration-300 group-hover:scale-105 blur-sm" style={{ transform: 'rotate(6deg)' }}></div>
+                            <div className="absolute inset-0 bg-muted rounded-xl transform-gpu transition-transform duration-300 group-hover:scale-105" style={{ transform: 'rotate(2deg)' }}></div>
+                            <div className="relative w-full h-full p-4 bg-card rounded-xl border border-border flex flex-col items-center justify-center text-center">
+                              <h4 className="text-foreground font-semibold text-lg">
                                 Show All
                               </h4>
-                              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                              <p className="text-muted-foreground text-sm">
                                 ({hiddenEventsCount} more)
                               </p>
                             </div>
@@ -573,7 +565,7 @@ export default function NewsRoomPage() {
                               <Button
                                 variant="outline"
                                 onClick={() => toggleEntryExpansion(entryId)}
-                                className="bg-white/50 dark:bg-slate-800/50 border-white/20 dark:border-slate-700/20 backdrop-blur-sm text-gray-700 dark:text-gray-200 hover:bg-white/70 dark:hover:bg-slate-800/70 transition-all duration-200 shadow-md"
+                                className="bg-card border-border text-foreground hover:bg-accent transition-all duration-200 shadow-sm"
                               >
                                 <motion.div
                                   initial={false}
@@ -591,29 +583,29 @@ export default function NewsRoomPage() {
                     )}
                   </div>
                 ) : (
-                  <div className="ml-16 text-center py-8">
-                    <div className="text-gray-400 dark:text-gray-600 mb-2">📊</div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">No critical events in this batch</p>
+                  <div className="ml-4 text-center py-8 sm:ml-16">
+                    <div className="text-muted-foreground mb-2">📊</div>
+                    <p className="text-sm text-muted-foreground">No critical events in this batch</p>
                   </div>
                 )}
 
                 {/* Timeline Spacer */}
                 {index < filteredTimelineEntries.length - 1 && (
-                  <div className="mt-8 border-b border-gray-200/50 dark:border-gray-700/50"></div>
+                  <div className="mt-8 border-b border-border"></div>
                 )}
               </motion.div>
             )
           })}
-        </div>
+        </Reveal>
         )}
 
         {!isLoading && !error && filteredTimelineEntries.length === 0 && (
           <div className="text-center py-12">
-            <div className="h-12 w-12 text-gray-300 dark:text-gray-600 mx-auto mb-4 flex items-center justify-center">
+            <div className="h-12 w-12 text-muted-foreground mx-auto mb-4 flex items-center justify-center">
               📋
             </div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">No timeline entries found</h3>
-            <p className="text-gray-500 dark:text-gray-400">Try adjusting your search or filter criteria.</p>
+            <h3 className="text-lg font-medium text-foreground mb-2">No timeline entries found</h3>
+            <p className="text-muted-foreground">Try adjusting your search or filter criteria.</p>
           </div>
         )}
       </div>

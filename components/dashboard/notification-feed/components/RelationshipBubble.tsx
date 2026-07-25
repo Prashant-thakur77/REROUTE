@@ -14,8 +14,8 @@ export function RelationshipBubble({ relationship }: RelationshipBubbleProps) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md cursor-pointer border bg-gray-50 dark:bg-gray-900 text-black dark:text-white border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800">
-            <div className="w-1.5 h-1.5 bg-black dark:bg-white rounded-full" />
+          <div className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md cursor-pointer border bg-muted text-foreground border-border hover:bg-accent">
+            <div className="w-1.5 h-1.5 bg-foreground rounded-full" />
             Risk Chain ({Math.round(relationship.strength * 100)}%)
           </div>
         </TooltipTrigger>

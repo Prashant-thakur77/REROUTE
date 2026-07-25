@@ -52,9 +52,9 @@ export function ChangePasswordDialog({ isOpen, onClose }: ChangePasswordDialogPr
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="w-[95vw] max-w-md max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+          <DialogTitle className="flex items-center gap-2 font-display text-xl font-semibold tracking-tight">
             <Lock className="h-5 w-5" />
             Change Password
           </DialogTitle>
@@ -62,7 +62,7 @@ export function ChangePasswordDialog({ isOpen, onClose }: ChangePasswordDialogPr
         
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="space-y-2">
-            <Label htmlFor="currentPassword">Current Password</Label>
+            <Label htmlFor="currentPassword" className="text-sm text-muted-foreground">Current Password</Label>
             <div className="relative">
               <Input
                 id="currentPassword"
@@ -70,8 +70,8 @@ export function ChangePasswordDialog({ isOpen, onClose }: ChangePasswordDialogPr
                 value={formData.currentPassword}
                 onChange={(e) => handleChange("currentPassword", e.target.value)}
                 placeholder="Enter current password "
+                className="pr-11"
                 required
-                className="shadow-md border-none focus-visible:ring-0 focus-visible:ring-offset-0"
               />
               <Button
                 type="button"
@@ -90,7 +90,7 @@ export function ChangePasswordDialog({ isOpen, onClose }: ChangePasswordDialogPr
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="newPassword">New Password</Label>
+            <Label htmlFor="newPassword" className="text-sm text-muted-foreground">New Password</Label>
             <div className="relative">
               <Input
                 id="newPassword"
@@ -98,8 +98,8 @@ export function ChangePasswordDialog({ isOpen, onClose }: ChangePasswordDialogPr
                 value={formData.newPassword}
                 onChange={(e) => handleChange("newPassword", e.target.value)}
                 placeholder="Enter new password"
+                className="pr-11"
                 required
-                className="shadow-md border-none focus-visible:ring-0 focus-visible:ring-offset-0"
               />
               <Button
                 type="button"
@@ -118,7 +118,7 @@ export function ChangePasswordDialog({ isOpen, onClose }: ChangePasswordDialogPr
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm New Password</Label>
+            <Label htmlFor="confirmPassword" className="text-sm text-muted-foreground">Confirm New Password</Label>
             <div className="relative">
               <Input
                 id="confirmPassword"
@@ -126,8 +126,8 @@ export function ChangePasswordDialog({ isOpen, onClose }: ChangePasswordDialogPr
                 value={formData.confirmPassword}
                 onChange={(e) => handleChange("confirmPassword", e.target.value)}
                 placeholder="Confirm new password"
+                className="pr-11"
                 required
-                className="shadow-md border-none focus-visible:ring-0 focus-visible:ring-offset-0"
               />
               <Button
                 type="button"
@@ -146,17 +146,19 @@ export function ChangePasswordDialog({ isOpen, onClose }: ChangePasswordDialogPr
           </div>
           
           <DialogFooter className="pt-4">
-            <Button 
-              type="button" 
-              variant="outline" 
+            <Button
+              type="button"
+              variant="outline"
               onClick={onClose}
               disabled={isSubmitting}
+              className="w-full rounded-full sm:w-auto"
             >
               Cancel
             </Button>
-            <Button 
+            <Button
               type="submit"
               disabled={isSubmitting}
+              className="w-full rounded-full sm:w-auto"
             >
               {isSubmitting ? "Updating..." : "Update Password"}
             </Button>

@@ -247,7 +247,7 @@ export default function RerouteOrchestrator({
       case 'executing': return <Zap className="w-4 h-4 animate-pulse text-blue-500" />;
       case 'complete': return <CheckCircle className="w-4 h-4 text-green-500" />;
       case 'error': return <AlertTriangle className="w-4 h-4 text-red-500" />;
-      default: return <Pause className="w-4 h-4 text-gray-400" />;
+      default: return <Pause className="w-4 h-4 text-muted-foreground" />;
     }
   };
 

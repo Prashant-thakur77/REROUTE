@@ -131,17 +131,17 @@ const SimulationToolbar: FC<SimulationToolbarProps> = ({
 
   return (
     <>
-      <div className="w-full h-auto sm:h-14 py-3 sm:py-0 bg-theme-bg-surface border-b border-theme-border-subtle flex flex-col sm:flex-row items-center justify-between gap-3 px-4 sm:px-6 z-30 flex-shrink-0">
+      <div className="w-full h-auto sm:h-14 py-3 sm:py-0 bg-theme-bg-surface border-b border-theme-border-subtle flex flex-col sm:flex-row items-center justify-between gap-3 px-4 sm:px-6 z-30 flex-shrink-0 overflow-x-hidden">
         {/* Left Section: Label + Mode Switcher */}
-        <div className="flex items-center justify-between sm:justify-start w-full sm:w-auto gap-6">
+        <div className="flex flex-wrap items-center justify-between sm:justify-start w-full sm:w-auto min-w-0 gap-3 sm:gap-6">
           <span className="text-sm font-bold text-theme-text-primary tracking-tight uppercase hidden sm:block">Digital Twin</span>
           
-          <div className="flex items-center bg-[#EFEBE3] dark:bg-[#191817] p-1 rounded-full border border-theme-border-subtle">
+          <div className="flex items-center shrink-0 bg-secondary p-1 rounded-full border border-theme-border-subtle">
             <button
               onClick={() => setControlTowerMode(false)}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all duration-200 ${
+              className={`px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all duration-200 ${
                 !isControlTowerMode
-                  ? 'bg-black text-white dark:bg-white dark:text-black shadow-sm font-bold'
+                  ? 'bg-foreground text-background shadow-sm font-bold'
                   : 'bg-transparent text-theme-text-secondary hover:text-theme-text-primary'
               }`}
             >
@@ -149,9 +149,9 @@ const SimulationToolbar: FC<SimulationToolbarProps> = ({
             </button>
             <button
               onClick={() => setControlTowerMode(true)}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all duration-200 ${
+              className={`px-3 sm:px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide transition-all duration-200 ${
                 isControlTowerMode
-                  ? 'bg-black text-white dark:bg-white dark:text-black shadow-sm font-bold'
+                  ? 'bg-foreground text-background shadow-sm font-bold'
                   : 'bg-transparent text-theme-text-secondary hover:text-theme-text-primary'
               }`}
             >
@@ -170,7 +170,7 @@ const SimulationToolbar: FC<SimulationToolbarProps> = ({
           <button
             onClick={handleSaveClick}
             disabled={isSaving}
-            className="px-4 py-1.5 text-xs font-semibold rounded-lg border border-[#D6CFC4] hover:border-theme-text-primary text-theme-text-primary hover:bg-[#EFEBE3] dark:hover:bg-[#191817] transition-all disabled:opacity-50"
+            className="px-4 py-1.5 text-xs font-semibold rounded-lg border border-[#CBD5E1] hover:border-theme-text-primary text-theme-text-primary hover:bg-[#F1F5F9] dark:hover:bg-[#131A28] transition-all disabled:opacity-50"
           >
             {isSaving ? 'Saving...' : 'Save snapshot'}
           </button>

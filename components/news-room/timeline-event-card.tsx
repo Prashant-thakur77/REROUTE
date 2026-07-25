@@ -24,8 +24,8 @@ export function GlassmorphicCard({
   [key: string]: any 
 }) {
   return (
-    <Card 
-      className={`border border-white/30 dark:border-slate-700/10 bg-white/70 dark:bg-slate-950 backdrop-blur-xl shadow-xl shadow-black/5 dark:shadow-black/20 rounded-xl ${className}`} 
+    <Card
+      className={`rounded-xl border border-border bg-card shadow-sm ${className}`}
       {...props}
     >
       {children}
@@ -74,9 +74,9 @@ export function TimelineEventCard({ event, onClick, isCollapsed = false, isBlurr
   }
 
   // Adjust styling and content based on collapsed state
-  const cardClassName = isCollapsed 
-    ? "cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all duration-200 hover:bg-white/70 dark:hover:bg-slate-900/8"
-    : "cursor-pointer hover:shadow-2xl hover:scale-105 transition-all duration-300 hover:bg-white/80 dark:hover:bg-slate-900/10"
+  const cardClassName = isCollapsed
+    ? "cursor-pointer hover:shadow-md hover:border-primary/30 transition-all duration-200 hover:bg-accent/40"
+    : "cursor-pointer hover:shadow-lg hover:border-primary/30 transition-all duration-300 hover:bg-accent/40"
   
   const summaryLines = isCollapsed ? "line-clamp-1" : "line-clamp-2"
   const titleLines = isCollapsed ? "line-clamp-1" : "line-clamp-2"
@@ -88,8 +88,8 @@ export function TimelineEventCard({ event, onClick, isCollapsed = false, isBlurr
         onClick={() => !isBlurred && onClick(event)}
       >
         <CardHeader className={isCollapsed ? "pb-2" : "pb-3"}>
-          <div className="flex items-start justify-between">
-            <div className="flex items-center space-x-2">
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span className={isCollapsed ? "text-base" : "text-lg"}>{getCategoryIcon(event.category)}</span>
@@ -151,19 +151,19 @@ export function TimelineEventCard({ event, onClick, isCollapsed = false, isBlurr
               </Tooltip>
             )}
           </div>
-          <h4 className={`font-semibold text-gray-900 dark:text-gray-100 text-sm leading-tight ${titleLines}`}>
+          <h4 className={`font-semibold text-foreground text-sm leading-tight ${titleLines}`}>
             {event.title}
           </h4>
         </CardHeader>
         <CardContent className="pt-0 flex-grow flex flex-col justify-between">
           <div>
-            <p className={`text-xs text-gray-600 dark:text-gray-300 mb-3 ${summaryLines}`}>
+            <p className={`text-xs text-muted-foreground mb-3 ${summaryLines}`}>
               {event.summary}
             </p>
             
             <div className={`space-y-2 text-xs ${isCollapsed ? 'space-y-1' : ''}`}>
-              <div className="flex items-center text-gray-500 dark:text-gray-400">
-                <MapPin className="h-3 w-3 mr-1" />
+              <div className="flex min-w-0 items-center text-muted-foreground">
+                <MapPin className="h-3 w-3 mr-1 shrink-0" />
                 {isCollapsed ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -178,9 +178,9 @@ export function TimelineEventCard({ event, onClick, isCollapsed = false, isBlurr
                 )}
               </div>
               {!isCollapsed && (
-                <div className="flex items-center text-gray-500 dark:text-gray-400">
-                  <Calendar className="h-3 w-3 mr-1" />
-                  <span>{event.timeframe}</span>
+                <div className="flex min-w-0 items-center text-muted-foreground">
+                  <Calendar className="h-3 w-3 mr-1 shrink-0" />
+                  <span className="truncate">{event.timeframe}</span>
                 </div>
               )}
             </div>
@@ -190,14 +190,14 @@ export function TimelineEventCard({ event, onClick, isCollapsed = false, isBlurr
             {!isCollapsed && event.affectedEntities.length > 0 && (
               <div className="mt-3 flex flex-wrap gap-1">
                 {event.affectedEntities.slice(0, 2).map((entity, index) => (
-                  <Badge key={index} variant="outline" className="text-xs px-1 py-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+                  <Badge key={index} variant="outline" className="text-xs px-1 py-0 border-border text-muted-foreground">
                     {entity}
                   </Badge>
                 ))}
                 {event.affectedEntities.length > 2 && (
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Badge variant="outline" className="text-xs px-1 py-0 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
+                      <Badge variant="outline" className="text-xs px-1 py-0 border-border text-muted-foreground">
                         +{event.affectedEntities.length - 2} more
                       </Badge>
                     </TooltipTrigger>
@@ -213,7 +213,7 @@ export function TimelineEventCard({ event, onClick, isCollapsed = false, isBlurr
               <div className="mt-3">
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                    <div className="text-xs text-muted-foreground">
                       <span className="font-medium">{Math.round(event.sources[0].credibility * 100)}% credible</span>
                       <span className="mx-1">•</span>
                       <span>{formatTimeAgo(event.sources[0].publishedAt)}</span>
