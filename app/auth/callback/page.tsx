@@ -141,13 +141,13 @@ export default function AuthCallbackPage() {
   }, [router])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-slate-900">
-      <div className="max-w-md w-full space-y-8 p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8 dark:from-gray-900 dark:to-slate-900">
+      <div className="w-full max-w-md space-y-8 p-6 sm:p-8">
         <div className="text-center">
           {status === 'loading' && (
             <>
               <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-6"></div>
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-4">
+              <h2 className="mb-4 text-2xl font-extrabold text-gray-900 dark:text-white sm:text-3xl">
                 Completing Authentication
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-300">
@@ -170,7 +170,7 @@ export default function AuthCallbackPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-4">
+              <h2 className="mb-4 text-2xl font-extrabold text-gray-900 dark:text-white sm:text-3xl">
                 Welcome!
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-300">
@@ -193,7 +193,7 @@ export default function AuthCallbackPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </div>
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-4">
+              <h2 className="mb-4 text-2xl font-extrabold text-gray-900 dark:text-white sm:text-3xl">
                 Authentication Failed
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">

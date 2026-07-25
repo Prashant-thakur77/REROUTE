@@ -151,169 +151,179 @@ const SigninPage = () => {
     form.reset();
   };
 
+  const inputClass =
+    "h-11 bg-[#F8FAFC] border-[#CBD5E1] text-[#0F172A] placeholder:text-[#64748B] focus-visible:ring-[#2748E8]/40";
+  const primaryBtn =
+    "h-11 w-full rounded-full bg-[#0F172A] text-[#F8FAFC] hover:bg-[#1E293B] transition-transform duration-200 hover:-translate-y-0.5";
+
   return (
     <>
       <AuthHeader />
-      <div className="relative min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-slate-900 flex items-center justify-center overflow-hidden pt-16">
-        {/* Background blurred elements */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-300 dark:bg-purple-900 opacity-20 blur-3xl"></div>
-        <div className="absolute bottom-1/3 right-1/3 w-96 h-96 rounded-full bg-blue-300 dark:bg-blue-900 opacity-20 blur-3xl"></div>
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#F8FAFC] px-4 pb-8 pt-20 sm:pt-24">
+        {/* Ambient editorial glow */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(39,72,232,0.08) 0%, transparent 60%)",
+          }}
+        />
 
-      <Card className="w-[400px] bg-secondary/50 backdrop-blur-md shadow-lg border border-gray-800 dark:border-slate-300">
-        <CardHeader>
-          <CardTitle className="text-2xl text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
-            {isSignUpMode ? 'Create Account' : 'Welcome Back'}
-          </CardTitle>
-          <CardDescription className="text-center">
-            {isSignUpMode 
-              ? 'Join our resilience planning platform' 
-              : 'Choose your preferred method to sign in'
-            }
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="email" onValueChange={setAuthMethod}>
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="email">Email</TabsTrigger>
-              <TabsTrigger value="social">Social</TabsTrigger>
-              <TabsTrigger value="magic">Magic Link</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="email">
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-4"
-                >
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="you@example.com"
-                            className="bg-white/50 dark:bg-slate-800/50 border border-white/30 dark:border-slate-700"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="••••••••"
-                            className="bg-white/50 dark:bg-slate-800/50 border border-white/30 dark:border-slate-700"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700" 
+        <Card className="relative w-full max-w-[420px] rounded-2xl border-[#CBD5E1] bg-[#FFFFFF] shadow-[0_24px_70px_rgba(24,22,15,0.14)]">
+          <CardHeader className="text-center">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2748E8]">
+              REROUTE
+            </p>
+            <CardTitle className="mt-1 font-display text-2xl font-semibold text-[#0F172A] sm:text-3xl">
+              {isSignUpMode ? "Create account" : "Welcome back"}
+            </CardTitle>
+            <CardDescription className="text-sm text-[#475569]">
+              {isSignUpMode
+                ? "Join the supply chain resilience platform"
+                : "Choose your preferred method to sign in"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="px-4 sm:px-6">
+            <Tabs defaultValue="email" onValueChange={setAuthMethod}>
+              <TabsList className="grid h-auto w-full grid-cols-3 gap-1 rounded-full bg-[#F1F5F9] p-1">
+                <TabsTrigger value="email" className="rounded-full px-1 py-1.5 text-xs data-[state=active]:bg-[#FFFFFF] data-[state=active]:text-[#0F172A] sm:text-sm">Email</TabsTrigger>
+                <TabsTrigger value="social" className="rounded-full px-1 py-1.5 text-xs data-[state=active]:bg-[#FFFFFF] data-[state=active]:text-[#0F172A] sm:text-sm">Social</TabsTrigger>
+                <TabsTrigger value="magic" className="rounded-full px-1 py-1.5 text-xs data-[state=active]:bg-[#FFFFFF] data-[state=active]:text-[#0F172A] sm:text-sm">Magic Link</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="email" className="mt-5">
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-[#475569]">Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="you@example.com"
+                              className={inputClass}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-[#475569]">Password</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="password"
+                              placeholder="••••••••"
+                              className={inputClass}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="submit" className={primaryBtn} disabled={isLoading}>
+                      {isLoading
+                        ? isSignUpMode
+                          ? "Creating account..."
+                          : "Signing in..."
+                        : isSignUpMode
+                          ? "Create account"
+                          : "Sign in"}
+                    </Button>
+                  </form>
+                </Form>
+
+                <div className="mt-4 text-center">
+                  <button
+                    onClick={toggleMode}
+                    className="inline-flex min-h-[40px] items-center px-2 text-sm text-[#2748E8] hover:underline focus:outline-none"
                     disabled={isLoading}
                   >
-                    {isLoading 
-                      ? (isSignUpMode ? "Creating Account..." : "Signing in...") 
-                      : (isSignUpMode ? "Create Account" : "Sign in")
-                    }
-                  </Button>
-                </form>
-              </Form>
-              
-              <div className="text-center mt-4">
-                <button
-                  onClick={toggleMode}
-                  className="text-blue-500 hover:underline text-sm focus:outline-none"
-                  disabled={isLoading}
-                >
-                  {isSignUpMode 
-                    ? 'Already have an account? Sign In' 
-                    : 'Don\'t have an account? Sign Up'
-                  }
-                </button>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="social">
-              <div className="space-y-4">
-                <Button
-                  variant="outline"
-                  className="w-full bg-white/50 dark:bg-slate-800/50 border border-white/30 dark:border-slate-700"
-                  onClick={() => handleSocialLogin("google")}
-                  disabled={isLoading}
-                >
-                  <FcGoogle className="mr-2 h-4 w-4" />
-                  Continue with Google
-                </Button>
-                <Button
-                  variant="outline"
-                  className="w-full bg-white/50 dark:bg-slate-800/50 border border-white/30 dark:border-slate-700"
-                  onClick={() => handleSocialLogin("github")}
-                  disabled={isLoading}
-                >
-                  <Github className="mr-2 h-4 w-4" />
-                  Continue with GitHub
-                </Button>
-                <Separator />
-                <p className="text-center text-sm text-muted-foreground">
-                  Secure authentication with OAuth
-                </p>
-              </div>
-            </TabsContent>
-            
-            <TabsContent value="magic">
-              <Form {...form}>
-                <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="email"
-                            placeholder="you@example.com"
-                            className="bg-white/50 dark:bg-slate-800/50 border border-white/30 dark:border-slate-700"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    {isSignUpMode
+                      ? "Already have an account? Sign In"
+                      : "Don't have an account? Sign Up"}
+                  </button>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="social" className="mt-5">
+                <div className="space-y-4">
                   <Button
-                    type="button"
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                    onClick={handleMagicLink}
+                    variant="outline"
+                    className="h-11 w-full rounded-full border-[#CBD5E1] bg-[#F8FAFC] text-[#0F172A] hover:bg-[#F1F5F9]"
+                    onClick={() => handleSocialLogin("google")}
                     disabled={isLoading}
                   >
-                    <Mail className="mr-2 h-4 w-4" />
-                    {isLoading ? "Sending..." : "Send Magic Link"}
+                    <FcGoogle className="mr-2 h-4 w-4" />
+                    Continue with Google
                   </Button>
-                </form>
-              </Form>
-              <p className="text-center text-sm text-muted-foreground mt-4">
-                We'll send you a secure link to sign in instantly
-              </p>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+                  <Button
+                    variant="outline"
+                    className="h-11 w-full rounded-full border-[#CBD5E1] bg-[#F8FAFC] text-[#0F172A] hover:bg-[#F1F5F9]"
+                    onClick={() => handleSocialLogin("github")}
+                    disabled={isLoading}
+                  >
+                    <Github className="mr-2 h-4 w-4" />
+                    Continue with GitHub
+                  </Button>
+                  <Separator className="bg-[#E2E8F0]" />
+                  <p className="text-center text-sm text-[#64748B]">
+                    Secure authentication with OAuth
+                  </p>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="magic" className="mt-5">
+                <Form {...form}>
+                  <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-[#475569]">Email</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="email"
+                              placeholder="you@example.com"
+                              className={inputClass}
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="button"
+                      className={primaryBtn}
+                      onClick={handleMagicLink}
+                      disabled={isLoading}
+                    >
+                      <Mail className="mr-2 h-4 w-4" />
+                      {isLoading ? "Sending..." : "Send Magic Link"}
+                    </Button>
+                  </form>
+                </Form>
+                <p className="mt-4 text-center text-sm text-[#64748B]">
+                  We'll send you a secure link to sign in instantly
+                </p>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </div>
     </>
   );

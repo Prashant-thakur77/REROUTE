@@ -15,19 +15,20 @@ import { SupplyNode, SupplyArc, NodeType, NodeStatus } from "@/types/supplyChain
 
 // ─── Colour palette ──────────────────────────────────────────────────────────
 
+// Aligned with the digital-twin graph node-type palette for a consistent identity.
 const NODE_COLORS: Record<NodeType, string> = {
-  supplier:     "#4B6EFF",
-  manufacturer: "#8B5CF6",
-  warehouse:    "#F59E0B",
-  retailer:     "#10B981",
-  port:         "#06B6D4",
+  supplier:     "#2748E8",
+  manufacturer: "#B45309",
+  warehouse:    "#7C3AED",
+  retailer:     "#475569",
+  port:         "#1A7F4B",
 };
 
 const STATUS_COLORS: Record<NodeStatus, string> = {
-  active:   "#10B981",
-  delayed:  "#F59E0B",
-  critical: "#EF4444",
-  inactive: "#6B7280",
+  active:   "#1A7F4B",
+  delayed:  "#B45309",
+  critical: "#B91C1C",
+  inactive: "#64748B",
 };
 
 // Public topojson from Natural Earth — no API key required
@@ -64,10 +65,10 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
     return (
       <div
         className="w-full h-full flex flex-col items-center justify-center gap-3"
-        style={{ background: "#060a18" }}
+        style={{ background: "var(--map-bg)" }}
       >
-        <div className="w-10 h-10 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
-        <span className="text-sm tracking-wide" style={{ color: "#6B7280" }}>
+        <div className="w-10 h-10 rounded-full animate-spin" style={{ border: "2px solid var(--border-default)", borderTopColor: "var(--accent-blue)" }} />
+        <span className="text-sm tracking-wide" style={{ color: "var(--text-muted)" }}>
           Loading supply chain map…
         </span>
       </div>
@@ -77,10 +78,7 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
   return (
     <div
       className="relative w-full h-full"
-      style={{ 
-        background: "#060a18 url('//unpkg.com/three-globe/example/img/night-sky.png') center/cover no-repeat", 
-        minHeight: 0 
-      }}
+      style={{ background: "var(--map-bg)", minHeight: 0 }}
       onMouseLeave={() => setTooltip(null)}
     >
       {/* ── World map ─────────────────────────────────────────────────────── */}
@@ -108,14 +106,14 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
                   geography={geo}
                   style={{
                     default: {
-                      fill: "#0d1424",
-                      stroke: "#1e2d4a",
+                      fill: "var(--map-country-fill)",
+                      stroke: "var(--map-country-stroke)",
                       strokeWidth: 0.4,
                       outline: "none",
                     },
                     hover: {
-                      fill: "#111e33",
-                      stroke: "#2a3f60",
+                      fill: "var(--map-country-hover)",
+                      stroke: "var(--map-country-stroke)",
                       strokeWidth: 0.5,
                       outline: "none",
                     },
@@ -179,7 +177,7 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
                 <circle
                   r={r}
                   fill={fill}
-                  stroke="#060a18"
+                  stroke="var(--map-bg)"
                   strokeWidth={1.2 / zoom}
                   style={{
                     cursor: "pointer",
@@ -202,18 +200,18 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
           style={{
             left: tooltip.x + 14,
             top:  tooltip.y - 10,
-            background:      "rgba(6,10,24,0.92)",
+            background:      "var(--bg-glass)",
             backdropFilter:  "blur(20px)",
-            border:          "1px solid rgba(255,255,255,0.1)",
+            border:          "1px solid var(--border-default)",
             padding:         "12px 16px",
-            color:           "#fff",
+            color:           "var(--text-primary)",
             minWidth:        160,
             maxWidth:        240,
           }}
         >
           <p className="font-semibold text-sm mb-1">{tooltip.node.name}</p>
           {(tooltip.node.city || tooltip.node.country) && (
-            <p style={{ color: "#9ca3af", fontSize: 11 }}>
+            <p style={{ color: "var(--text-muted)", fontSize: 11 }}>
               📍 {tooltip.node.city}
               {tooltip.node.city && tooltip.node.country ? ", " : ""}
               {tooltip.node.country}
@@ -239,7 +237,7 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
               {tooltip.node.status}
             </span>
           </div>
-          <p style={{ color: "#6B7280", fontSize: 10, marginTop: 6 }}>
+          <p style={{ color: "var(--text-muted)", fontSize: 10, marginTop: 6 }}>
             {tooltip.node.lat.toFixed(4)}°,{" "}
             {tooltip.node.lng.toFixed(4)}°
           </p>
@@ -252,24 +250,24 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
       >
         <button
           onClick={() => setZoom((z) => Math.min(z * 1.5, 10))}
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-white text-base font-bold transition-colors"
-          style={{ background: "rgba(75,110,255,0.2)", border: "1px solid rgba(75,110,255,0.4)" }}
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-base font-bold transition-colors hover:!bg-[color:var(--bg-secondary)]"
+          style={{ background: "var(--bg-glass)", border: "1px solid var(--border-default)", color: "var(--text-primary)", backdropFilter: "blur(12px)" }}
           title="Zoom in"
         >
           +
         </button>
         <button
           onClick={() => setZoom((z) => Math.max(z / 1.5, 0.8))}
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-white text-base font-bold transition-colors"
-          style={{ background: "rgba(75,110,255,0.2)", border: "1px solid rgba(75,110,255,0.4)" }}
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-base font-bold transition-colors hover:!bg-[color:var(--bg-secondary)]"
+          style={{ background: "var(--bg-glass)", border: "1px solid var(--border-default)", color: "var(--text-primary)", backdropFilter: "blur(12px)" }}
           title="Zoom out"
         >
           −
         </button>
         <button
           onClick={() => { setZoom(1); setCenter([0, 20]); }}
-          className="w-8 h-8 flex items-center justify-center rounded-lg text-white text-xs font-bold transition-colors"
-          style={{ background: "rgba(75,110,255,0.2)", border: "1px solid rgba(75,110,255,0.4)" }}
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold transition-colors hover:!bg-[color:var(--bg-secondary)]"
+          style={{ background: "var(--bg-glass)", border: "1px solid var(--border-default)", color: "var(--text-primary)", backdropFilter: "blur(12px)" }}
           title="Reset view"
         >
           ⊙
@@ -280,35 +278,35 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
       <div
         className="absolute top-4 right-4 z-10 text-xs"
         style={{
-          background:     "rgba(6,10,24,0.85)",
+          background:     "var(--bg-glass)",
           backdropFilter: "blur(16px)",
           borderRadius:   14,
-          border:         "1px solid rgba(255,255,255,0.06)",
+          border:         "1px solid var(--border-subtle)",
           padding:        "14px 16px",
-          color:          "#fff",
+          color:          "var(--text-primary)",
           minWidth:       150,
         }}
       >
-        <p className="font-semibold mb-2 uppercase tracking-wider" style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>
+        <p className="font-semibold mb-2 uppercase tracking-wider" style={{ fontSize: 10, color: "var(--text-muted)" }}>
           Node Types
         </p>
         {(Object.entries(NODE_COLORS) as [NodeType, string][]).map(([type, color]) => (
           <div key={type} className="flex items-center gap-2.5 mb-1.5">
             <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: color, boxShadow: `0 0 6px ${color}66` }} />
-            <span className="capitalize" style={{ color: "#d1d5db" }}>{type}</span>
+            <span className="capitalize" style={{ color: "var(--text-secondary)" }}>{type}</span>
           </div>
         ))}
-        <p className="font-semibold mt-4 mb-2 uppercase tracking-wider" style={{ fontSize: 10, color: "rgba(255,255,255,0.4)" }}>
+        <p className="font-semibold mt-4 mb-2 uppercase tracking-wider" style={{ fontSize: 10, color: "var(--text-muted)" }}>
           Status
         </p>
         {(Object.entries(STATUS_COLORS) as [NodeStatus, string][]).map(([status, color]) => (
           <div key={status} className="flex items-center gap-2.5 mb-1.5">
             <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: color, boxShadow: `0 0 6px ${color}66` }} />
-            <span className="capitalize" style={{ color: "#d1d5db" }}>{status}</span>
+            <span className="capitalize" style={{ color: "var(--text-secondary)" }}>{status}</span>
           </div>
         ))}
 
-        <p className="mt-4 text-center" style={{ fontSize: 9, color: "rgba(255,255,255,0.2)" }}>
+        <p className="mt-4 text-center" style={{ fontSize: 9, color: "var(--text-muted)" }}>
           {nodes.length} node{nodes.length !== 1 ? "s" : ""} · {arcs.length} route{arcs.length !== 1 ? "s" : ""}
         </p>
       </div>
@@ -316,7 +314,7 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
       {/* ── Controls hint ─────────────────────────────────────────────────── */}
       <div
         className="absolute bottom-5 left-5 z-10 text-xs px-3 py-2 rounded-full"
-        style={{ background: "rgba(6,10,24,0.6)", border: "1px solid rgba(255,255,255,0.06)", color: "#6B7280" }}
+        style={{ background: "var(--bg-glass)", backdropFilter: "blur(12px)", border: "1px solid var(--border-subtle)", color: "var(--text-muted)" }}
       >
         🖱 Drag to pan · Scroll to zoom
       </div>

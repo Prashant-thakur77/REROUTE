@@ -33,9 +33,9 @@ export function Footer() {
   };
 
   return (
-    <footer className="w-full bg-background py-16 border-t border-border/40">
-      <div className="max-w-[1400px] mx-auto px-8">
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] md:pr-16 gap-12 md:gap-24">
+    <footer className="w-full bg-background py-12 border-t border-border/40 md:py-16">
+      <div className="max-w-[1400px] mx-auto px-6 sm:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] md:pr-16 gap-10 md:gap-24">
           
           {}
           <div>
@@ -46,43 +46,43 @@ export function Footer() {
                   <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
                 </svg>
               </div>
-              <h2 className="text-[22px] font-[700] text-foreground tracking-tight">REROUTE 
-                (PRODUCT ROUTE INTELLIGENCE AND SUPPLY MAPPING)
-              </h2>
+              <h2 className="text-[22px] font-[700] text-foreground tracking-tight">REROUTE</h2>
             </div>
+            <p className="text-[13px] font-[600] text-foreground max-w-xs leading-relaxed mb-2">
+              Risk Evaluation &amp; Route Optimization Using Twin Emulation
+            </p>
             <p className="text-[14px] font-[400] text-muted-foreground max-w-xs leading-relaxed">
               Empowering global supply chains with autonomous AI and digital twin resilience for risk mitigation and supply chain optimization.
             </p>
           </div>
 
-          <div className="flex gap-16 md:gap-32 md:ml-auto flex-wrap">
+          <div className="flex gap-12 sm:gap-16 md:gap-32 md:ml-auto flex-wrap">
             {}
             <div>
-              <h3 className="text-[15px] font-[600] text-foreground mb-6">Resources</h3>
-              <ul className="space-y-3.5">
-                <li><Link href="/docs" className="text-[14px] text-muted-foreground hover:text-primary transition-colors">Documentation</Link></li>
-                <li><Link href="/privacy" className="text-[14px] text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="text-[14px] text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
+              <h3 className="text-[15px] font-[600] text-foreground mb-3 md:mb-5">Resources</h3>
+              <ul>
+                <li><Link href="/docs" className="flex min-h-[40px] items-center text-[14px] text-muted-foreground hover:text-primary transition-colors">Documentation</Link></li>
+                <li><Link href="/privacy" className="flex min-h-[40px] items-center text-[14px] text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="flex min-h-[40px] items-center text-[14px] text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
 
             {}
             <div>
-              <h3 className="text-[15px] font-[600] text-foreground mb-6">Platform</h3>
-              <ul className="space-y-3.5">
-                <li><a href="#top" onClick={(e) => smoothScroll(e, 'top')} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">Home</a></li>
-                <li><a href="#how-it-works" onClick={(e) => smoothScroll(e, 'how-it-works')} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">How It Works</a></li>
-                <li><a href="#benefits" onClick={(e) => smoothScroll(e, 'benefits')} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">Analytics</a></li>
-                <li><a href="#features" onClick={(e) => smoothScroll(e, 'features')} className="text-[14px] text-muted-foreground hover:text-primary transition-colors">Features</a></li>
+              <h3 className="text-[15px] font-[600] text-foreground mb-3 md:mb-5">Platform</h3>
+              <ul>
+                <li><a href="#top" onClick={(e) => smoothScroll(e, 'top')} className="flex min-h-[40px] items-center text-[14px] text-muted-foreground hover:text-primary transition-colors">Home</a></li>
+                <li><a href="#how-it-works" onClick={(e) => smoothScroll(e, 'how-it-works')} className="flex min-h-[40px] items-center text-[14px] text-muted-foreground hover:text-primary transition-colors">How It Works</a></li>
+                <li><a href="#platform" onClick={(e) => smoothScroll(e, 'platform')} className="flex min-h-[40px] items-center text-[14px] text-muted-foreground hover:text-primary transition-colors">Platform</a></li>
+                <li><a href="#simulation" onClick={(e) => smoothScroll(e, 'simulation')} className="flex min-h-[40px] items-center text-[14px] text-muted-foreground hover:text-primary transition-colors">Simulation</a></li>
               </ul>
             </div>
           </div>
         </div>
 
         {}
-        <div className="mt-20 pt-8 border-t border-border/40 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="mt-12 pt-8 border-t border-border/40 flex flex-col md:flex-row justify-between items-center gap-4 md:mt-16">
           <p className="text-[14px] text-muted-foreground">© {new Date().getFullYear()} REROUTE Systems. All rights reserved.</p>
-          <p className="text-[14px] text-muted-foreground">Developed by <span className="font-medium text-foreground">STACK OVERFLOWED</span></p>
         </div>
       </div>
     </footer>

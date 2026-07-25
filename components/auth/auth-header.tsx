@@ -6,18 +6,19 @@ import { ThemeToggle } from "../theme";
 export function AuthHeader() {
   return (
     <header className="fixed top-0 left-0 w-full bg-background/80 backdrop-blur-md z-50 border-b border-border/40">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div className="container mx-auto flex items-center justify-between gap-2 px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
-          <span className="font-bold text-xl">REROUTE</span>
+          <span className="text-lg font-bold sm:text-xl">REROUTE</span>
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
           <ThemeToggle start="top-right" />
-          <Link 
-            href="/" 
-            className="text-sm font-medium hover:text-primary transition-colors"
+          <Link
+            href="/"
+            className="text-sm font-medium transition-colors hover:text-primary"
           >
-            Back to Home
+            <span className="hidden sm:inline">Back to Home</span>
+            <span className="sm:hidden">Home</span>
           </Link>
         </div>
       </div>
