@@ -8,6 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
     "deploy:gcp": "gcloud builds submit --tag gcr.io/reroute-ai-production/reroute-ai && gcloud run deploy reroute-ai --image gcr.io/reroute-ai-production/reroute-ai --platform managed --region us-central1 --allow-unauthenticated --env-vars-file=.env.yaml",
     "sentry:setup": "node scripts/add-sentry-to-apis.mjs",
     "sentry:check": "node scripts/check-api-routes.mjs"
@@ -144,7 +147,8 @@
     "dotenv": "^17.4.2",
     "postcss": "^8",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.10"
   },
   "packageManager": "pnpm@9.15.4"
 }
