@@ -15,6 +15,7 @@ const alertSchema = z.object({
     title: z.string().describe("A concise, alarming title for the notification"),
     message: z.string().describe("A detailed summary of the threat and its specific implication for the node"),
     severity: z.enum(['CRITICAL', 'HIGH', 'MEDIUM', 'LOW']).describe("The absolute risk severity"),
+    confidence: z.number().min(0).max(1).describe("Your confidence from 0 to 1 that this threat is real and correctly attributed to this specific node, based on source reliability and how directly the news impacts it. Use <0.6 when the link is speculative or the source is weak."),
     news_url: z.string().describe("The URL of the source article"),
     source_title: z.string().describe("The title of the source article"),
     published_at: z.string().describe("The publication date of the article")
@@ -228,6 +229,7 @@ ${JSON.stringify(freshNews.map(r => ({ title: r.title, content: r.content, url: 
            citations: {
               category: 'AI Threat Intelligence',
               affectedNodes: [alert.node_id],
+              confidence: alert.confidence,
               sources: [
                 {
                   title: alert.source_title,
