@@ -69,7 +69,7 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
       >
         {/* Timeline Line */}
         {!isLast && (
-          <div className="absolute left-6 top-12 w-0.5 h-20 bg-gradient-to-b from-gray-300 to-gray-200 dark:from-gray-600 dark:to-gray-700" />
+          <div className="absolute left-6 top-12 w-0.5 h-20 bg-border" />
         )}
 
         {/* Timeline Node */}
@@ -82,7 +82,7 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
                 ? 'bg-green-100 border-green-300 text-green-700 dark:bg-green-900/30 dark:border-green-600 dark:text-green-400' 
                 : isActive 
                 ? 'bg-blue-100 border-blue-300 text-blue-700 dark:bg-blue-900/30 dark:border-blue-600 dark:text-blue-400 animate-pulse' 
-                : 'bg-gray-100 border-gray-300 text-gray-500 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400'
+                : 'bg-muted border-border text-muted-foreground'
               }
             `}
             whileHover={{ scale: 1.05 }}
@@ -112,7 +112,7 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
                   ? 'bg-green-500 text-white' 
                   : isActive 
                   ? 'bg-blue-500 text-white' 
-                  : 'bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300'
+                  : 'bg-muted text-muted-foreground'
                 }
               `}
             >
@@ -130,7 +130,7 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
                 ? 'bg-green-50/50 border-green-200 dark:bg-green-900/10 dark:border-green-800' 
                 : isActive 
                 ? 'bg-blue-50/50 border-blue-200 dark:bg-blue-900/10 dark:border-blue-800' 
-                : 'bg-gray-50/50 border-gray-200 dark:bg-gray-900/10 dark:border-gray-700'
+                : 'bg-muted/50 border-border'
               }
             `}
             whileHover={{ 
@@ -145,7 +145,7 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
                   ? 'text-green-800 dark:text-green-300' 
                   : isActive 
                   ? 'text-blue-800 dark:text-blue-300' 
-                  : 'text-gray-700 dark:text-gray-300'
+                  : 'text-foreground'
                 }
               `}>
                 {step.title}
@@ -157,7 +157,7 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
                   ? 'bg-green-100 text-green-600 dark:bg-green-900/40 dark:text-green-400' 
                   : isActive 
                   ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-400' 
-                  : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400'
+                  : 'bg-muted text-muted-foreground'
                 }
               `}>
                 {step.icon}
@@ -170,7 +170,7 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
                 ? 'text-green-700 dark:text-green-400' 
                 : isActive 
                 ? 'text-blue-700 dark:text-blue-400' 
-                : 'text-gray-600 dark:text-gray-400'
+                : 'text-muted-foreground'
               }
             `}>
               {step.description}
@@ -179,7 +179,7 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
             {/* Progress Indicator */}
             {(isCompleted || isActive) && (
               <motion.div
-                className="mt-3 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
+                className="mt-3 h-1.5 bg-muted rounded-full overflow-hidden"
                 initial={{ width: 0 }}
                 animate={{ width: "100%" }}
                 transition={{ delay: 0.5 + index * 0.1, duration: 0.8 }}
@@ -213,10 +213,10 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
     >
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h2 className="text-lg font-display font-semibold text-foreground">
             Implementation Roadmap
           </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Strategic execution timeline with progress tracking
           </p>
         </div>
@@ -244,18 +244,18 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
 
       {/* Summary Footer */}
       <motion.div
-        className="mt-8 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border border-gray-200 dark:border-gray-700"
+        className="mt-8 p-4 bg-muted rounded-lg border border-border"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8 }}
       >
         <div className="flex items-center space-x-2 mb-2">
           <Shield className="w-4 h-4 text-blue-500" />
-          <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+          <span className="text-sm font-medium text-foreground">
             Risk Mitigation Progress
           </span>
         </div>
-        <p className="text-xs text-gray-600 dark:text-gray-400">
+        <p className="text-xs text-muted-foreground">
           Implementation is on track with 2 completed milestones. Next phase focuses on system integration and testing.
         </p>
       </motion.div>
@@ -271,14 +271,14 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="h-full flex flex-col"
     >
-      <Card className="border border-white/30 dark:border-slate-700/20 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl shadow-xl shadow-black/5 dark:shadow-black/30 rounded-2xl h-full flex flex-col">
-        <CardHeader className="flex flex-row items-center justify-between gap-2 p-6 pb-4 border-b border-white/20 dark:border-slate-700/20">
+      <Card className="border border-border bg-card shadow-xl rounded-2xl h-full flex flex-col">
+        <CardHeader className="flex flex-row items-center justify-between gap-2 p-6 pb-4 border-b border-border">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg shadow-blue-500/25">
               <TrendingUp className="h-5 w-5 text-white" />
             </div>
             <div>
-              <CardTitle className="text-lg font-semibold">Implementation Roadmap</CardTitle>
+              <CardTitle className="text-lg font-display font-semibold text-foreground">Implementation Roadmap</CardTitle>
               <CardDescription className="text-xs text-muted-foreground">
                 Strategic execution timeline with progress tracking
               </CardDescription>
@@ -312,7 +312,7 @@ export const ImplementationRoadmapPanel: React.FC<ImplementationRoadmapPanelProp
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
                 <TrendingUp className="h-4 w-4 text-white" />
               </div>
-              <DrawerTitle className="text-lg font-semibold">Implementation Roadmap</DrawerTitle>
+              <DrawerTitle className="text-lg font-display font-semibold text-foreground">Implementation Roadmap</DrawerTitle>
             </div>
             <DrawerClose asChild>
               <button 

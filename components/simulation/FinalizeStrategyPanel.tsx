@@ -132,7 +132,7 @@ export const FinalizeStrategyPanel: React.FC<FinalizeStrategyPanelProps> = ({
         </div>
         
         <div>
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h3 className="text-2xl font-display font-bold text-foreground mb-2">
             Ready to Finalize Strategy
           </h3>
           <p className="text-muted-foreground text-lg">
@@ -188,14 +188,14 @@ export const FinalizeStrategyPanel: React.FC<FinalizeStrategyPanelProps> = ({
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="h-full flex flex-col"
     >
-      <Card className="border border-white/40 dark:border-slate-700/30 bg-white/98 dark:bg-slate-900/98 backdrop-blur-xl shadow-2xl shadow-black/10 dark:shadow-black/40 rounded-2xl h-full flex flex-col overflow-hidden">
-        <CardHeader className="flex flex-row items-center justify-between gap-4 p-8 pb-6 border-b border-white/30 dark:border-slate-700/30 bg-gradient-to-r from-green-50/70 to-emerald-50/50 dark:from-green-950/30 dark:to-emerald-950/20 backdrop-blur-sm">
+      <Card className="border border-border bg-card shadow-xl rounded-2xl h-full flex flex-col overflow-hidden">
+        <CardHeader className="flex flex-row items-center justify-between gap-4 p-8 pb-6 border-b border-border bg-green-50 dark:bg-green-950/30">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30 border border-green-400/20">
               <CheckCircle className="h-6 w-6 text-white" />
             </div>
             <div>
-              <CardTitle className="text-xl font-bold text-gray-900 dark:text-white">Finalize Strategy</CardTitle>
+              <CardTitle className="text-xl font-display font-bold text-foreground">Finalize Strategy</CardTitle>
               <CardDescription className="text-sm text-muted-foreground mt-1">
                 Review and onboard your mitigation strategy
               </CardDescription>
@@ -204,7 +204,7 @@ export const FinalizeStrategyPanel: React.FC<FinalizeStrategyPanelProps> = ({
           {!isMobile && (
             <button 
               onClick={onClose} 
-              className="p-3 rounded-xl hover:bg-white/60 dark:hover:bg-slate-800/60 transition-all duration-200 hover:scale-105 flex-shrink-0"
+              className="p-3 rounded-xl hover:bg-muted transition-all duration-200 hover:scale-105 flex-shrink-0"
               aria-label="Close finalize panel"
             >
               <X className="h-5 w-5 text-muted-foreground" />
@@ -212,7 +212,7 @@ export const FinalizeStrategyPanel: React.FC<FinalizeStrategyPanelProps> = ({
           )}
         </CardHeader>
         
-        <CardContent className="flex-1 p-8 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
+        <CardContent className="flex-1 p-8 overflow-y-auto scrollbar-thin scrollbar-thumb-muted-foreground/30 scrollbar-track-transparent">
           <FinalizeContent />
         </CardContent>
       </Card>
@@ -223,13 +223,13 @@ export const FinalizeStrategyPanel: React.FC<FinalizeStrategyPanelProps> = ({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onClose}>
-        <DrawerContent className="max-h-[90vh] border-t border-gray-200/60 dark:border-gray-700/60">
-          <DrawerHeader className="flex items-center justify-between p-5 sm:p-8 border-b border-gray-200/50 dark:border-gray-700/50">
+        <DrawerContent className="max-h-[90vh] bg-background border-t border-border">
+          <DrawerHeader className="flex items-center justify-between p-5 sm:p-8 border-b border-border">
             <div className="flex items-center gap-3 sm:gap-4 min-w-0">
               <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30 flex-shrink-0">
                 <CheckCircle className="h-5 w-5 text-white" />
               </div>
-              <DrawerTitle className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate">Finalize Strategy</DrawerTitle>
+              <DrawerTitle className="text-lg sm:text-xl font-display font-bold text-foreground truncate">Finalize Strategy</DrawerTitle>
             </div>
             <DrawerClose asChild>
               <button

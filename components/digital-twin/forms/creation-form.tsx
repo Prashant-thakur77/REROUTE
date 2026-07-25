@@ -176,17 +176,17 @@ export default function CreationForm({ onSuccess, onCancel }: CreationFormProps)
           ease: [0.4, 0.0, 0.2, 1],
           layout: { duration: 0.4 }
         }}
-        className="bg-blue-50/80 dark:bg-slate-900/50 rounded-2xl shadow-2xl shadow-slate-400/20 dark:shadow-black/50 border border-slate-200/80 dark:border-slate-700/60"
+        className="bg-card rounded-2xl shadow-xl border border-border"
       >
         {/* Simplified Header */}
         <div className="px-6 pt-5 pb-2">
           <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-slate-800 dark:text-slate-200 tracking-tight">
+            <h2 className="text-xl font-bold font-display text-foreground tracking-tight">
               {steps[step].name}
             </h2>
-            <Badge 
-              variant="secondary" 
-              className="px-3 py-1 text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 shadow-sm"
+            <Badge
+              variant="secondary"
+              className="px-3 py-1 text-xs font-semibold bg-muted text-muted-foreground border border-border shadow-sm"
             >
               Step {step + 1}/{steps.length}
             </Badge>
@@ -195,9 +195,9 @@ export default function CreationForm({ onSuccess, onCancel }: CreationFormProps)
 
         {/* Progress Bar */}
         <div className="px-6 pb-4">
-          <div className="w-full bg-slate-200/80 dark:bg-slate-700/50 rounded-full h-1.5 overflow-hidden">
+          <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
             <motion.div
-              className="bg-gradient-to-r from-blue-500 to-indigo-500 h-1.5 rounded-full"
+              className="bg-primary h-1.5 rounded-full"
               initial={{ width: '0%' }}
               animate={{ width: `${((step + 1) / steps.length) * 100}%` }}
               transition={{ duration: 0.5, ease: 'easeInOut' }}
@@ -223,8 +223,8 @@ export default function CreationForm({ onSuccess, onCancel }: CreationFormProps)
                     setStep(0);
                     onCancel();
                 }} 
-                variant="ghost" 
-                className="text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50 shadow-sm border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all duration-200 rounded-lg"
+                variant="ghost"
+                className="text-muted-foreground hover:text-foreground hover:bg-muted shadow-sm border border-transparent hover:border-border transition-all duration-200 rounded-lg"
               >
                 Cancel
               </Button>
@@ -232,14 +232,14 @@ export default function CreationForm({ onSuccess, onCancel }: CreationFormProps)
                 <Button 
                   onClick={handleBack} 
                   disabled={step === 0} 
-                  variant="outline" 
-                  className="disabled:cursor-not-allowed shadow-sm border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/50 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 transition-all duration-200 rounded-lg"
+                  variant="outline"
+                  className="disabled:cursor-not-allowed shadow-sm border-border bg-background hover:bg-muted disabled:opacity-50 transition-all duration-200 rounded-lg"
                 >
                     Back
                 </Button>
                 <Button 
                   onClick={handleNext}
-                  className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-300 transform hover:-translate-y-0.5 border-0 px-6 font-semibold rounded-lg"
+                  className="shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 px-6 font-semibold rounded-full"
                 >
                   {step === steps.length - 1 ? "Create Digital Twin" : "Continue"}
                 </Button>

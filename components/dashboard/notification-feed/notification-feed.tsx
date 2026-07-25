@@ -814,43 +814,43 @@ export function NotificationFeed() {
 
       {/* Notification Details Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="w-[95vw] max-w-2xl max-h-[85vh] overflow-y-auto p-4 sm:p-6 bg-theme-bg-glass backdrop-blur-[16px] saturate-[180%] border border-theme-border-subtle/50 shadow-lg">
+        <DialogContent className="top-[4.5rem] translate-y-0 w-[95vw] max-w-2xl max-h-[calc(100vh-5.5rem)] overflow-y-auto p-5 sm:p-6 bg-popover border border-border shadow-xl rounded-2xl">
           {selectedNotification && (
             <>
               <DialogHeader>
-                <div className="flex flex-wrap items-center gap-2 pr-6">
-                  <div className="rounded-full p-1.5 bg-theme-bg-secondary shrink-0">
+                <div className="flex flex-wrap items-center gap-2.5 pr-6">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full border border-border bg-muted shrink-0">
                     {renderNotificationIcon(selectedNotification)}
                   </div>
-                  <DialogTitle className="text-base sm:text-lg font-semibold text-theme-text-primary break-words min-w-0">{selectedNotification.title}</DialogTitle>
+                  <DialogTitle className="font-display text-lg sm:text-xl font-semibold text-foreground break-words min-w-0">{selectedNotification.title}</DialogTitle>
                   {selectedNotification.severity && (
                     <span className={cn(
-                      "text-[0.65rem] font-[700] tracking-[0.05em] py-[2px] px-[8px] rounded-theme-pill border border-transparent",
-                      selectedNotification.severity === 'HIGH' 
-                        ? 'bg-theme-red/10 text-theme-red' 
+                      "text-[0.65rem] font-bold uppercase tracking-[0.06em] py-1 px-2.5 rounded-full",
+                      selectedNotification.severity === 'HIGH'
+                        ? 'bg-theme-red text-white'
                         : selectedNotification.severity === 'MEDIUM'
-                        ? 'bg-theme-bg-secondary text-theme-text-secondary'
-                        : 'bg-theme-blue-soft text-theme-blue'
+                        ? 'bg-theme-amber-soft text-theme-amber'
+                        : 'bg-primary/10 text-primary'
                     )}>
                       {selectedNotification.severity}
                     </span>
                   )}
                 </div>
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-theme-text-muted">
+                <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
                   {getTypeIcon(getNotificationType(selectedNotification))}
                   <span>{selectedNotification.created_at && safeDateFormat(selectedNotification.created_at) || "Unknown time"}</span>
                   <span>•</span>
                   <span className="capitalize">{selectedNotification.notification_type?.replace('_', ' ')}</span>
                 </div>
               </DialogHeader>
-              
-              <div className="space-y-6">
+
+              <div className="mt-4 space-y-6">
                 {/* Full Message */}
                 {selectedNotification.message && (
                   <div>
-                    <h4 className="font-[600] text-theme-text-primary mb-2">Details</h4>
-                    <div className="bg-theme-bg-secondary/40 border border-theme-border-subtle rounded-theme-md p-4">
-                      <p className="text-sm text-theme-text-secondary leading-relaxed whitespace-pre-wrap">
+                    <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Details</h4>
+                    <div className="rounded-xl border border-border bg-muted p-4">
+                      <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
                         {selectedNotification.message}
                       </p>
                     </div>
@@ -865,7 +865,7 @@ export function NotificationFeed() {
                       {/* Sources */}
                       {citations?.sources && citations.sources.length > 0 && (
                         <div>
-                          <h4 className="font-medium text-foreground mb-3">Sources ({citations.sources.length})</h4>
+                          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Sources ({citations.sources.length})</h4>
                           <div className="space-y-2">
                             {citations.sources.map((source, idx) => (
                               <SourceBubble key={idx} source={source} />
@@ -877,7 +877,7 @@ export function NotificationFeed() {
                       {/* Risk Relationships */}
                       {citations?.relationships && citations.relationships.length > 0 && (
                         <div>
-                          <h4 className="font-medium text-foreground mb-3">Risk Relationships ({citations.relationships.length})</h4>
+                          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Risk Relationships ({citations.relationships.length})</h4>
                           <div className="space-y-3">
                             {citations.relationships.map((relationship, idx) => (
                               <div key={idx} className="bg-muted border border-border rounded-lg p-4">
@@ -909,7 +909,7 @@ export function NotificationFeed() {
                       {/* Affected Entities */}
                       {citations?.affectedEntities && citations.affectedEntities.length > 0 && (
                         <div>
-                          <h4 className="font-medium text-foreground mb-3">Affected Entities ({citations.affectedEntities.length})</h4>
+                          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Affected Entities ({citations.affectedEntities.length})</h4>
                           <div className="flex flex-wrap gap-2">
                             {citations.affectedEntities.map((entity, idx) => (
                               <div key={idx} className="inline-flex items-center px-3 py-1.5 text-sm bg-muted text-foreground rounded-md border border-border">
@@ -924,7 +924,7 @@ export function NotificationFeed() {
                       {/* Additional Details */}
                       {citations && (
                         <div>
-                          <h4 className="font-medium text-foreground mb-3">Additional Information</h4>
+                          <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Additional Information</h4>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                             {citations.category && (
                               <div className="bg-muted rounded-lg p-3">

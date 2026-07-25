@@ -71,10 +71,10 @@ export default function ManualDisruptionDialog({ isOpen, onClose, nodeId }: Manu
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="w-[95vw] sm:max-w-[425px] bg-popover border border-border shadow-xl rounded-2xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-red-500" />
+          <DialogTitle className="flex items-center gap-2 font-display text-foreground">
+            <AlertTriangle className="w-5 h-5 text-theme-red" />
             Simulate Disruption
           </DialogTitle>
           <DialogDescription>
@@ -87,21 +87,21 @@ export default function ManualDisruptionDialog({ isOpen, onClose, nodeId }: Manu
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="e.g., A massive storm has flooded the main access roads..."
-            className="min-h-[100px] w-full p-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="min-h-[100px] w-full p-3 rounded-md border border-border bg-muted text-foreground focus:outline-none focus:ring-2 focus:ring-theme-red"
           />
         </div>
 
         <DialogFooter>
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+            className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground"
           >
             Cancel
           </button>
           <button
             onClick={handleSimulate}
             disabled={!description}
-            className="px-4 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-4 py-2 text-sm bg-theme-red hover:bg-theme-red/90 text-white rounded-full disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
             Simulate & Analyze
           </button>

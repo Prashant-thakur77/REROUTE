@@ -35,7 +35,7 @@ export const CountrySelectionDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[400px]">
+      <DialogContent className="w-[95vw] sm:max-w-[400px] bg-popover border border-border shadow-xl rounded-2xl">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -43,7 +43,7 @@ export const CountrySelectionDialog = ({
           transition={{ duration: 0.2, ease: "easeOut" }}
         >
           <DialogHeader>
-            <DialogTitle>Select Your Country</DialogTitle>
+            <DialogTitle className="font-display text-foreground">Select Your Country</DialogTitle>
             <DialogDescription>
               Since you selected domestic operations, please specify your
               country.

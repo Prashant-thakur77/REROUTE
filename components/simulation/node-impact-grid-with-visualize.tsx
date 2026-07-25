@@ -90,7 +90,7 @@ export default function NodeImpactGridWithVisualize({
 
   return (
     <>
-      <Card className="shadow-xl shadow-black/10 border-border/50 bg-white/70 dark:bg-slate-900/5 backdrop-blur-xl">
+      <Card className="shadow-xl border border-border bg-card">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -113,18 +113,18 @@ export default function NodeImpactGridWithVisualize({
             {showVisualize && (
               <Dialog open={visualizeOpen} onOpenChange={setVisualizeOpen}>
                 <DialogTrigger asChild>
-                  <Button 
-                    variant="outline" 
-                    className="flex items-center gap-2 bg-white/80 dark:bg-slate-900/20 backdrop-blur-xl border-white/40 dark:border-slate-700/30 hover:bg-white/90 dark:hover:bg-slate-900/30"
+                  <Button
+                    variant="outline"
+                    className="flex items-center gap-2"
                     disabled={isLoading}
                   >
                     <Eye className="h-4 w-4" />
                     Visualize
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-6xl max-h-[90vh] overflow-auto">
+                <DialogContent className="bg-popover border border-border shadow-xl w-[95vw] max-w-6xl top-[4.5rem] translate-y-0 max-h-[calc(100vh-5.5rem)] overflow-y-auto">
                   <DialogHeader>
-                    <DialogTitle>Cascading Failure Visualization</DialogTitle>
+                    <DialogTitle className="font-display text-foreground">Cascading Failure Visualization</DialogTitle>
                     <DialogDescription>
                       Interactive network view showing how disruptions cascade through your supply chain
                     </DialogDescription>
@@ -252,7 +252,7 @@ export default function NodeImpactGridWithVisualize({
                       <TableCell>{node.recovery}</TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <div className="w-full max-w-24 h-2 bg-slate-200 rounded-full overflow-hidden">
+                          <div className="w-full max-w-24 h-2 bg-muted rounded-full overflow-hidden">
                             <div
                               className={`h-full ${
                                 node.riskScore > 70 ? "bg-red-500" : node.riskScore > 40 ? "bg-yellow-500" : "bg-green-500"

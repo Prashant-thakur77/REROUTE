@@ -129,12 +129,12 @@ const SaveSupplyChainDialog: FC<SaveSupplyChainDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md w-full mx-4 p-6 rounded-xl shadow-2xl bg-blue-50/80 dark:bg-slate-900/50 border-slate-200/80 dark:border-slate-700/60 top-20 translate-y-0">
+      <DialogContent className="sm:max-w-md w-[95vw] mx-auto p-6 rounded-2xl shadow-xl bg-popover border border-border top-[4.5rem] translate-y-0 max-h-[calc(100vh-5.5rem)] overflow-y-auto">
         <DialogHeader className="space-y-2">
-          <DialogTitle className="text-xl font-bold text-gray-900 dark:text-gray-50">
+          <DialogTitle className="font-display text-xl font-semibold text-foreground">
             Save Supply Chain
           </DialogTitle>
-          <DialogDescription className="text-sm text-gray-500 dark:text-gray-400">
+          <DialogDescription className="text-sm text-muted-foreground">
             Provide a name and description for your supply chain configuration. 
             This will help you identify and manage it later.
           </DialogDescription>
@@ -143,7 +143,7 @@ const SaveSupplyChainDialog: FC<SaveSupplyChainDialogProps> = ({
         <div className="space-y-4 py-4">
           {/* Supply Chain Name Input */}
           <div className="space-y-2">
-            <label htmlFor="supply-chain-name" className="text-sm font-medium text-gray-800 dark:text-gray-200">
+            <label htmlFor="supply-chain-name" className="text-sm font-medium text-foreground">
               Supply Chain Name *
             </label>
             <Input
@@ -154,28 +154,28 @@ const SaveSupplyChainDialog: FC<SaveSupplyChainDialogProps> = ({
               onChange={handleNameChange}
               onKeyPress={handleKeyPress}
               className={cn(
-                'border border-gray-300 text-sm p-3.5 rounded-xl bg-gray-50 dark:bg-gray-800 dark:border-gray-700',
+                'border border-border text-sm p-3.5 rounded-xl bg-muted',
                 {
-                  'border-red-500 focus-visible:ring-red-500': errors.name,
+                  'border-destructive focus-visible:ring-destructive': errors.name,
                 }
               )}
               maxLength={50}
               disabled={isLoading}
             />
             {errors.name && (
-              <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1.5">
+              <p className="text-sm text-destructive flex items-center gap-1.5">
                 <X className="w-3.5 h-3.5" />
                 {errors.name}
               </p>
             )}
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               {name.length}/50 characters
             </p>
           </div>
 
           {/* Supply Chain Description Textarea */}
           <div className="space-y-2">
-            <label htmlFor="supply-chain-description" className="text-sm font-medium text-gray-800 dark:text-gray-200">
+            <label htmlFor="supply-chain-description" className="text-sm font-medium text-foreground">
               Description
             </label>
             <CopilotTextarea
@@ -184,9 +184,9 @@ const SaveSupplyChainDialog: FC<SaveSupplyChainDialogProps> = ({
               value={description}
               onValueChange={setDescription}
               className={cn(
-                'border border-gray-300 h-[100px] resize-none text-sm p-3.5 rounded-xl bg-gray-50 dark:bg-gray-800 dark:border-gray-700 scrollbar-hide',
+                'border border-border h-[100px] resize-none text-sm p-3.5 rounded-xl bg-muted scrollbar-hide',
                 {
-                  'border-red-500 focus-visible:ring-red-500': errors.description,
+                  'border-destructive focus-visible:ring-destructive': errors.description,
                 }
               )}
               maxLength={500}
@@ -194,24 +194,24 @@ const SaveSupplyChainDialog: FC<SaveSupplyChainDialogProps> = ({
               autosuggestionsConfig={autosuggestionsConfig}
             />
             {errors.description && (
-              <p className="text-sm text-red-600 dark:text-red-400 flex items-center gap-1.5">
+              <p className="text-sm text-destructive flex items-center gap-1.5">
                 <X className="w-3.5 h-3.5" />
                 {errors.description}
               </p>
             )}
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               {description.length}/500 characters
             </p>
           </div>
         </div>
 
-        <DialogFooter className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200 dark:border-gray-800">
+        <DialogFooter className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-border">
           <Button
             type="button"
             variant="outline"
             onClick={handleClose}
             disabled={isLoading}
-            className="w-full sm:w-auto order-2 sm:order-1 text-sm py-2 px-4 rounded-lg"
+            className="w-full sm:w-auto order-2 sm:order-1 text-sm py-2 px-4 rounded-full"
           >
             Cancel
           </Button>
@@ -219,14 +219,14 @@ const SaveSupplyChainDialog: FC<SaveSupplyChainDialogProps> = ({
             type="button"
             onClick={handleSave}
             disabled={isLoading || !name.trim()}
-            className="w-full sm:w-auto order-1 sm:order-2 bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 text-sm py-2 px-4 rounded-lg shadow-md"
+            className="w-full sm:w-auto order-1 sm:order-2 text-sm py-2 px-4 rounded-full"
           >
             <Save className="w-5 h-5 mr-2.5" />
             {isLoading ? 'Saving...' : 'Save Supply Chain'}
           </Button>
         </DialogFooter>
 
-        <div className="text-sm text-gray-500 dark:text-gray-400 text-center pt-3">
+        <div className="text-sm text-muted-foreground text-center pt-3">
           Press Ctrl + Enter to save quickly
         </div>
       </DialogContent>

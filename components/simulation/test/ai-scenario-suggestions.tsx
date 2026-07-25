@@ -321,7 +321,7 @@ export function AIScenarioSuggestions({ open, onOpenChange, onSelectScenario }: 
       case "demand":
         return <ShoppingCart className="h-5 w-5 text-green-500" />
       default:
-        return <Building className="h-5 w-5 text-gray-500" />
+        return <Building className="h-5 w-5 text-muted-foreground" />
     }
   }
 
@@ -335,11 +335,11 @@ export function AIScenarioSuggestions({ open, onOpenChange, onSelectScenario }: 
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="sm:max-w-md md:max-w-lg lg:max-w-xl overflow-y-auto">
+      <SheetContent className="bg-background border-border sm:max-w-md md:max-w-lg lg:max-w-xl overflow-y-auto">
         <SheetHeader>
           <div className="flex justify-between items-center">
-            <SheetTitle className="flex items-center">
-              <Sparkles className="h-5 w-5 mr-2 text-black dark:text-white" />
+            <SheetTitle className="flex items-center font-display text-foreground">
+              <Sparkles className="h-5 w-5 mr-2 text-foreground" />
               AI Scenario Suggestions
               {fromCache && (
                 <Badge variant="secondary" className="ml-2">
@@ -380,10 +380,10 @@ export function AIScenarioSuggestions({ open, onOpenChange, onSelectScenario }: 
         </SheetHeader>
 
         {/* Custom Scenario Generator Section */}
-        <div className="mt-8 p-6 border rounded-lg bg-white dark:bg-black border-slate-200 dark:border-slate-800 space-y-4">
+        <div className="mt-8 p-6 border border-border rounded-lg bg-muted space-y-4">
           <div className="flex items-center gap-2">
-            <Wand2 className="h-5 w-5 text-black dark:text-white" />
-            <h3 className="font-semibold text-lg">Generate Custom Scenario</h3>
+            <Wand2 className="h-5 w-5 text-foreground" />
+            <h3 className="font-display font-semibold text-lg text-foreground">Generate Custom Scenario</h3>
           </div>
           
           <div className="space-y-4">
@@ -484,7 +484,7 @@ export function AIScenarioSuggestions({ open, onOpenChange, onSelectScenario }: 
 
         {/* Recommended Scenarios Section */}
         <div>
-          <h3 className="font-semibold mb-4 flex items-center">
+          <h3 className="font-display font-semibold text-foreground mb-4 flex items-center">
             <Sparkles className="h-4 w-4 mr-2" />
             Recommended Scenarios
             {scenarios.length > 0 && (
@@ -519,7 +519,7 @@ export function AIScenarioSuggestions({ open, onOpenChange, onSelectScenario }: 
           ) : (
             <div className="grid gap-4">
               {filteredScenarios.map((scenario, index) => (
-                <Card key={index} className="border border-slate-200 dark:border-slate-800 bg-white dark:bg-black transition-all hover:border-slate-400 dark:hover:border-slate-600 hover:shadow-sm">
+                <Card key={index} className="border border-border bg-card transition-all hover:border-foreground/30 hover:shadow-sm">
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
                       <div className="flex items-center">

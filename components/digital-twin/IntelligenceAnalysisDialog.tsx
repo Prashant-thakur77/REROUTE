@@ -31,11 +31,11 @@ function SuccessRedirect({ onGoToDashboard, onClose }: { onGoToDashboard: () => 
   return (
     <div className="flex flex-col justify-between h-full w-full min-h-[400px]">
       <div className="text-center flex-grow flex flex-col justify-center items-center">
-        <CheckCircle2 className="w-16 h-16 text-green-500 mb-4" />
-        <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
+        <CheckCircle2 className="w-16 h-16 text-theme-green mb-4" />
+        <h3 className="text-2xl font-semibold text-foreground">
           Analysis Complete
         </h3>
-        <p className="mt-2 text-gray-500 dark:text-gray-400 max-w-sm">
+        <p className="mt-2 text-muted-foreground max-w-sm">
           We have successfully analyzed your supply chain.
         </p>
       </div>
@@ -70,17 +70,17 @@ function ErrorRedirect({ onGoToDashboard, error }: { onGoToDashboard: () => void
   return (
     <div className="flex flex-col justify-between h-full w-full min-h-[400px]">
       <div className="text-center flex-grow flex flex-col justify-center items-center">
-        <div className="w-16 h-16 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center mb-4">
-          <span className="text-orange-500 text-2xl">⚠️</span>
+        <div className="w-16 h-16 bg-theme-amber-soft rounded-full flex items-center justify-center mb-4">
+          <span className="text-theme-amber text-2xl">⚠️</span>
         </div>
-        <h3 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
+        <h3 className="text-2xl font-semibold text-foreground">
           Analysis Temporarily Unavailable
         </h3>
-        <p className="mt-2 text-gray-500 dark:text-gray-400 max-w-sm">
+        <p className="mt-2 text-muted-foreground max-w-sm">
           Don't worry! Our system will continue trying to analyze your supply chain in the background. 
           You can return to the dashboard and check back later.
         </p>
-        <p className="mt-4 text-sm text-gray-400 dark:text-gray-500 max-w-md">
+        <p className="mt-4 text-sm text-muted-foreground max-w-md">
           We'll notify you once the analysis is complete. No action is required from your side.
         </p>
       </div>
@@ -177,7 +177,7 @@ const IntelligenceAnalysisDialog: FC<IntelligenceAnalysisDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-2xl w-full mx-4 p-8 rounded-xl shadow-2xl bg-blue-50/80 dark:bg-slate-900/50 border-slate-200/80 dark:border-slate-700/60">
+      <DialogContent className="sm:max-w-2xl w-[95vw] mx-auto p-6 sm:p-8 rounded-2xl shadow-xl bg-popover border border-border top-[4.5rem] translate-y-0 max-h-[calc(100vh-5.5rem)] overflow-y-auto">
 
         {/* Main content area */}
         {status === "streaming" ? (
@@ -191,7 +191,7 @@ const IntelligenceAnalysisDialog: FC<IntelligenceAnalysisDialogProps> = ({
         ) : (
           <div
             ref={contentRef}
-            className="prose dark:prose-invert prose-sm max-w-none h-96 overflow-y-auto bg-gray-50 dark:bg-gray-800 rounded-md p-4 border border-gray-200 dark:border-gray-700 my-4"
+            className="prose dark:prose-invert prose-sm max-w-none h-96 overflow-y-auto bg-muted rounded-xl p-4 border border-border my-4"
           >
             {assistantMessages.map((m) => (
               <MemoizedMarkdown key={m.id} content={m.content} id={m.id} />

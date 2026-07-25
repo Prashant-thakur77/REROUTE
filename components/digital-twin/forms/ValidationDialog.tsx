@@ -136,16 +136,16 @@ const ValidationDialog: FC<ValidationDialogProps> = ({
 
   const getSeverityIcon = (severity: "error" | "warning") => {
     return severity === "error" ? (
-      <XCircle className="h-4 w-4 text-red-500" />
+      <XCircle className="h-4 w-4 text-theme-red" />
     ) : (
-      <AlertTriangle className="h-4 w-4 text-amber-500" />
+      <AlertTriangle className="h-4 w-4 text-theme-amber" />
     )
   }
 
   const getSeverityColor = (severity: "error" | "warning") => {
     return severity === "error"
-      ? "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800"
-      : "bg-amber-50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800"
+      ? "bg-theme-red-soft border-theme-red/30"
+      : "bg-theme-amber-soft border-theme-amber/30"
   }
 
   const getElementTypeIcon = (elementType: string) => {
@@ -202,7 +202,7 @@ const ValidationDialog: FC<ValidationDialogProps> = ({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleFocusElement(issue)}
-                    className="h-6 px-2 text-xs hover:bg-background/80"
+                    className="h-6 px-2 text-xs hover:bg-muted"
                   >
                     <Eye className="h-3 w-3 mr-1" />
                     Focus
@@ -214,7 +214,7 @@ const ValidationDialog: FC<ValidationDialogProps> = ({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleFixWithAI(issue)}
-                    className="h-6 px-2 text-xs hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-950/30 dark:hover:text-blue-400 transition-colors"
+                    className="h-6 px-2 text-xs hover:bg-primary/10 hover:text-primary transition-colors"
                   >
                     <Bot className="h-3 w-3 mr-1" />
                     Fix with AI
@@ -228,7 +228,7 @@ const ValidationDialog: FC<ValidationDialogProps> = ({
             <p className="text-xs text-muted-foreground leading-relaxed">{issue.suggestion}</p>
 
             {isFixable && (
-              <div className="mt-1.5 flex items-center gap-1 text-xs text-blue-600 dark:text-blue-400">
+              <div className="mt-1.5 flex items-center gap-1 text-xs text-primary">
                 <Sparkles className="h-3 w-3" />
                 <span>AI can help fix this issue automatically</span>
               </div>
@@ -241,10 +241,10 @@ const ValidationDialog: FC<ValidationDialogProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl h-[80vh] p-0 flex flex-col bg-blue-50/80 dark:bg-slate-900/50 border-slate-200/80 dark:border-slate-700/60">
+      <DialogContent className="w-[95vw] max-w-2xl h-[80vh] p-0 flex flex-col overflow-hidden bg-popover border border-border shadow-xl rounded-2xl top-[4.5rem] translate-y-0 max-h-[calc(100vh-5.5rem)]">
         <DialogHeader className="p-4 pb-2">
-          <DialogTitle className="flex items-center gap-2 text-lg">
-            <AlertTriangle className="h-4 w-4 text-amber-500" />
+          <DialogTitle className="flex items-center gap-2 text-lg font-display text-foreground">
+            <AlertTriangle className="h-4 w-4 text-theme-amber" />
             Supply Chain Health Check
           </DialogTitle>
         </DialogHeader>
@@ -257,8 +257,8 @@ const ValidationDialog: FC<ValidationDialogProps> = ({
             <Alert
               className={`p-3 ${
                 summary.errors > 0
-                  ? "border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/20"
-                  : "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20"
+                  ? "border-theme-red/30 bg-theme-red-soft"
+                  : "border-theme-green/30 bg-theme-green-soft"
               }`}
             >
               <AlertDescription className="text-sm">
@@ -282,12 +282,12 @@ const ValidationDialog: FC<ValidationDialogProps> = ({
             </Alert>
 
             {fixableIssueIds.size > 0 && onFixWithAI && (
-              <div className="p-2 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-400">
+              <div className="p-2 bg-primary/10 border border-primary/20 rounded-lg">
+                <div className="flex items-center gap-2 text-sm text-primary">
                   <Bot className="h-4 w-4" />
                   <span className="font-medium">AI Assistant Available</span>
                 </div>
-                <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                <p className="text-xs text-primary mt-1">
                   {fixableIssueIds.size} issue{fixableIssueIds.size !== 1 ? "s" : ""} can be automatically fixed with AI
                   assistance.
                 </p>
@@ -304,16 +304,16 @@ const ValidationDialog: FC<ValidationDialogProps> = ({
               <div className="flex items-center gap-2">
                 {errors.length > 0 && currentIssues.some((issue) => issue.severity === "error") && (
                   <>
-                    <XCircle className="h-4 w-4 text-red-500" />
-                    <h3 className="font-semibold text-sm text-red-700 dark:text-red-400">Errors ({errors.length})</h3>
+                    <XCircle className="h-4 w-4 text-theme-red" />
+                    <h3 className="font-semibold text-sm text-theme-red">Errors ({errors.length})</h3>
                   </>
                 )}
                 {warnings.length > 0 &&
                   currentIssues.some((issue) => issue.severity === "warning") &&
                   !currentIssues.some((issue) => issue.severity === "error") && (
                     <>
-                      <AlertTriangle className="h-4 w-4 text-amber-500" />
-                      <h3 className="font-semibold text-sm text-amber-700 dark:text-amber-400">
+                      <AlertTriangle className="h-4 w-4 text-theme-amber" />
+                      <h3 className="font-semibold text-sm text-theme-amber">
                         Warnings ({warnings.length})
                       </h3>
                     </>
@@ -392,7 +392,7 @@ const ValidationDialog: FC<ValidationDialogProps> = ({
             </Button>
 
             {summary.canSave && (
-              <Button onClick={onSaveWithWarnings} disabled={isLoading} className="bg-green-600 hover:bg-green-700">
+              <Button onClick={onSaveWithWarnings} disabled={isLoading} className="bg-theme-green hover:bg-theme-green/90 text-white rounded-full">
                 <Save className="h-4 w-4 mr-1" />
                 {isLoading ? "Saving..." : "Save Supply Chain"}
               </Button>
