@@ -9,6 +9,7 @@ import { ImportTwinDialog, type ImportPayload } from '@/components/digital-twin/
 import { saveSupplyChainToDatabase } from '@/lib/api/supply-chain';
 import { useUser } from '@/lib/stores/user';
 import { toast } from 'sonner';
+import { Waypoints, Map as MapIcon } from 'lucide-react';
 import DigitalTwinCanvas from '@/components/digital-twin/canvas/digital-twin-canvas';
 import { selectTemplate, getTemplateInfo } from '@/lib/template-selector';
 import {
@@ -387,26 +388,30 @@ export default function DigitalTwinClientPage() {
       return (
         <div className="relative w-full h-full flex flex-col flex-1">
           {/* View toggle */}
-          <div className="absolute bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 rounded-full border border-white/10 bg-black/70 p-1.5 shadow-2xl backdrop-blur-xl max-w-[calc(100vw-1.5rem)]">
+          <div className="absolute bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 rounded-full border border-border bg-popover/95 p-1 shadow-lg ring-1 ring-black/[0.02] backdrop-blur-md max-w-[calc(100vw-1.5rem)]">
             <button
               onClick={() => setViewMode("graph")}
-              className={`rounded-full px-3.5 sm:px-4 py-2 min-h-[40px] text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
+              aria-pressed={viewMode === "graph"}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 min-h-[38px] text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
                 viewMode === "graph"
-                  ? "bg-primary text-primary-foreground shadow-[0_2px_12px_hsl(var(--primary)/0.5)]"
-                  : "text-white/60 hover:text-white"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
-              🔗 Digital Twin
+              <Waypoints className="h-4 w-4 shrink-0" />
+              Digital Twin
             </button>
             <button
               onClick={() => setViewMode("map")}
-              className={`rounded-full px-3.5 sm:px-4 py-2 min-h-[40px] text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
+              aria-pressed={viewMode === "map"}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-2 min-h-[38px] text-xs sm:text-sm font-medium whitespace-nowrap transition-colors ${
                 viewMode === "map"
-                  ? "bg-primary text-primary-foreground shadow-[0_2px_12px_hsl(var(--primary)/0.5)]"
-                  : "text-white/60 hover:text-white"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
-              🗺️ Map
+              <MapIcon className="h-4 w-4 shrink-0" />
+              Map
             </button>
           </div>
 
