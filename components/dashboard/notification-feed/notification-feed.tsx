@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { GroundingBadge } from "@/components/ui/grounding-badge"
+import { AlertActions } from "./components/AlertActions"
 
 // Import API functions and types
 import { getNotifications, markNotificationAsRead, markAllNotificationsAsRead } from "@/lib/api/notifications"
@@ -591,8 +593,9 @@ export function NotificationFeed() {
                               }
                               return null
                             })()}
+                            <GroundingBadge citations={notification.citations as NotificationCitations | null} compact className="ml-0.5" />
                           </div>
-                          
+
                           <button
                             className="h-8 px-2 text-[0.78rem] text-theme-blue font-[500] hover:text-theme-blue/80 transition-colors flex items-center gap-1 bg-transparent border-none cursor-pointer shrink-0"
                             onClick={(e) => {
@@ -842,9 +845,17 @@ export function NotificationFeed() {
                   <span>•</span>
                   <span className="capitalize">{selectedNotification.notification_type?.replace('_', ' ')}</span>
                 </div>
+                {/* AI grounding — confidence, sources, and review flag */}
+                <GroundingBadge
+                  citations={selectedNotification.citations as NotificationCitations | null}
+                  className="mt-3"
+                />
               </DialogHeader>
 
               <div className="mt-4 space-y-6">
+                {/* Actionable alert workflow — acknowledge / assign / resolve / note */}
+                <AlertActions notificationId={selectedNotification.notification_id} />
+
                 {/* Full Message */}
                 {selectedNotification.message && (
                   <div>
@@ -930,12 +941,6 @@ export function NotificationFeed() {
                               <div className="bg-muted rounded-lg p-3">
                                 <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Category</div>
                                 <div className="text-sm text-foreground mt-1 capitalize">{citations.category.toLowerCase()}</div>
-                              </div>
-                            )}
-                            {citations.confidence && (
-                              <div className="bg-muted rounded-lg p-3">
-                                <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Confidence</div>
-                                <div className="text-sm text-foreground mt-1">{Math.round(citations.confidence * 100)}%</div>
                               </div>
                             )}
                           </div>
