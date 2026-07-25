@@ -1,0 +1,10 @@
+id,name,type,lat,lng,country,address,capacity,leadTime,riskScore
+shanghai-supplier,Shanghai Components,Supplier,31.2304,121.4737,CHN,Shanghai,25000,30,0.45
+shenzhen-port,Port of Shenzhen,Port,22.5431,114.0579,CHN,Shenzhen,,,0.35
+singapore-port,Port of Singapore,Port,1.2644,103.8222,SGP,Singapore,,,0.30
+mumbai-factory,Mumbai Assembly Plant,Factory,19.0760,72.8777,IND,Mumbai,18000,12,0.55
+rotterdam-port,Port of Rotterdam,Port,51.9496,4.1453,NLD,Rotterdam,,,0.40
+hamburg-warehouse,Hamburg Distribution Center,Warehouse,53.5511,9.9937,DEU,Hamburg,30000,5,0.25
+la-port,Port of Los Angeles,Port,33.7295,-118.2621,USA,Los Angeles,,,0.50
+chicago-dc,Chicago Distribution,Distribution,41.8781,-87.6298,USA,Chicago,40000,4,0.30
+nyc-retail,New York Retail Hub,Retailer,40.7128,-74.0060,USA,New York,,,0.78

@@ -5,6 +5,10 @@ import { useQueryState, parseAsString, parseAsInteger, parseAsArrayOf } from 'nu
 import { decompressArchData } from '@/lib/utils/url-compression';
 import DigitalTwinDashboard from '@/components/digital-twin/display/dashboard';
 import CreationForm from '@/components/digital-twin/forms/creation-form';
+import { ImportTwinDialog, type ImportPayload } from '@/components/digital-twin/forms/ImportTwinDialog';
+import { saveSupplyChainToDatabase } from '@/lib/api/supply-chain';
+import { useUser } from '@/lib/stores/user';
+import { toast } from 'sonner';
 import DigitalTwinCanvas from '@/components/digital-twin/canvas/digital-twin-canvas';
 import { selectTemplate, getTemplateInfo } from '@/lib/template-selector';
 import {
@@ -28,6 +32,7 @@ export default function DigitalTwinClientPage() {
   const [isLoading, setIsLoading] = useState(true);
   // True only after a load attempt for the current twinId completes with no data.
   const [notFound, setNotFound] = useState(false);
+  const { userData } = useUser();
   type ViewMode = "graph" | "map";
   const [viewMode, setViewMode] = useState<ViewMode>("graph");
 
@@ -299,9 +304,59 @@ export default function DigitalTwinClientPage() {
     
     // Close the dialog
     setView(null, { scroll: false });
-    
+
     // Set the twin ID to show the canvas
     setTwinId(twinId);
+  };
+
+  // Build a twin from CSV/Excel-imported nodes & edges, persist it to Supabase
+  // (so it appears in the registry and the Map view), then open it on the canvas.
+  const handleImportSuccess = async (payload: ImportPayload) => {
+    if (!userData?.id) {
+      toast.error('You need to be signed in to import a supply chain.');
+      throw new Error('Not authenticated');
+    }
+
+    try {
+      const saved = await saveSupplyChainToDatabase({
+        name: payload.name,
+        description: 'Imported from CSV/Excel',
+        timestamp: new Date().toISOString(),
+        organisation: {
+          id: userData.id,
+          name: userData.organisation_name,
+          industry: userData.industry,
+          sub_industry: userData.sub_industry,
+          location: userData.location,
+        },
+        nodes: payload.nodes,
+        edges: payload.edges,
+      });
+
+      const sid: string = (saved as any)?.supply_chain_id;
+      if (!sid) throw new Error('Save did not return a supply chain id.');
+
+      // Cache locally too so the graph view opens instantly without a round-trip.
+      const twinData = {
+        name: payload.name,
+        industry: 'Imported',
+        nodes: payload.nodes,
+        edges: payload.edges,
+        supply_chain_id: sid,
+        fromImport: true,
+        fromDatabase: true,
+        createdAt: new Date().toISOString(),
+      };
+      localStorage.setItem(`supplyChain-${sid}`, JSON.stringify(twinData));
+
+      toast.success(`Imported "${payload.name}" — ${payload.nodes.length} nodes, ${payload.edges.length} edges`);
+      setView(null, { scroll: false });
+      setTwinId(sid);
+    } catch (err: any) {
+      console.error('Import save failed:', err);
+      toast.error(err?.message || 'Failed to import supply chain.');
+      throw err; // surfaced in the dialog
+    }
   };
 
   // If a twinId is present, we would show the canvas/details view.
@@ -332,7 +387,7 @@ export default function DigitalTwinClientPage() {
       return (
         <div className="relative w-full h-full flex flex-col flex-1">
           {/* View toggle */}
-          <div className="absolute bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:bottom-8 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-1 rounded-full border border-white/10 bg-black/70 p-1.5 shadow-2xl backdrop-blur-xl max-w-[calc(100vw-1.5rem)]">
+          <div className="absolute bottom-[max(1.5rem,env(safe-area-inset-bottom))] sm:bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-1 rounded-full border border-white/10 bg-black/70 p-1.5 shadow-2xl backdrop-blur-xl max-w-[calc(100vw-1.5rem)]">
             <button
               onClick={() => setViewMode("graph")}
               className={`rounded-full px-3.5 sm:px-4 py-2 min-h-[40px] text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
@@ -341,7 +396,7 @@ export default function DigitalTwinClientPage() {
                   : "text-white/60 hover:text-white"
               }`}
             >
-              Graph View
+              🔗 Digital Twin
             </button>
             <button
               onClick={() => setViewMode("map")}
@@ -388,7 +443,7 @@ export default function DigitalTwinClientPage() {
         open={view === 'create'}
         onOpenChange={(isOpen) => !isOpen && setView(null, { scroll: false })}
       >
-        <DialogContent className="sm:max-w-2xl p-0" hideCloseIcon={true}>
+        <DialogContent className="top-[4.5rem] translate-y-0 w-[95vw] sm:max-w-2xl max-h-[calc(100vh-5.5rem)] overflow-y-auto p-0" hideCloseIcon={true}>
           <DialogHeader className="p-6 pb-0">
             <DialogTitle className="text-xl font-bold text-slate-900 dark:text-slate-100">
               Create a New Digital Twin
@@ -403,6 +458,12 @@ export default function DigitalTwinClientPage() {
           />
         </DialogContent>
       </Dialog>
+
+      <ImportTwinDialog
+        isOpen={view === 'import'}
+        onClose={() => setView(null, { scroll: false })}
+        onImport={handleImportSuccess}
+      />
     </>
   );
 } 

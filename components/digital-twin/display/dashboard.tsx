@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { useQueryState, parseAsString } from 'nuqs';
 import { getUserSupplyChains, deleteSupplyChainViaEdgeFunction } from '@/lib/api/supply-chain';
 import { useUser } from '@/lib/stores/user';
-import { AlertCircle, Trash2 } from 'lucide-react';
+import { AlertCircle, Trash2, FileSpreadsheet } from 'lucide-react';
 import { RefreshCWIcon, PlusIcon } from '@/components/icons';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
@@ -217,6 +217,13 @@ export default function DigitalTwinDashboard() {
             Sync
           </button>
           <button
+            onClick={() => setView('import')}
+            className="flex items-center gap-2 min-h-[40px] px-3 py-1.5 text-xs border border-theme-border-subtle text-theme-text-secondary hover:text-theme-text-primary hover:border-theme-border-default transition-colors rounded-theme-md bg-theme-bg-surface"
+          >
+            <FileSpreadsheet size={13} />
+            <span className="whitespace-nowrap">Import CSV</span>
+          </button>
+          <button
             onClick={() => setView('create')}
             className="flex items-center gap-2 min-h-[40px] px-3 py-1.5 text-xs bg-theme-text-primary text-theme-bg-primary hover:bg-theme-text-primary/90 transition-colors font-semibold rounded-theme-md shadow-sm"
           >
@@ -240,13 +247,22 @@ export default function DigitalTwinDashboard() {
               <p className="text-xs text-theme-text-secondary mb-6 leading-relaxed">
                 No operation network graphs have been registered. Create your first graph to begin resilience modeling.
               </p>
-              <button
-                onClick={() => setView('create')}
-                className="inline-flex items-center gap-2 min-h-[40px] px-4 py-2 text-xs bg-theme-text-primary text-theme-bg-primary hover:bg-theme-text-primary/95 transition-colors font-semibold rounded-theme-md"
-              >
-                <PlusIcon size={12} />
-                Register First Graph
-              </button>
+              <div className="flex flex-col items-center gap-2">
+                <button
+                  onClick={() => setView('create')}
+                  className="inline-flex items-center gap-2 min-h-[40px] px-4 py-2 text-xs bg-theme-text-primary text-theme-bg-primary hover:bg-theme-text-primary/95 transition-colors font-semibold rounded-theme-md"
+                >
+                  <PlusIcon size={12} />
+                  Register First Graph
+                </button>
+                <button
+                  onClick={() => setView('import')}
+                  className="inline-flex items-center gap-1.5 text-xs text-theme-text-secondary hover:text-theme-blue transition-colors"
+                >
+                  <FileSpreadsheet size={13} />
+                  or import from CSV / Excel
+                </button>
+              </div>
             </div>
           </div>
         ) : (
@@ -351,9 +367,9 @@ export default function DigitalTwinDashboard() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="sm:max-w-md border border-theme-border-subtle/50 bg-theme-bg-glass backdrop-blur-[16px] saturate-[180%] shadow-lg rounded-theme-lg">
+        <DialogContent className="sm:max-w-md w-[95vw] border border-border bg-popover shadow-xl rounded-2xl">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-theme-text-primary text-sm font-semibold">
+            <DialogTitle className="flex items-center gap-2 font-display text-foreground text-base font-semibold">
               <AlertCircle className="h-4 w-4 text-theme-red" />
               Deregister Network Graph
             </DialogTitle>

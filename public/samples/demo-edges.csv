@@ -1,0 +1,10 @@
+id,source,target,mode,cost,transitTime
+e1,shanghai-supplier,shenzhen-port,road,400,2
+e2,shenzhen-port,singapore-port,sea,1200,6
+e3,singapore-port,mumbai-factory,sea,1800,9
+e4,mumbai-factory,rotterdam-port,sea,3200,24
+e5,rotterdam-port,hamburg-warehouse,rail,500,2
+e6,shenzhen-port,la-port,sea,3500,16
+e7,la-port,chicago-dc,rail,900,4
+e8,chicago-dc,nyc-retail,road,600,2
+e9,hamburg-warehouse,nyc-retail,air,4200,3
