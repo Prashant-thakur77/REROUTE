@@ -81,6 +81,19 @@ export default function SupplyChainMap({ twinId }: SupplyChainMapProps) {
       style={{ background: "var(--map-bg)", minHeight: 0 }}
       onMouseLeave={() => setTooltip(null)}
     >
+      {/* Empty state — no fabricated data, just an honest prompt */}
+      {nodes.length === 0 && (
+        <div className="absolute inset-0 z-30 flex items-center justify-center p-6">
+          <div className="max-w-sm rounded-2xl border border-border bg-popover/95 p-6 text-center shadow-xl backdrop-blur">
+            <p className="font-display text-base font-semibold text-foreground">No location data yet</p>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              This supply chain has no nodes with coordinates. Add latitude/longitude to
+              your nodes (or import a CSV with lat/lng columns) to plot them on the map.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* ── World map ─────────────────────────────────────────────────────── */}
       <ComposableMap
         projection="geoMercator"

@@ -233,6 +233,9 @@ export default function DigitalTwinClientPage() {
             };
 
             console.log(`✅ Loaded supply chain "${scData.name}" from DB: ${canvasNodes.length} nodes, ${canvasEdges.length} edges`);
+            // Cache so views that read localStorage (e.g. the Map) reflect this
+            // exact twin instead of falling back to sample data.
+            try { localStorage.setItem(`supplyChain-${twinId}`, JSON.stringify(twinData)); } catch {}
             setActiveTwinData(twinData);
             setIsLoading(false);
           } catch (dbErr: any) {
