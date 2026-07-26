@@ -30,7 +30,7 @@ export function AppSidebar() {
   ]
 
   return (
-    <div className="w-full h-[52px] border-b border-theme-border-subtle bg-theme-bg-surface flex items-center justify-between gap-2 px-3 sm:px-4 lg:px-6 shrink-0 sticky top-0 z-[100] min-w-0">
+    <div role="banner" className="w-full h-[52px] border-b border-theme-border-subtle bg-theme-bg-surface flex items-center justify-between gap-2 px-3 sm:px-4 lg:px-6 shrink-0 sticky top-0 z-[100] min-w-0">
       {/* Left: Logo + Nav links */}
       <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 min-w-0">
         <Link href="/" className="flex items-center gap-2 group shrink-0">
@@ -47,7 +47,7 @@ export function AppSidebar() {
 
         <div className="h-5 w-px bg-theme-border-subtle hidden sm:block shrink-0" />
 
-        <nav className="flex items-center gap-0.5 sm:gap-1 min-w-0">
+        <nav aria-label="Primary" className="flex items-center gap-0.5 sm:gap-1 min-w-0">
           {navigationItems.map((item) => {
             const Icon = item.icon
             return (

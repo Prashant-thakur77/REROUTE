@@ -11,7 +11,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "deploy:gcp": "gcloud builds submit --tag gcr.io/reroute-ai-production/reroute-ai && gcloud run deploy reroute-ai --image gcr.io/reroute-ai-production/reroute-ai --platform managed --region us-central1 --allow-unauthenticated --env-vars-file=.env.yaml",
+    "deploy:gcp": "gcloud builds submit --tag gcr.io/reroute-503610/reroute-ai && gcloud run deploy reroute-ai --image gcr.io/reroute-503610/reroute-ai --platform managed --region us-central1 --allow-unauthenticated --env-vars-file=.env.yaml",
     "sentry:setup": "node scripts/add-sentry-to-apis.mjs",
     "sentry:check": "node scripts/check-api-routes.mjs"
   },
