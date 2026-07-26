@@ -168,7 +168,7 @@ export function AlertActions({ notificationId, alert }: { notificationId: string
     <div>
       <div className="mb-3 flex items-center justify-between">
         <h4 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          <ListChecks className="h-3.5 w-3.5" /> Actions
+          <ListChecks className="h-3.5 w-3.5" aria-hidden="true" /> Actions
         </h4>
         <span className={`rounded-full border px-2.5 py-0.5 text-[0.65rem] font-bold uppercase tracking-wide ${STATUS_BADGE[state.status]}`}>
           {loading ? "…" : alertStatusLabel(state.status)}
@@ -192,7 +192,7 @@ export function AlertActions({ notificationId, alert }: { notificationId: string
                     : "border-border bg-card text-foreground hover:bg-accent"
                 }`}
               >
-                {busy === step.value ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Icon className="h-3.5 w-3.5" />}
+                {busy === step.value ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" /> : <Icon className="h-3.5 w-3.5" aria-hidden="true" />}
                 {step.label}
               </button>
             )
@@ -209,7 +209,7 @@ export function AlertActions({ notificationId, alert }: { notificationId: string
               onClick={() => apply({ assignee: userData?.email ?? null }, "assign")}
               className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-foreground transition-colors hover:bg-accent disabled:opacity-60"
             >
-              {busy === "assign" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <UserPlus className="h-3.5 w-3.5" />}
+              {busy === "assign" ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" /> : <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />}
               Assign to me
             </button>
           )}
@@ -231,7 +231,7 @@ export function AlertActions({ notificationId, alert }: { notificationId: string
               onClick={() => apply({ note }, "note")}
               className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {busy === "note" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+              {busy === "note" ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" /> : <Check className="h-3.5 w-3.5" aria-hidden="true" />}
               Save note
             </button>
           </div>
@@ -246,7 +246,7 @@ export function AlertActions({ notificationId, alert }: { notificationId: string
               onClick={generateMitigation}
               className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/15 disabled:opacity-60"
             >
-              {generating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+              {generating ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" /> : <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />}
               {generating ? "Generating…" : mitigation ? "Regenerate" : "Generate mitigation"}
             </button>
           </div>
@@ -277,7 +277,7 @@ export function AlertActions({ notificationId, alert }: { notificationId: string
                   }}
                   className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
                 >
-                  {busy === "save-mitigation" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+                  {busy === "save-mitigation" ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" /> : <Check className="h-3.5 w-3.5" aria-hidden="true" />}
                   Save plan &amp; mark in progress
                 </button>
               </div>
@@ -295,7 +295,7 @@ export function AlertActions({ notificationId, alert }: { notificationId: string
                 onClick={doReroute}
                 className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-accent disabled:opacity-60"
               >
-                {rerouting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Route className="h-3.5 w-3.5" />}
+                {rerouting ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" /> : <Route className="h-3.5 w-3.5" aria-hidden="true" />}
                 {rerouting ? "Computing…" : reroute ? "Recompute" : "Find alternate routes"}
               </button>
             </div>

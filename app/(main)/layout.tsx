@@ -110,10 +110,11 @@ export default function MainLayout({
   }
   return (
       <div className={`h-full w-full`}>
+        <a href="#main-content" className="skip-link">Skip to content</a>
         <SidebarProvider>
           <div className="flex flex-col h-screen w-full overflow-hidden">
             <AppSidebar />
-            <main className="relative flex-1 min-w-0 min-h-0 flex flex-col overflow-y-auto overflow-x-hidden bg-background">
+            <main id="main-content" className="relative flex-1 min-w-0 min-h-0 flex flex-col overflow-y-auto overflow-x-hidden bg-background">
               {/* Subtle ambient glow — dark mode only, non-interactive, top-anchored */}
               <div
                 className="pointer-events-none absolute inset-x-0 top-0 h-[420px] max-w-full hidden dark:block"

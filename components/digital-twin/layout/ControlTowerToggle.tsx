@@ -34,12 +34,12 @@ const ControlTowerToggle: FC = () => {
           <div className="relative flex items-center gap-2">
             {isControlTowerMode ? (
               <>
-                <ShieldAlert className="w-3.5 h-3.5" />
+                <ShieldAlert className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Control Tower</span>
               </>
             ) : (
               <>
-                <Settings className="w-3.5 h-3.5" />
+                <Settings className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Design Mode</span>
               </>
             )}

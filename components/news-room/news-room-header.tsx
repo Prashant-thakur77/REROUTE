@@ -40,8 +40,8 @@ const NewsRoomTitle = ({ alertCount }: { alertCount: number }) => (
 
 const BackButton = () => (
     <Button asChild variant="ghost" size="icon" className="text-foreground hover:bg-accent">
-        <Link href="/dashboard">
-            <ArrowLeft className="h-5 w-5" />
+        <Link href="/dashboard" aria-label="Back to dashboard">
+            <ArrowLeft className="h-5 w-5" aria-hidden="true" />
         </Link>
     </Button>
 )

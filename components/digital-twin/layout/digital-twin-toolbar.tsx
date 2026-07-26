@@ -163,7 +163,7 @@ const SimulationToolbar: FC<SimulationToolbarProps> = ({
         {/* Right Section: Auto-save + Outlined Button */}
         <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-[#1A7F4B]">
-            <Check className="w-4 h-4 stroke-[3px]" />
+            <Check className="w-4 h-4 stroke-[3px]" aria-hidden="true" />
             <span className="hidden sm:inline">Auto-saved</span>
           </div>
 

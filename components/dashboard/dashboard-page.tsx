@@ -24,7 +24,7 @@ export default function DashboardPage() {
           actions={
             <div className="flex items-center gap-2">
               {m.isLoading && (
-                <RefreshCw className="h-4 w-4 animate-spin text-muted-foreground" />
+                <RefreshCw className="h-4 w-4 animate-spin text-muted-foreground" aria-hidden="true" />
               )}
               <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs font-semibold text-theme-green">
                 <span className="h-1.5 w-1.5 rounded-full bg-theme-green animate-pulse" />

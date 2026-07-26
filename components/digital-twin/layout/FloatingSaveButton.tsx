@@ -54,7 +54,7 @@ const FloatingSaveButton: FC<FloatingSaveButtonProps> = ({
               </>
             ) : (
               <>
-                <Save className="w-4 h-4" />
+                <Save className="w-4 h-4" aria-hidden="true" />
                 <span>Save</span>
               </>
             )}
@@ -67,7 +67,7 @@ const FloatingSaveButton: FC<FloatingSaveButtonProps> = ({
             transition-all duration-200
             ${isHovered ? 'scale-100 opacity-100' : 'scale-0 opacity-0'}
           `}>
-            <ChevronDown className="w-3 h-3 text-background/70" />
+            <ChevronDown className="w-3 h-3 text-background/70" aria-hidden="true" />
           </div>
         </button>
       </div>

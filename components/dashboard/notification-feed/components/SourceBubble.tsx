@@ -99,7 +99,7 @@ export function SourceBubble({ source }: SourceBubbleProps) {
           >
             <span className="shrink-0">{getSiteIcon(source.url)}</span>
             <span className="truncate">{displayTitle.length > 25 ? `${displayTitle.substring(0, 25)}...` : displayTitle}</span>
-            <ExternalLink className="w-2 h-2 opacity-60 shrink-0" />
+            <ExternalLink className="w-2 h-2 opacity-60 shrink-0" aria-hidden="true" />
           </button>
         </TooltipTrigger>
         <TooltipContent side="bottom" className="max-w-sm">
@@ -125,7 +125,7 @@ export function SourceBubble({ source }: SourceBubbleProps) {
                     className="font-medium text-sm text-left hover:underline cursor-pointer flex items-center gap-1"
                   >
                     {source.title}
-                    <ExternalLink className="w-3 h-3 inline ml-0.5 opacity-60" />
+                    <ExternalLink className="w-3 h-3 inline ml-0.5 opacity-60" aria-hidden="true" />
                   </button>
                   <div className="text-xs text-muted-foreground mt-1">
                     Credibility: {Math.round(source.credibility * 100)}%

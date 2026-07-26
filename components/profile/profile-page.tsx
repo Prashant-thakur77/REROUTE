@@ -70,11 +70,11 @@ export function ProfilePage(): React.ReactElement {
                 }}
                 className="gap-2 rounded-full"
               >
-                <Edit className="h-4 w-4" />
+                <Edit className="h-4 w-4" aria-hidden="true" />
                 Update Profile
               </Button>
               <Button onClick={logout} variant="outline" className="gap-2 rounded-full">
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-4 w-4" aria-hidden="true" />
                 Logout
               </Button>
             </>
@@ -121,15 +121,15 @@ export function ProfilePage(): React.ReactElement {
 
               <div className="mt-5 flex flex-wrap gap-2 text-sm">
                 <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-muted px-3 py-1.5 text-foreground">
-                  <Globe className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <Globe className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                   <span className="truncate">{userData.industry || "No industry"} – {userData.sub_industry || "No sub-industry"}</span>
                 </span>
                 <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-muted px-3 py-1.5 text-foreground">
-                  <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                   <span className="truncate">{userData.location || "Location not specified"}</span>
                 </span>
                 <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-muted px-3 py-1.5 text-foreground">
-                  <Users className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <Users className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
                   <span className="truncate">{userData.employee_count || "N/A"} employees</span>
                 </span>
               </div>
@@ -144,7 +144,7 @@ export function ProfilePage(): React.ReactElement {
             <Card className="h-full rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 font-display text-lg text-foreground">
-                  <Mail className="h-5 w-5 text-primary" />
+                  <Mail className="h-5 w-5 text-primary" aria-hidden="true" />
                   Notifications
                 </CardTitle>
               </CardHeader>
@@ -153,7 +153,7 @@ export function ProfilePage(): React.ReactElement {
                 <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-border bg-card">
-                      <Mail className="h-5 w-5 text-foreground" />
+                      <Mail className="h-5 w-5 text-foreground" aria-hidden="true" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium text-foreground">Email</p>
@@ -170,7 +170,7 @@ export function ProfilePage(): React.ReactElement {
                 <div className="flex items-center justify-between rounded-xl border border-border bg-muted p-4">
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-border bg-card">
-                      <Phone className="h-5 w-5 text-foreground" />
+                      <Phone className="h-5 w-5 text-foreground" aria-hidden="true" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium text-foreground">SMS</p>
@@ -191,7 +191,7 @@ export function ProfilePage(): React.ReactElement {
             <Card className="h-full rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 font-display text-lg text-foreground">
-                  <Lock className="h-5 w-5 text-primary" />
+                  <Lock className="h-5 w-5 text-primary" aria-hidden="true" />
                   Security
                 </CardTitle>
               </CardHeader>
@@ -206,7 +206,7 @@ export function ProfilePage(): React.ReactElement {
                     variant="outline"
                     className="w-full rounded-full"
                   >
-                    <Lock className="mr-2 h-4 w-4" />
+                    <Lock className="mr-2 h-4 w-4" aria-hidden="true" />
                     Change Password
                   </Button>
                 </div>
@@ -232,13 +232,13 @@ export function ProfilePage(): React.ReactElement {
                     className="group flex items-center gap-3 rounded-xl border border-border bg-muted p-3 transition-colors hover:border-primary/40 hover:bg-accent"
                   >
                     <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg border border-border bg-card text-primary">
-                      <link.icon className="h-4 w-4" />
+                      <link.icon className="h-4 w-4" aria-hidden="true" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-medium text-foreground">{link.label}</p>
                       <p className="truncate text-xs text-muted-foreground">{link.desc}</p>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                    <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </a>
                 ))}
               </CardContent>
@@ -258,7 +258,7 @@ export function ProfilePage(): React.ReactElement {
             <Card className="rounded-xl border border-border bg-card shadow-sm">
               <CardHeader className="border-b border-border pb-4">
                 <CardTitle className="flex items-center gap-2 font-display text-lg text-foreground">
-                  <Globe className="h-5 w-5 text-primary" />
+                  <Globe className="h-5 w-5 text-primary" aria-hidden="true" />
                   System Status
                 </CardTitle>
               </CardHeader>
@@ -299,7 +299,7 @@ export function ProfilePage(): React.ReactElement {
             <Card className="rounded-xl border border-border bg-card shadow-sm">
               <CardHeader className="border-b border-border pb-4">
                 <CardTitle className="flex items-center gap-2 font-display text-lg text-foreground">
-                  <Activity className="h-5 w-5 text-primary" />
+                  <Activity className="h-5 w-5 text-primary" aria-hidden="true" />
                   Node Health Distribution
                 </CardTitle>
               </CardHeader>

@@ -311,8 +311,28 @@
 }
 
 *:focus-visible {
-  outline: 2px solid #2B4FE8 !important;
+  outline: 2px solid hsl(var(--ring)) !important;
   outline-offset: 2px !important;
+}
+
+/* Skip-to-content link — visually hidden until focused (keyboard/screen-reader) */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 200;
+  transform: translateY(-160%);
+  transition: transform 0.2s ease;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+}
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 /* Vertical writing mode for collapsed panel */

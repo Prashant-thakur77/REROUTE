@@ -56,6 +56,7 @@ export function AppSidebar() {
                   <TooltipTrigger asChild>
                     <Link
                       href={item.href}
+                      aria-label={item.label}
                       className={cn(
                         "flex items-center justify-center gap-1.5 px-2.5 sm:px-3 min-h-[40px] md:min-h-0 py-1.5 rounded-[6px] text-[0.82rem] font-[500] transition-all duration-200 border border-transparent shrink-0",
                         item.isActive
@@ -63,7 +64,7 @@ export function AppSidebar() {
                           : "text-theme-text-muted hover:bg-theme-bg-secondary hover:text-theme-text-primary"
                       )}
                     >
-                      <Icon className="h-3.5 w-3.5 shrink-0" />
+                      <Icon className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                       <span className="hidden md:block">{item.label}</span>
                     </Link>
                   </TooltipTrigger>
@@ -89,12 +90,13 @@ export function AppSidebar() {
                 <TooltipTrigger asChild>
                   <Link
                     href={item.href}
+                    aria-label={item.label}
                     className={cn(
                       "w-10 h-10 md:w-8 md:h-8 flex items-center justify-center rounded-full cursor-pointer bg-theme-bg-secondary border border-theme-border-subtle hover:bg-theme-bg-secondary/80 text-theme-text-primary transition-all duration-200 shrink-0",
                       item.isActive && "ring-2 ring-theme-blue/50"
                     )}
                   >
-                    <Icon className="h-4 w-4 shrink-0" />
+                    <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
                   </Link>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">

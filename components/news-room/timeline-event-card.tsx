@@ -163,7 +163,7 @@ export function TimelineEventCard({ event, onClick, isCollapsed = false, isBlurr
             
             <div className={`space-y-2 text-xs ${isCollapsed ? 'space-y-1' : ''}`}>
               <div className="flex min-w-0 items-center text-muted-foreground">
-                <MapPin className="h-3 w-3 mr-1 shrink-0" />
+                <MapPin className="h-3 w-3 mr-1 shrink-0" aria-hidden="true" />
                 {isCollapsed ? (
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -179,7 +179,7 @@ export function TimelineEventCard({ event, onClick, isCollapsed = false, isBlurr
               </div>
               {!isCollapsed && (
                 <div className="flex min-w-0 items-center text-muted-foreground">
-                  <Calendar className="h-3 w-3 mr-1 shrink-0" />
+                  <Calendar className="h-3 w-3 mr-1 shrink-0" aria-hidden="true" />
                   <span className="truncate">{event.timeframe}</span>
                 </div>
               )}

@@ -460,7 +460,7 @@ export function NotificationFeed() {
             className="text-xs text-muted-foreground hover:text-foreground"
             disabled={unreadCount === 0}
           >
-            <BellOff className="h-3 w-3 mr-1" />
+            <BellOff className="h-3 w-3 mr-1" aria-hidden="true" />
             Mark all read
           </Button>
         </div>
@@ -474,7 +474,7 @@ export function NotificationFeed() {
                 animate={{ opacity: 1, y: 0 }}
                 className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground"
               >
-                <BellOff className="h-12 w-12 mb-3 opacity-20" />
+                <BellOff className="h-12 w-12 mb-3 opacity-20" aria-hidden="true" />
                 <p className="text-sm">No notifications to display</p>
               </motion.div>
             ) : (
@@ -548,13 +548,14 @@ export function NotificationFeed() {
                               <Button
                                 variant="ghost"
                                 size="sm"
+                                aria-label="Mark as read"
                                 className="h-8 w-8 p-0 rounded-full hover:bg-theme-bg-secondary text-theme-text-secondary shrink-0"
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   handleMarkAsRead(notification.notification_id)
                                 }}
                               >
-                                <X className="h-3 w-3" />
+                                <X className="h-3 w-3" aria-hidden="true" />
                               </Button>
                             )}
                           </div>
@@ -604,7 +605,7 @@ export function NotificationFeed() {
                             }}
                           >
                             View Details
-                            <ArrowRight className="h-3 w-3" />
+                            <ArrowRight className="h-3 w-3" aria-hidden="true" />
                           </button>
                         </div>
                       </div>
@@ -653,7 +654,7 @@ export function NotificationFeed() {
                 <span>Show Less</span>
               ) : (
                 <>
-                  <Plus className="h-4 w-4" />
+                  <Plus className="h-4 w-4" aria-hidden="true" />
                   <span>Show {filteredNotifications.length - INITIAL_DISPLAY_COUNT} More</span>
                 </>
               )}
@@ -684,7 +685,7 @@ export function NotificationFeed() {
     if (auditLogs.length === 0) {
       return (
         <div className="flex flex-col items-center justify-center py-12 text-center text-muted-foreground">
-          <Info className="h-12 w-12 mb-3 opacity-20" />
+          <Info className="h-12 w-12 mb-3 opacity-20" aria-hidden="true" />
           <p className="text-sm">No recent activity found.</p>
         </div>
       )
@@ -764,7 +765,7 @@ export function NotificationFeed() {
           className="text-[0.82rem] text-theme-blue font-[500] hover:text-theme-blue/80 hover:underline underline-offset-4 transition-colors flex items-center gap-1 w-fit"
         >
           View Real-Time Alerts
-          <ArrowRight className="h-3.5 w-3.5" />
+          <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
         </Link>
       </div>
 
