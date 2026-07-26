@@ -98,6 +98,28 @@ gcloud run services update reroute-ai --region us-central1 \
    threat alert → Reroute / Generate mitigation → resolve.
 4. (Optional) Map a custom domain: `gcloud run domain-mappings create`.
 
+## 6. Server-driven scans (scale beyond the browser)
+
+Autonomous threat scans run server-side via **`/api/cron/scan`** (idempotent —
+the per-chain agent dedups its own work), so they no longer depend on a browser
+tab being open. Trigger it with any scheduler:
+
+**Google Cloud Scheduler:**
+```bash
+gcloud scheduler jobs create http reroute-scan \
+  --location us-central1 --schedule "*/15 * * * *" \
+  --uri "https://YOUR_CLOUD_RUN_URL/api/cron/scan" \
+  --http-method GET \
+  --headers "Authorization=Bearer $CRON_SECRET"
+```
+
+**Vercel Cron:** already declared in `vercel.json` (every 15 min). Set `CRON_SECRET`
+in the Vercel env; Vercel signs cron requests, and the endpoint also accepts the
+`Authorization: Bearer $CRON_SECRET` header.
+
+Set `CRON_SECRET` in your runtime env (`.env.yaml` / Cloud Run / Vercel) so the
+endpoint rejects unauthenticated calls.
+
 ## Alternative: Vercel
 `vercel --prod` also works (Next.js native). Set the same env vars in the Vercel
 dashboard. Cloud Run is preferred here for the Docker/standalone parity and
