@@ -7,7 +7,9 @@ const nextConfig = {
   output: 'standalone',
   devIndicators: false,
   typescript: {
-    ignoreBuildErrors: true,
+    // Code is type-clean (tsc --noEmit passes); enforce it on every build so
+    // type regressions fail CI instead of slipping through.
+    ignoreBuildErrors: false,
   },
   images: {
     unoptimized: true,
