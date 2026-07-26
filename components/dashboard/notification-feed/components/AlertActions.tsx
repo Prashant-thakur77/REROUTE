@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-import { Check, CircleDot, CircleCheckBig, UserPlus, Loader2, ListChecks, Sparkles } from "lucide-react"
+import { Check, CircleDot, CircleCheckBig, UserPlus, Loader2, ListChecks, Sparkles, Route, AlertTriangle } from "lucide-react"
 import { useUser } from "@/lib/stores/user"
 import {
   getLatestAlertAction,
@@ -43,6 +43,22 @@ interface AlertContext {
   message?: string | null
   severity?: string | null
   node?: string | null
+  nodeId?: string | null
+}
+
+interface RerouteResp {
+  failedLabel: string
+  severity: string
+  feasibleCount: number
+  infeasibleCount: number
+  reroutes: {
+    fromLabel: string
+    toLabel: string
+    feasible: boolean
+    route: string
+    addedCost: number | null
+    addedTime: number | null
+  }[]
 }
 
 export function AlertActions({ notificationId, alert }: { notificationId: string; alert?: AlertContext }) {
@@ -53,6 +69,31 @@ export function AlertActions({ notificationId, alert }: { notificationId: string
   const [busy, setBusy] = useState<string | null>(null)
   const [mitigation, setMitigation] = useState<MitigationPlan | null>(null)
   const [generating, setGenerating] = useState(false)
+  const [reroute, setReroute] = useState<RerouteResp | null>(null)
+  const [rerouting, setRerouting] = useState(false)
+
+  async function doReroute() {
+    if (!alert?.nodeId) {
+      toast.error("This alert isn't linked to a specific node, so it can't be rerouted.")
+      return
+    }
+    setRerouting(true)
+    setReroute(null)
+    try {
+      const res = await fetch("/api/agent/alert-reroute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nodeId: alert.nodeId }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data?.error || "Failed to compute alternate routes")
+      setReroute(data as RerouteResp)
+    } catch (e: any) {
+      toast.error(e?.message || "Could not compute alternate routes.")
+    } finally {
+      setRerouting(false)
+    }
+  }
 
   async function generateMitigation() {
     setGenerating(true)
@@ -243,6 +284,60 @@ export function AlertActions({ notificationId, alert }: { notificationId: string
             </div>
           )}
         </div>
+
+        {/* Reroute around the affected node (deterministic) */}
+        {alert?.nodeId && (
+          <div className="border-t border-border pt-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="text-xs font-medium text-muted-foreground">Reroute around this node</span>
+              <button
+                disabled={rerouting}
+                onClick={doReroute}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-accent disabled:opacity-60"
+              >
+                {rerouting ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Route className="h-3.5 w-3.5" />}
+                {rerouting ? "Computing…" : reroute ? "Recompute" : "Find alternate routes"}
+              </button>
+            </div>
+
+            {reroute && (
+              <div className="mt-3 space-y-2">
+                <p className="text-xs text-muted-foreground">
+                  {reroute.feasibleCount} of {reroute.reroutes.length} affected segment
+                  {reroute.reroutes.length === 1 ? "" : "s"} reroutable
+                  {reroute.infeasibleCount > 0 ? ` · ${reroute.infeasibleCount} with no alternate` : ""}.
+                </p>
+                {reroute.reroutes.length === 0 && (
+                  <p className="rounded-lg border border-border bg-card p-3 text-sm text-muted-foreground">
+                    No routes pass through this node in the current twin.
+                  </p>
+                )}
+                {reroute.reroutes.map((r, i) => (
+                  <div
+                    key={i}
+                    className={`rounded-lg border p-3 ${r.feasible ? "border-border bg-card" : "border-theme-red/30 bg-theme-red-soft"}`}
+                  >
+                    <div className="flex flex-wrap items-center gap-2">
+                      {r.feasible ? (
+                        <CircleCheckBig className="h-3.5 w-3.5 shrink-0 text-theme-green" />
+                      ) : (
+                        <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-theme-red" />
+                      )}
+                      <span className="text-sm font-medium text-foreground">{r.route}</span>
+                    </div>
+                    {r.feasible && (r.addedCost != null || r.addedTime != null) && (
+                      <div className="mt-1 pl-5 text-xs text-muted-foreground">
+                        {r.addedCost != null && `${r.addedCost >= 0 ? "+" : ""}$${Math.round(r.addedCost)} cost`}
+                        {r.addedCost != null && r.addedTime != null && " · "}
+                        {r.addedTime != null && `${r.addedTime >= 0 ? "+" : ""}${Math.round(r.addedTime)}d transit`}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )

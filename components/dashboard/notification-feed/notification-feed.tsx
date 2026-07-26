@@ -861,6 +861,7 @@ export function NotificationFeed() {
                     message: selectedNotification.message,
                     severity: selectedNotification.severity,
                     node: (selectedNotification.citations as NotificationCitations | null)?.affectedEntities?.[0] ?? null,
+                    nodeId: (selectedNotification.citations as any)?.affectedNodes?.[0] ?? null,
                   }}
                 />
 

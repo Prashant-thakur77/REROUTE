@@ -1,119 +1,70 @@
-import '@/lib/zod-patch';
 import { NextRequest, NextResponse } from 'next/server';
-import { LlmAgent, Gemini, InMemoryRunner, stringifyContent } from '@google/adk';
-import { withTrace } from '../../../../lib/adk/core/trace';
-import { getAIKeyForModule, AI_MODELS } from '@/lib/ai-config';
-import { z } from 'zod';
+import { rerouteAroundNode, type RawNode, type RawEdge, type Reroute } from '@/lib/routing';
 
-const RouteOptimizationSchema = z.object({
-  severity: z.enum(['Low', 'Medium', 'High']).describe('Severity of the disruption based on the description'),
-  impactDescription: z.string().describe('A detailed 2-3 sentence analysis of the operational impact on the supply chain'),
-  alternateRoutes: z.array(z.string()).describe('An array of 1 to 3 specific recommended alternate routes or mitigation steps')
-});
+// Deterministic route optimization. Computes real alternate paths around a
+// disrupted node (weighted Dijkstra) instead of asking an LLM to traverse the
+// graph — correct, instant, and quota-free. Response shape is unchanged so the
+// Control Tower panel keeps working.
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { nodeId, description, nodes, edges } = body;
 
-    if (!nodeId || !description) {
-      return NextResponse.json({ error: 'nodeId and description are required' }, { status: 400 });
+    if (!nodeId || !Array.isArray(nodes) || !Array.isArray(edges)) {
+      return NextResponse.json({ error: 'nodeId, nodes and edges are required' }, { status: 400 });
     }
 
     const disruptedNode = nodes.find((n: any) => n.id === nodeId);
     const nodeName = disruptedNode?.data?.label || nodeId;
 
-    console.log(`🧠 AI Agent Analyzing disruption at ${nodeName}: ${description}`);
+    const rNodes: RawNode[] = nodes.map((n: any) => ({ id: n.id, label: n.data?.label ?? n.id }));
+    const rEdges: RawEdge[] = edges.map((e: any) => ({
+      source: e.source,
+      target: e.target,
+      cost: e.data?.cost,
+      time: e.data?.transitTime ?? e.data?.transit_time,
+    }));
 
-    const prompt = `
-    You are a logistics route optimization specialist.
-
-    Failed node ID: ${nodeId} (${nodeName})
-    Disruption: ${description}
-    
-    Supply Chain Context:
-    Nodes: ${JSON.stringify(nodes.map((n:any) => ({ 
-      id: n.id, 
-      name: n.data.label, 
-      type: n.type,
-      preKnownRisks: n.data.hasPreKnownRisks ? n.data.riskExplanation : null 
-    })))}
-    Edges (Routes): ${JSON.stringify(edges.map((e:any) => ({ 
-      from: e.source, 
-      to: e.target,
-      mode: e.data?.mode,
-      historicalDisruptionsPerYear: e.data?.frequencyOfDisruptions,
-      userDefinedAlternativeRoutes: e.data?.hasAltRoute ? e.data?.altRouteDetails : null
-    })))}
-
-    Step 1: Identify every route in the graph that passes through the failed node.
-    Step 2: For each affected route, find an alternate path using only nodes and edges present in the graph that does not pass through the failed node. If multiple alternates exist for one route, include only the lowest-cost one.
-    Step 3: Write each alternate route as a string in the format: "NodeName → NodeName → NodeName" using the exact node labels from the graph, ordered from origin to final destination.
-    Step 4: If an alternate route passes through a node that has a known elevated risk (or preKnownRisks), append "(elevated risk)" after that node name in the route string.
-    Step 5: Rank alternateRoutes by lowest additional cost first. If cost data is absent from the graph, rank by fewest additional hops.
-    Step 6: If no complete bypass route exists for any affected path, include the best partial reroute and append "(partial — full bypass unavailable)" to that route string.
-
-    IMPORTANT: If the disrupted node or its connected routes have user-defined 'userDefinedAlternativeRoutes' in the context data above, you MUST explicitly mention them and prioritize them.
-    Provide your analysis matching the JSON schema exactly.
-    `;
-
-    const traceId = `route-opt-${Date.now()}`;
-    const traceResult = await withTrace(traceId, 'RouteOptAgent', async () => {
-      const agent = new LlmAgent({
-        name: 'route_optimization_agent',
-        description: 'Analyzes supply chain disruptions and recommends optimal alternate routes.',
-        instruction: 'You are a logistics route optimization specialist. Analyze the disrupted node and supply chain graph, then return alternate routing recommendations as valid JSON matching the schema exactly.',
-        model: new Gemini({ model: AI_MODELS.agents, apiKey: getAIKeyForModule('agents') }),
-        outputSchema: RouteOptimizationSchema as any,
-        disallowTransferToParent: true,
-        disallowTransferToPeers: true,
-      });
-
-      const runner = new InMemoryRunner({ appName: 'route-optimization', agent });
-      let finalContent = '';
-      for await (const event of runner.runEphemeral({
-        userId: 'system',
-        newMessage: { role: 'user', parts: [{ text: prompt }] },
-      })) {
-        const text = stringifyContent(event);
-        if (text) finalContent += text;
-      }
-      return { success: true, data: finalContent };
-    });
-
-    if (!traceResult.success) throw new Error(traceResult.error);
-
-    const rawData = traceResult.data as string;
-    const jsonMatch = rawData.match(/\{[\s\S]*\}/);
-    
-    let object;
-    if (!jsonMatch) {
-      console.warn('⚠️ No JSON found in ADK response. Raw output:', rawData);
-      // Trigger the fallback mechanism for empty/invalid responses
-      throw new Error('OVERLOADED_OR_EMPTY: Failed to parse route-optimization JSON');
-    } else {
-      object = JSON.parse(jsonMatch[0]);
+    // Flag nodes with elevated risk so alternate routes can warn about them.
+    const riskById = new Map<string, boolean>();
+    for (const n of nodes as any[]) {
+      const d = n.data || {};
+      const elevated =
+        (Number(d.riskScore) || 0) >= 0.7 ||
+        String(d.riskLevel ?? '').toLowerCase() === 'high' ||
+        !!d.hasPreKnownRisks;
+      riskById.set(n.id, elevated);
     }
 
-    return NextResponse.json(object);
+    const result = rerouteAroundNode(rNodes, rEdges, nodeId);
+
+    const routeStr = (r: Reroute): string => {
+      const alt = r.alternate;
+      if (!alt) return `${r.fromLabel} → ${r.toLabel}: no bypass route available`;
+      const labeled = alt.path
+        .map((id, i) => (riskById.get(id) ? `${alt.labels[i]} (elevated risk)` : alt.labels[i]))
+        .join(' → ');
+      const extra: string[] = [];
+      if (r.addedCost != null && r.addedCost !== 0) extra.push(`${r.addedCost > 0 ? '+' : ''}$${Math.round(r.addedCost)}`);
+      if (r.addedTime != null && r.addedTime !== 0) extra.push(`${r.addedTime > 0 ? '+' : ''}${Math.round(r.addedTime)}d`);
+      return `${labeled}${extra.length ? ` (${extra.join(', ')})` : ''}`;
+    };
+
+    const total = result.reroutes.length;
+    const alternateRoutes =
+      total === 0 ? [`No modeled routes pass through ${nodeName}.`] : result.reroutes.slice(0, 5).map(routeStr);
+
+    const impactDescription =
+      total === 0
+        ? `No modeled routes pass through ${nodeName}, so this disruption has no direct routing impact on the network.${description ? ` Context: ${description}` : ''}`
+        : `Disruption at ${nodeName} affects ${total} route segment${total === 1 ? '' : 's'}. ` +
+          `${result.feasibleCount} can be rerouted around it` +
+          (result.infeasibleCount > 0 ? `, but ${result.infeasibleCount} have no viable bypass in the current network.` : '.');
+
+    return NextResponse.json({ severity: result.severity, impactDescription, alternateRoutes });
   } catch (error: any) {
-    const errMsg: string = error?.message || '';
-    const isRateLimit = errMsg.includes('quota') || errMsg.includes('rate') || errMsg.includes('429') || errMsg.includes('RESOURCE_EXHAUSTED') || errMsg.toLowerCase().includes('overloaded');
-    
-    if (isRateLimit) {
-      console.warn('⚠️ AI quota/overload exceeded — using fallback route optimization data');
-      return NextResponse.json({
-        severity: 'High',
-        impactDescription: `Simulation of disruption. Immediate downstream delays expected across connected nodes. AI rate limits currently active, displaying projected fallback analysis.`,
-        alternateRoutes: [
-          "Wait for conditions to clear.",
-          "Check secondary nodes for capacity.",
-          "Reroute critical shipments via nearest functional port."
-        ]
-      });
-    }
-
-    console.error('Error in route-optimization agent:', error);
-    return NextResponse.json({ error: errMsg || 'Failed to process route optimization' }, { status: 500 });
+    console.error('Error in route-optimization:', error?.message);
+    return NextResponse.json({ error: error?.message || 'Failed to process route optimization' }, { status: 500 });
   }
 }
