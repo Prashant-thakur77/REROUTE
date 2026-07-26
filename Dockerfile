@@ -24,11 +24,17 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Inject public environment variables required by the frontend during build time
-ENV NEXT_PUBLIC_SUPABASE_URL=https://suvgsieqzkbqykqbakoq.supabase.co
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdzaWVxemticXlrcWJha29xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0OTk5NTAsImV4cCI6MjA5MTA3NTk1MH0.z71lrhHTPr2cHKNpmkei57zUaTu06Uw7rlRPGzJWYS8
-ENV NEXT_PUBLIC_COPILOTKIT_ENABLED=true
-ENV NEXT_PUBLIC_SENTRY_DSN=https://5f5c54279c0640aaa9cc5e0a07b145cc@o4511036366192640.ingest.us.sentry.io/4511036452241408
+# Public (browser-exposed) env vars, baked in at build time. Overridable per build
+# with `docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=... ` (or Cloud Build
+# substitutions) so a different Supabase project needs no Dockerfile edit.
+ARG NEXT_PUBLIC_SUPABASE_URL=https://suvgsieqzkbqykqbakoq.supabase.co
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1dmdzaWVxemticXlrcWJha29xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU0OTk5NTAsImV4cCI6MjA5MTA3NTk1MH0.z71lrhHTPr2cHKNpmkei57zUaTu06Uw7rlRPGzJWYS8
+ARG NEXT_PUBLIC_COPILOTKIT_ENABLED=true
+ARG NEXT_PUBLIC_SENTRY_DSN=https://5f5c54279c0640aaa9cc5e0a07b145cc@o4511036366192640.ingest.us.sentry.io/4511036452241408
+ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
+ENV NEXT_PUBLIC_COPILOTKIT_ENABLED=$NEXT_PUBLIC_COPILOTKIT_ENABLED
+ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 
 # Run the build
 RUN pnpm run build
