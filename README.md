@@ -1,6 +1,6 @@
 <p align="center">
   <h1 align="center">🔷 REROUTE.ai</h1>
-  <p align="center"><strong>Product Route Intelligence and Supply Mapping</strong></p>
+  <p align="center"><strong>Risk Evaluation &amp; Route Optimization Using Twin Emulation</strong></p>
   <p align="center">
     An AI-powered supply chain digital twin platform built on <strong>Google ADK</strong> with autonomous multi-agent orchestration, real-time weather & geopolitical intelligence, chaos simulation, and strategic decision-making.
   </p>
@@ -17,6 +17,17 @@ Built on **Next.js 16** with **Google Gemini 2.5 Flash** and the **Google Agenti
 **Deployed on Google Cloud Run** via a multi-stage Dockerized pipeline for production-grade scalability.
 
 ---
+
+## ⭐ Highlights
+
+- **Real data in** — build a twin by drag-and-drop **or CSV/Excel import**, persisted to Supabase.
+- **Grounded AI** — every alert shows a **confidence score, its sources, and a "needs-review" flag** (the AI explains; it isn't a black box).
+- **Deterministic rerouting** — a **weighted Dijkstra** engine computes real alternate routes with exact **added cost + time** (the math is computed, not hallucinated).
+- **Actionable alerts** — acknowledge → assign → resolve, generate an AI **mitigation plan**, and **reroute** — all with a full audit trail.
+- **Server-driven scans** — an idempotent cron sweep (`/api/cron/scan`) so monitoring scales beyond an open browser tab.
+- **Tested & typed** — 37 unit/integration/edge-case tests (Vitest), CI, and a type-enforced build.
+
+See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ## 🚀 Key Features
 
@@ -95,7 +106,6 @@ reroute.ai/
 │   │   ├── digital-twin/              # Supply chain visualization + Copilot
 │   │   │   └── view/[id]/             # Individual twin view (dynamic route)
 │   │   ├── news-room/                 # Segregated intelligence timeline
-│   │   ├── risk-prediction/           # Risk prediction UI
 │   │   ├── simulation/                # Chaos simulation engine
 │   │   │   ├── mitigationstrategy/    # Strategy execution dashboard
 │   │   │   └── result/                # Simulation results view
@@ -117,7 +127,6 @@ reroute.ai/
 │   │   │   │   └── finalize/          # Strategy finalization
 │   │   │   └── strategy-execution/    # Strategy execution tracker
 │   │   ├── audit-logs/                # Audit log retrieval API
-│   │   ├── risk-prediction/           # Risk prediction proxy
 │   │   ├── coordination/             # Agent coordination layer
 │   │   ├── copilotkit*/               # CopilotKit chat endpoints (3 variants)
 │   │   ├── forecast-scenarios/        # Forecast scenario persistence
@@ -147,7 +156,6 @@ reroute.ai/
 │   ├── dashboard/                     # Dashboard widgets
 │   │   ├── notification-feed/         # Live notification feed
 │   │   └── dashboard-page.tsx         # Main dashboard view
-│   ├── risk-prediction/              # Risk prediction components
 │   ├── orchestrator/                  # Agent orchestration UI
 │   ├── copilot/                       # CopilotKit chat interface
 │   ├── strategy-dashboard.tsx         # Strategy management view
@@ -242,8 +250,7 @@ All tables enforce **Row Level Security (RLS)** so users can only access their o
 ### Prerequisites
 
 - **Node.js** ≥ 22
-- **Python** ≥ 3.10 (for the ML risk prediction API)
-- **pnpm** 11+ (recommended)
+- **pnpm** 9+ (recommended)
 - **Docker** (for Cloud Run deployment)
 - API keys for required services (see Environment Variables)
 
@@ -261,23 +268,12 @@ pnpm install
 pnpm dev
 ```
 
-### ML Risk Prediction API
+### Testing
 
 ```bash
-# Navigate to the ML directory
-cd ../Market-Supply
-
-# Install Python dependencies
-pip install xgboost scikit-learn pandas numpy fastapi uvicorn python-multipart joblib shap
-
-# Train the model (first time only, ~7s on GPU)
-python ml/train.py
-
-# Start the FastAPI server
-uvicorn api.main:app --reload --port 8001
+pnpm test        # 37 unit/integration/edge-case tests (Vitest)
+pnpm typecheck   # tsc --noEmit
 ```
-
-The Next.js app at **http://localhost:3000** and the ML API at **http://localhost:8001** must run simultaneously.
 
 ### Environment Setup
 
@@ -318,8 +314,8 @@ NEXT_PUBLIC_SENTRY_DSN=your_sentry_dsn
 # ─── CopilotKit ─────────────────────────────────────
 NEXT_PUBLIC_COPILOTKIT_ENABLED=true
 
-# ─── ML Risk Prediction API ─────────────────────────
-RISK_MODEL_API_URL=http://localhost:8001
+# ─── Scheduling (server-driven scans) ───────────────
+CRON_SECRET=your_cron_secret
 ```
 
 ---
