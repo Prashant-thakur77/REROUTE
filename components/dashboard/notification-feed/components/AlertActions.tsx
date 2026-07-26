@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-import { Check, CircleDot, CircleCheckBig, UserPlus, Loader2, ListChecks } from "lucide-react"
+import { Check, CircleDot, CircleCheckBig, UserPlus, Loader2, ListChecks, Sparkles } from "lucide-react"
 import { useUser } from "@/lib/stores/user"
 import {
   getLatestAlertAction,
@@ -19,6 +19,12 @@ const STATUS_STEPS: { value: Exclude<AlertStatus, "open" | "reopened">; label: s
   { value: "resolved", label: "Resolve", icon: CircleCheckBig },
 ]
 
+const TIMEFRAME_STYLE: Record<string, string> = {
+  immediate: "border-theme-red/30 bg-theme-red-soft text-theme-red",
+  "short-term": "border-theme-amber/30 bg-theme-amber-soft text-theme-amber",
+  "long-term": "border-theme-blue/30 bg-theme-blue-soft text-theme-blue",
+}
+
 const STATUS_BADGE: Record<AlertStatus, string> = {
   open: "border-border bg-muted text-muted-foreground",
   acknowledged: "border-theme-blue/30 bg-theme-blue-soft text-theme-blue",
@@ -27,12 +33,50 @@ const STATUS_BADGE: Record<AlertStatus, string> = {
   reopened: "border-theme-amber/30 bg-theme-amber-soft text-theme-amber",
 }
 
-export function AlertActions({ notificationId }: { notificationId: string }) {
+interface MitigationPlan {
+  summary: string
+  steps: { action: string; timeframe: "immediate" | "short-term" | "long-term"; owner: string }[]
+}
+
+interface AlertContext {
+  title?: string | null
+  message?: string | null
+  severity?: string | null
+  node?: string | null
+}
+
+export function AlertActions({ notificationId, alert }: { notificationId: string; alert?: AlertContext }) {
   const { userData } = useUser()
   const [state, setState] = useState<AlertActionState>(DEFAULT_ALERT_STATE)
   const [note, setNote] = useState("")
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState<string | null>(null)
+  const [mitigation, setMitigation] = useState<MitigationPlan | null>(null)
+  const [generating, setGenerating] = useState(false)
+
+  async function generateMitigation() {
+    setGenerating(true)
+    setMitigation(null)
+    try {
+      const res = await fetch("/api/agent/alert-mitigation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: alert?.title,
+          message: alert?.message,
+          severity: alert?.severity,
+          node: alert?.node,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data?.error || "Failed to generate mitigation")
+      setMitigation(data as MitigationPlan)
+    } catch (e: any) {
+      toast.error(e?.message || "Could not generate a mitigation plan.")
+    } finally {
+      setGenerating(false)
+    }
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -150,6 +194,54 @@ export function AlertActions({ notificationId }: { notificationId: string }) {
               Save note
             </button>
           </div>
+        </div>
+
+        {/* Generate mitigation */}
+        <div className="border-t border-border pt-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span className="text-xs font-medium text-muted-foreground">AI mitigation plan</span>
+            <button
+              disabled={generating}
+              onClick={generateMitigation}
+              className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary/15 disabled:opacity-60"
+            >
+              {generating ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />}
+              {generating ? "Generating…" : mitigation ? "Regenerate" : "Generate mitigation"}
+            </button>
+          </div>
+
+          {mitigation && (
+            <div className="mt-3 space-y-3">
+              <p className="text-sm text-foreground">{mitigation.summary}</p>
+              <ol className="space-y-2">
+                {mitigation.steps.map((s, i) => (
+                  <li key={i} className="rounded-lg border border-border bg-card p-3">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[0.65rem] font-bold text-primary">{i + 1}</span>
+                      <span className={`rounded-full border px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide ${TIMEFRAME_STYLE[s.timeframe] ?? "border-border bg-muted text-muted-foreground"}`}>
+                        {s.timeframe}
+                      </span>
+                      <span className="text-xs text-muted-foreground">{s.owner}</span>
+                    </div>
+                    <p className="mt-1.5 text-sm text-foreground">{s.action}</p>
+                  </li>
+                ))}
+              </ol>
+              <div className="flex justify-end">
+                <button
+                  disabled={busy !== null || loading}
+                  onClick={() => {
+                    setNote(mitigation.summary)
+                    apply({ note: mitigation.summary, status: "in_progress" }, "save-mitigation")
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3.5 py-1.5 text-xs font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+                >
+                  {busy === "save-mitigation" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Check className="h-3.5 w-3.5" />}
+                  Save plan &amp; mark in progress
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

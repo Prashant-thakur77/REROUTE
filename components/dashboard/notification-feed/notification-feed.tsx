@@ -853,8 +853,16 @@ export function NotificationFeed() {
               </DialogHeader>
 
               <div className="mt-4 space-y-6">
-                {/* Actionable alert workflow — acknowledge / assign / resolve / note */}
-                <AlertActions notificationId={selectedNotification.notification_id} />
+                {/* Actionable alert workflow — acknowledge / assign / resolve / note / mitigate */}
+                <AlertActions
+                  notificationId={selectedNotification.notification_id}
+                  alert={{
+                    title: selectedNotification.title,
+                    message: selectedNotification.message,
+                    severity: selectedNotification.severity,
+                    node: (selectedNotification.citations as NotificationCitations | null)?.affectedEntities?.[0] ?? null,
+                  }}
+                />
 
                 {/* Full Message */}
                 {selectedNotification.message && (
