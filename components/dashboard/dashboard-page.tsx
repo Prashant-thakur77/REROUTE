@@ -1,6 +1,7 @@
 "use client"
 
-import { RefreshCw } from "lucide-react"
+import { RefreshCw, FileSpreadsheet, Network } from "lucide-react"
+import Link from "next/link"
 import { NotificationFeed } from "@/components/dashboard/notification-feed"
 import { useDashboardMetrics } from "@/components/dashboard/useDashboardMetrics"
 import { PageHeader } from "@/components/ui/page-header"
@@ -33,6 +34,37 @@ export default function DashboardPage() {
             </div>
           }
         />
+
+        {/* First-run hint — only when the user has no supply chains yet */}
+        {!m.isLoading && m.totalSupplyChains === 0 && (
+          <Reveal>
+            <div className="flex flex-col gap-4 rounded-2xl border border-primary/20 bg-primary/5 p-6 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
+                <h3 className="font-display text-lg font-semibold text-foreground">Get started</h3>
+                <p className="mt-1 max-w-xl text-sm text-muted-foreground">
+                  You don&apos;t have a supply chain yet. Import one to begin — the AI agents will
+                  start monitoring it, and you&apos;ll be able to reroute and mitigate risks from here.
+                </p>
+              </div>
+              <div className="flex flex-shrink-0 flex-wrap gap-2">
+                <Link
+                  href="/digital-twin?view=import"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+                >
+                  <FileSpreadsheet className="h-4 w-4" aria-hidden="true" />
+                  Import a supply chain
+                </Link>
+                <Link
+                  href="/digital-twin?view=create"
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:bg-accent"
+                >
+                  <Network className="h-4 w-4" aria-hidden="true" />
+                  Build one
+                </Link>
+              </div>
+            </div>
+          </Reveal>
+        )}
 
         {/* Stats row */}
         <Reveal>
