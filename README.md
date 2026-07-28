@@ -316,6 +316,13 @@ NEXT_PUBLIC_COPILOTKIT_ENABLED=true
 
 # ─── Scheduling (server-driven scans) ───────────────
 CRON_SECRET=your_cron_secret
+
+# ─── DataHub (Optional metadata graph) ──────────────
+# Unset → DataHub features no-op; REROUTE runs unchanged.
+DATAHUB_GMS_URL=http://localhost:8080
+DATAHUB_TOKEN=your_datahub_access_token
+# Optional: DataHub UI base for deep-links from the Lineage page (e.g. http://localhost:9002)
+NEXT_PUBLIC_DATAHUB_URL=http://localhost:9002
 ```
 
 ---
@@ -379,6 +386,34 @@ The Dockerfile uses:
 | `POST` | `/api/suggestions` | AI-generated supply chain suggestions |
 | `POST` | `/api/copilotkit` | CopilotKit chat endpoint |
 | `POST` | `/api/copilotkit-digital-twin` | Digital twin-specific copilot |
+| `POST` | `/api/datahub/sync` | Push a supply-chain twin into DataHub (datasets + lineage + ownership) |
+| `POST` | `/api/datahub/impact` | Deterministic downstream blast radius; records an incident back to DataHub |
+
+---
+
+## 🧬 DataHub Integration
+
+REROUTE treats a supply-chain digital twin as a **metadata graph** and syncs it to
+[DataHub](https://datahub.com): each node becomes a **Dataset** entity, each goods
+flow becomes **lineage** (`UpstreamLineage`), node owners become **Ownership**, and
+risk/lead-time/capacity become **custom properties**. Agents then read topology and
+lineage back from DataHub, and REROUTE **writes its decisions back** — raising an
+**incident**, **tagging** impacted nodes, and posting the blast-radius rationale as
+**documentation** — so the graph stays truthful and the next person/agent inherits it.
+
+- **Read** — GMS GraphQL `scrollAcrossLineage` / `dataset.ownership` (`lib/datahub/read.ts`).
+- **Emit** — OpenAPI `/openapi/entities/v1/` upsert of `DatasetProperties` / `Ownership` / `UpstreamLineage` (`lib/datahub/emit.ts`).
+- **Write-back** — GraphQL `raiseIncident` / `addTags` / `updateDescription` (`lib/datahub/writeback.ts`).
+- **Impact** — deterministic downstream blast radius over the lineage DAG, unit tested (`lib/datahub/impact.ts`).
+
+DataHub is **optional**: with `DATAHUB_GMS_URL` unset, every entry point no-ops and
+REROUTE runs exactly as before. See [`docs/DATAHUB_HACKATHON_PLAN.md`](docs/DATAHUB_HACKATHON_PLAN.md).
+
+> **Pre-existing code disclosure.** REROUTE's design system, motion primitives, the
+> deterministic-routing (`lib/routing.ts`) and grounding (`lib/grounding.ts`) modules,
+> and the 13-agent ADK core pre-date this hackathon and are reused as disclosed. The
+> entire `lib/datahub/*` layer, the blast-radius impact engine, and the DataHub API
+> routes are new work for the DataHub hackathon.
 
 ---
 

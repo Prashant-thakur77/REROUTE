@@ -1,0 +1,11 @@
+{
+  "query": "mutation Raise($input: RaiseIncidentInput!) { raiseIncident(input: $input) }",
+  "variables": {
+    "input": {
+      "type": "OPERATIONAL",
+      "title": "Disruption at wafer-tw",
+      "description": "Disruption at TSMC Wafer Fab (Taiwan) impacts 6 downstream node(s) (blast-radius 5.544). Notify: eu-logistics, eu-sales, ops@subcon.my, us-logistics, us-sales. Confidence 100%.",
+      "resourceUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)"
+    }
+  }
+}

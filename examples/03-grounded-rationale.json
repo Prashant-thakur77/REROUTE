@@ -1,0 +1,34 @@
+{
+  "summary": "Disruption at TSMC Wafer Fab (Taiwan) impacts 6 downstream node(s) (blast-radius 5.544). Notify: eu-logistics, eu-sales, ops@subcon.my, us-logistics, us-sales. Confidence 100%.",
+  "claims": [
+    {
+      "text": "Failure at TSMC Wafer Fab (Taiwan) propagates downstream to 6 node(s), blast-radius score 5.544.",
+      "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)"
+    },
+    {
+      "text": "Assembly & Test (Malaysia) (Manufacturer) is impacted at 1 hop(s), severity 1.8, owned by ops@subcon.my.",
+      "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)"
+    },
+    {
+      "text": "EU Distribution (Rotterdam) (Distribution) is impacted at 3 hop(s), severity 0.864, owned by eu-logistics.",
+      "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)"
+    },
+    {
+      "text": "US Distribution (Dallas) (Distribution) is impacted at 3 hop(s), severity 0.864, owned by us-logistics.",
+      "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)"
+    },
+    {
+      "text": "Route this alert to: eu-logistics, eu-sales, ops@subcon.my, us-logistics, us-sales.",
+      "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)"
+    }
+  ],
+  "confidence": 1,
+  "needsReview": false,
+  "ownersToNotify": [
+    "eu-logistics",
+    "eu-sales",
+    "ops@subcon.my",
+    "us-logistics",
+    "us-sales"
+  ]
+}

@@ -8,6 +8,7 @@ import {
   Network,
   Settings,
   ShieldAlert,
+  Share2,
   User,
 } from "lucide-react"
 
@@ -22,6 +23,7 @@ export function AppSidebar() {
   const navigationItems = [
     { href: "/dashboard", icon: Home, label: "Dashboard", isActive: pathname === "/dashboard" },
     { href: "/digital-twin", icon: Network, label: "Digital Twin", isActive: pathname === "/digital-twin" },
+    { href: "/lineage", icon: Share2, label: "Lineage", isActive: pathname === "/lineage" },
     { href: "/simulation", icon: LineChart, label: "Simulation", isActive: pathname === "/simulation" },
   ]
 

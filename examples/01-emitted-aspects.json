@@ -1,0 +1,256 @@
+[
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "TSMC Wafer Fab (Taiwan)",
+      "description": "Supplier in Taiwan · risk 82",
+      "customProperties": {
+        "type": "Supplier",
+        "country": "Taiwan",
+        "risk": "82"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)",
+    "aspect": {
+      "__type": "Ownership",
+      "owners": [
+        {
+          "owner": "urn:li:corpuser:lin",
+          "type": "TECHNICAL_OWNER"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "Assembly & Test (Malaysia)",
+      "description": "Manufacturer in Malaysia · risk 40",
+      "customProperties": {
+        "type": "Manufacturer",
+        "country": "Malaysia",
+        "risk": "40"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)",
+    "aspect": {
+      "__type": "Ownership",
+      "owners": [
+        {
+          "owner": "urn:li:corpuser:ops",
+          "type": "TECHNICAL_OWNER"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)",
+    "aspect": {
+      "__type": "UpstreamLineage",
+      "upstreams": [
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)",
+          "type": "TRANSFORMED"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.port-sg,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "Port of Singapore",
+      "description": "Port in Singapore · risk 55",
+      "customProperties": {
+        "type": "Port",
+        "country": "Singapore",
+        "risk": "55"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.port-sg,PROD)",
+    "aspect": {
+      "__type": "UpstreamLineage",
+      "upstreams": [
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)",
+          "type": "TRANSFORMED"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "EU Distribution (Rotterdam)",
+      "description": "Distribution in Netherlands · risk 30",
+      "customProperties": {
+        "type": "Distribution",
+        "country": "Netherlands",
+        "risk": "30"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)",
+    "aspect": {
+      "__type": "Ownership",
+      "owners": [
+        {
+          "owner": "urn:li:corpuser:eu-logistics",
+          "type": "TECHNICAL_OWNER"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)",
+    "aspect": {
+      "__type": "UpstreamLineage",
+      "upstreams": [
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.port-sg,PROD)",
+          "type": "TRANSFORMED"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "US Distribution (Dallas)",
+      "description": "Distribution in USA · risk 25",
+      "customProperties": {
+        "type": "Distribution",
+        "country": "USA",
+        "risk": "25"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)",
+    "aspect": {
+      "__type": "Ownership",
+      "owners": [
+        {
+          "owner": "urn:li:corpuser:us-logistics",
+          "type": "TECHNICAL_OWNER"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)",
+    "aspect": {
+      "__type": "UpstreamLineage",
+      "upstreams": [
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.port-sg,PROD)",
+          "type": "TRANSFORMED"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-eu,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "EU Retail Network",
+      "description": "Retailer in Germany · risk 20",
+      "customProperties": {
+        "type": "Retailer",
+        "country": "Germany",
+        "risk": "20"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-eu,PROD)",
+    "aspect": {
+      "__type": "Ownership",
+      "owners": [
+        {
+          "owner": "urn:li:corpuser:eu-sales",
+          "type": "TECHNICAL_OWNER"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-eu,PROD)",
+    "aspect": {
+      "__type": "UpstreamLineage",
+      "upstreams": [
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)",
+          "type": "TRANSFORMED"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-us,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "US Retail Network",
+      "description": "Retailer in USA · risk 22",
+      "customProperties": {
+        "type": "Retailer",
+        "country": "USA",
+        "risk": "22"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-us,PROD)",
+    "aspect": {
+      "__type": "Ownership",
+      "owners": [
+        {
+          "owner": "urn:li:corpuser:us-sales",
+          "type": "TECHNICAL_OWNER"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-us,PROD)",
+    "aspect": {
+      "__type": "UpstreamLineage",
+      "upstreams": [
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)",
+          "type": "TRANSFORMED"
+        }
+      ]
+    }
+  }
+]

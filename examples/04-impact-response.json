@@ -1,0 +1,98 @@
+{
+  "supplyChainId": "semi-apac",
+  "failedNodeId": "wafer-tw",
+  "totalSeverity": 5.544,
+  "affectedOwners": [
+    "eu-logistics",
+    "eu-sales",
+    "ops@subcon.my",
+    "us-logistics",
+    "us-sales"
+  ],
+  "impacted": [
+    {
+      "id": "subcon-my",
+      "name": "Assembly & Test (Malaysia)",
+      "type": "Manufacturer",
+      "hops": 1,
+      "severity": 1.8,
+      "owner": "ops@subcon.my"
+    },
+    {
+      "id": "dc-nl",
+      "name": "EU Distribution (Rotterdam)",
+      "type": "Distribution",
+      "hops": 3,
+      "severity": 0.864,
+      "owner": "eu-logistics"
+    },
+    {
+      "id": "dc-us",
+      "name": "US Distribution (Dallas)",
+      "type": "Distribution",
+      "hops": 3,
+      "severity": 0.864,
+      "owner": "us-logistics"
+    },
+    {
+      "id": "port-sg",
+      "name": "Port of Singapore",
+      "type": "Port",
+      "hops": 2,
+      "severity": 0.72
+    },
+    {
+      "id": "retail-eu",
+      "name": "EU Retail Network",
+      "type": "Retailer",
+      "hops": 4,
+      "severity": 0.648,
+      "owner": "eu-sales"
+    },
+    {
+      "id": "retail-us",
+      "name": "US Retail Network",
+      "type": "Retailer",
+      "hops": 4,
+      "severity": 0.648,
+      "owner": "us-sales"
+    }
+  ],
+  "rationale": "Disruption at TSMC Wafer Fab (Taiwan) impacts 6 downstream node(s) (blast-radius 5.544). Notify: eu-logistics, eu-sales, ops@subcon.my, us-logistics, us-sales. Confidence 100%.",
+  "grounded": {
+    "confidence": 1,
+    "needsReview": false,
+    "claims": [
+      {
+        "text": "Failure at TSMC Wafer Fab (Taiwan) propagates downstream to 6 node(s), blast-radius score 5.544.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)"
+      },
+      {
+        "text": "Assembly & Test (Malaysia) (Manufacturer) is impacted at 1 hop(s), severity 1.8, owned by ops@subcon.my.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)"
+      },
+      {
+        "text": "EU Distribution (Rotterdam) (Distribution) is impacted at 3 hop(s), severity 0.864, owned by eu-logistics.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)"
+      },
+      {
+        "text": "US Distribution (Dallas) (Distribution) is impacted at 3 hop(s), severity 0.864, owned by us-logistics.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)"
+      },
+      {
+        "text": "Route this alert to: eu-logistics, eu-sales, ops@subcon.my, us-logistics, us-sales.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)"
+      }
+    ]
+  },
+  "dataHub": {
+    "configured": true,
+    "recorded": true,
+    "incidentUrn": "urn:li:incident:bfecab62-dc10-49a6-a305-78ce0cc6e5b1",
+    "lineageCheck": {
+      "source": "datahub",
+      "datahubDownstream": 6,
+      "agrees": true
+    }
+  }
+}
