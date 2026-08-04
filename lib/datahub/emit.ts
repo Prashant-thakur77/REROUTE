@@ -5,10 +5,28 @@
 // buildTwinAspects() is pure (no network) and unit tested; syncTwin() posts them.
 
 import { upsertAspects, isConfigured, type AspectUpsert } from "./client"
-import { nodeUrn, corpUserUrn } from "./urn"
+import { nodeUrn, corpUserUrn, PLATFORM } from "./urn"
 import type { TwinGraph, TwinNode } from "./types"
 
 export { isConfigured }
+
+/**
+ * Register REROUTE's custom data platform so supply-chain datasets render with a
+ * proper platform name/icon in DataHub instead of an unknown one.
+ */
+export function buildPlatformAspect(): AspectUpsert {
+  return {
+    entityType: "dataPlatform",
+    entityUrn: `urn:li:dataPlatform:${PLATFORM}`,
+    aspect: {
+      __type: "DataPlatformInfo",
+      name: PLATFORM,
+      displayName: "REROUTE Supply Chain",
+      type: "OTHERS",
+      datasetNameDelimiter: ".",
+    },
+  }
+}
 
 /**
  * Build the full aspect list for a twin — DatasetProperties + Ownership +
@@ -16,6 +34,9 @@ export { isConfigured }
  */
 export function buildTwinAspects(graph: TwinGraph): AspectUpsert[] {
   const { supplyChainId, nodes, edges } = graph
+
+  // Register the custom platform first so datasets attach to it.
+  const out0: AspectUpsert[] = [buildPlatformAspect()]
 
   // incoming edges per target node → upstream datasets (source feeds target).
   const upstreamsByTarget = new Map<string, string[]>()
@@ -25,7 +46,7 @@ export function buildTwinAspects(graph: TwinGraph): AspectUpsert[] {
     upstreamsByTarget.get(e.target)!.push(nodeUrn(supplyChainId, e.source))
   }
 
-  const out: AspectUpsert[] = []
+  const out: AspectUpsert[] = out0
   for (const n of nodes) {
     const urn = nodeUrn(supplyChainId, n.id)
 

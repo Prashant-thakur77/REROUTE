@@ -1,5 +1,16 @@
 [
   {
+    "entityType": "dataPlatform",
+    "entityUrn": "urn:li:dataPlatform:reroute",
+    "aspect": {
+      "__type": "DataPlatformInfo",
+      "name": "reroute",
+      "displayName": "REROUTE Supply Chain",
+      "type": "OTHERS",
+      "datasetNameDelimiter": "."
+    }
+  },
+  {
     "entityType": "dataset",
     "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)",
     "aspect": {
