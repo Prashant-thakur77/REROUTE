@@ -1,59 +1,43 @@
 {
-  "failedNodeId": "wafer-tw",
+  "failedNodeId": "port-sg",
   "impacted": [
-    {
-      "id": "subcon-my",
-      "name": "Assembly & Test (Malaysia)",
-      "type": "Manufacturer",
-      "hops": 1,
-      "severity": 1.8,
-      "owner": "ops@subcon.my"
-    },
     {
       "id": "dc-nl",
       "name": "EU Distribution (Rotterdam)",
       "type": "Distribution",
-      "hops": 3,
-      "severity": 0.864,
+      "hops": 1,
+      "severity": 2.4,
       "owner": "eu-logistics"
     },
     {
       "id": "dc-us",
       "name": "US Distribution (Dallas)",
       "type": "Distribution",
-      "hops": 3,
-      "severity": 0.864,
+      "hops": 1,
+      "severity": 2.4,
       "owner": "us-logistics"
-    },
-    {
-      "id": "port-sg",
-      "name": "Port of Singapore",
-      "type": "Port",
-      "hops": 2,
-      "severity": 0.72
     },
     {
       "id": "retail-eu",
       "name": "EU Retail Network",
       "type": "Retailer",
-      "hops": 4,
-      "severity": 0.648,
+      "hops": 2,
+      "severity": 1.8,
       "owner": "eu-sales"
     },
     {
       "id": "retail-us",
       "name": "US Retail Network",
       "type": "Retailer",
-      "hops": 4,
-      "severity": 0.648,
+      "hops": 2,
+      "severity": 1.8,
       "owner": "us-sales"
     }
   ],
-  "totalSeverity": 5.544,
+  "totalSeverity": 8.4,
   "affectedOwners": [
     "eu-logistics",
     "eu-sales",
-    "ops@subcon.my",
     "us-logistics",
     "us-sales"
   ]

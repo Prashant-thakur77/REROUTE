@@ -1,87 +1,106 @@
 {
-  "supplyChainId": "semi-apac",
-  "failedNodeId": "wafer-tw",
-  "totalSeverity": 5.544,
+  "supplyChainId": "demo-semi-apac",
+  "failedNodeId": "port-sg",
+  "totalSeverity": 8.4,
   "affectedOwners": [
     "eu-logistics",
     "eu-sales",
-    "ops@subcon.my",
     "us-logistics",
     "us-sales"
   ],
   "impacted": [
     {
-      "id": "subcon-my",
-      "name": "Assembly & Test (Malaysia)",
-      "type": "Manufacturer",
-      "hops": 1,
-      "severity": 1.8,
-      "owner": "ops@subcon.my"
-    },
-    {
       "id": "dc-nl",
       "name": "EU Distribution (Rotterdam)",
       "type": "Distribution",
-      "hops": 3,
-      "severity": 0.864,
+      "hops": 1,
+      "severity": 2.4,
       "owner": "eu-logistics"
     },
     {
       "id": "dc-us",
       "name": "US Distribution (Dallas)",
       "type": "Distribution",
-      "hops": 3,
-      "severity": 0.864,
+      "hops": 1,
+      "severity": 2.4,
       "owner": "us-logistics"
-    },
-    {
-      "id": "port-sg",
-      "name": "Port of Singapore",
-      "type": "Port",
-      "hops": 2,
-      "severity": 0.72
     },
     {
       "id": "retail-eu",
       "name": "EU Retail Network",
       "type": "Retailer",
-      "hops": 4,
-      "severity": 0.648,
+      "hops": 2,
+      "severity": 1.8,
       "owner": "eu-sales"
     },
     {
       "id": "retail-us",
       "name": "US Retail Network",
       "type": "Retailer",
-      "hops": 4,
-      "severity": 0.648,
+      "hops": 2,
+      "severity": 1.8,
       "owner": "us-sales"
     }
   ],
-  "rationale": "Disruption at TSMC Wafer Fab (Taiwan) impacts 6 downstream node(s) (blast-radius 5.544). Notify: eu-logistics, eu-sales, ops@subcon.my, us-logistics, us-sales. Confidence 100%.",
+  "rationale": "Disruption at Port of Singapore impacts 4 downstream node(s) (blast-radius 8.4). Notify: eu-logistics, eu-sales, us-logistics, us-sales. Reroute available (1/4 segments recoverable). Confidence 100%.",
   "grounded": {
     "confidence": 1,
     "needsReview": false,
     "claims": [
       {
-        "text": "Failure at TSMC Wafer Fab (Taiwan) propagates downstream to 6 node(s), blast-radius score 5.544.",
-        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)"
+        "text": "Failure at Port of Singapore propagates downstream to 4 node(s), blast-radius score 8.4.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.port-sg,PROD)"
       },
       {
-        "text": "Assembly & Test (Malaysia) (Manufacturer) is impacted at 1 hop(s), severity 1.8, owned by ops@subcon.my.",
-        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)"
+        "text": "EU Distribution (Rotterdam) (Distribution) is impacted at 1 hop(s), severity 2.4, owned by eu-logistics.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-nl,PROD)"
       },
       {
-        "text": "EU Distribution (Rotterdam) (Distribution) is impacted at 3 hop(s), severity 0.864, owned by eu-logistics.",
-        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)"
+        "text": "US Distribution (Dallas) (Distribution) is impacted at 1 hop(s), severity 2.4, owned by us-logistics.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-us,PROD)"
       },
       {
-        "text": "US Distribution (Dallas) (Distribution) is impacted at 3 hop(s), severity 0.864, owned by us-logistics.",
-        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)"
+        "text": "EU Retail Network (Retailer) is impacted at 2 hop(s), severity 1.8, owned by eu-sales.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.retail-eu,PROD)"
       },
       {
-        "text": "Route this alert to: eu-logistics, eu-sales, ops@subcon.my, us-logistics, us-sales.",
-        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)"
+        "text": "Route this alert to: eu-logistics, eu-sales, us-logistics, us-sales.",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.port-sg,PROD)"
+      },
+      {
+        "text": "Alternate route: Assembly & Test (Malaysia) → HK Air Cargo Hub → US Distribution (Dallas) (+$2800, -16d).",
+        "urn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-my,PROD)"
+      }
+    ]
+  },
+  "reroute": {
+    "severity": "High",
+    "feasibleCount": 1,
+    "infeasibleCount": 3,
+    "top": [
+      {
+        "fromLabel": "Assembly & Test (Malaysia)",
+        "toLabel": "US Distribution (Dallas)",
+        "feasible": true,
+        "route": "Assembly & Test (Malaysia) → HK Air Cargo Hub → US Distribution (Dallas) (+$2800, -16d)",
+        "addedCost": 2800,
+        "addedTime": -16
+      },
+      {
+        "fromLabel": "Assembly & Test (Malaysia)",
+        "toLabel": "EU Distribution (Rotterdam)",
+        "feasible": false,
+        "route": "Assembly & Test (Malaysia) → EU Distribution (Rotterdam): no alternate route available",
+        "addedCost": null,
+        "addedTime": null
+      },
+      {
+        "fromLabel": "Assembly & Test (Philippines)",
+        "toLabel": "EU Distribution (Rotterdam)",
+        "feasible": false,
+        "route": "Assembly & Test (Philippines) → EU Distribution (Rotterdam): no alternate route available",
+        "addedCost": null,
+        "addedTime": null
       }
     ]
   },
@@ -91,7 +110,7 @@
     "incidentUrn": "urn:li:incident:bfecab62-dc10-49a6-a305-78ce0cc6e5b1",
     "lineageCheck": {
       "source": "datahub",
-      "datahubDownstream": 6,
+      "datahubDownstream": 4,
       "agrees": true
     }
   }

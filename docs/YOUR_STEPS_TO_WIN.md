@@ -19,10 +19,13 @@ commands below. Companion docs: [DATAHUB_HACKATHON_PLAN.md](DATAHUB_HACKATHON_PL
 | Read-path proof | impact route reads downstream lineage from DataHub and cross-checks | `app/api/datahub/impact/route.ts` |
 | API | `/api/datahub/sync` · `/api/datahub/impact` · `/api/datahub/twin` | `app/api/datahub/` |
 | **Lineage UI** | click a node → blast radius + cited reasoning + write-back state | `/lineage` page |
-| Examples | 5 real generated artifacts + README | `examples/` |
-| Tests | 52 passing (15 DataHub) | `tests/datahub.test.ts` |
+| **Deterministic reroute in the flow** | weighted Dijkstra around the failed node, in the API response, the cited rationale, AND the incident written to DataHub | impact route + `rationale.ts` |
+| **Public zero-login demo** 🌟 | judges hit `<LIVE_URL>/demo` and immediately break a built-in semiconductor twin (dual fabs, air-freight backup lane) — no account, no CSV, no database | `/demo` + `lib/datahub/demo-twin.ts` |
+| Examples | 6 real generated artifacts + README | `examples/` |
+| Tests | 57 passing (20 DataHub) | `tests/datahub.test.ts` |
 | **Apache-2.0 LICENSE** | mandatory gate — in repo + package.json | `LICENSE` |
 | README | DataHub section + env vars + pre-existing-code disclosure | `README.md` |
+| **Devpost copy, ready to paste** | every form field pre-written (pitch, what-it-does, challenges, disclosure) | `docs/DEVPOST_SUBMISSION.md` |
 
 ---
 
@@ -64,13 +67,18 @@ NEXT_PUBLIC_DATAHUB_URL=http://localhost:9002
 pnpm dev   # start REROUTE
 ```
 
-1. Open **/lineage** in REROUTE. Header badge should read **“DataHub connected”**.
-2. Pick a supply chain → click **Sync to DataHub**. Expect “Synced N aspects”.
+1. Open **/demo** (no login needed!) or **/lineage**. Header badge should read
+   **“DataHub connected”**.
+2. On /demo the **Semiconductor APAC (demo)** chain is pre-selected → click
+   **Sync to DataHub**. Expect “Synced N aspects”. (On /lineage you can also
+   pick any of your own chains — the demo chain is in every dropdown.)
 3. In the DataHub UI, search one of your node names — the dataset should exist
    with **Lineage** (upstream/downstream), **Properties** (risk, leadTime), and
    **Ownership** if you set owners.
-4. Back in `/lineage`, **click a node** to fail it. Expect: blast radius lights
-   up + cited reasoning panel + **“Incident written back to DataHub.”**
+4. **Click the “Port of Singapore” node** to fail it. Expect: blast radius
+   lights up, **Alternate routes** panel shows the HK air-freight recovery
+   (+$ but −17d) and one severed lane, cited reasoning panel renders, and
+   **“Incident written back to DataHub.”**
 5. In DataHub, open that node → **Incidents** tab: the incident is there; the
    impacted nodes carry `reroute-impacted` tags.
 
@@ -108,7 +116,11 @@ Smoke-test the deployed URL: sign in → /lineage → click a node.
 
 Follow the shot list in [DATAHUB_HACKATHON_PLAN.md §7](DATAHUB_HACKATHON_PLAN.md).
 Practical tips:
-- Screen-record at 1080p; split-screen **REROUTE /lineage (left)** and the
+- **Record on `/demo`** — it's the cleanest surface (no sidebar noise) and lets
+  you say “try this yourself, no login” on camera.
+- Fail **Port of Singapore**: it gives the best story — big blast radius, one
+  feasible air-freight reroute (−17 days!), one severed lane, High severity.
+- Screen-record at 1080p; split-screen **REROUTE /demo (left)** and the
   **DataHub UI (right)** for the trigger→write-back moment — that split screen
   IS the winning shot.
 - Script beats: hook (war-room pain) → twin lives in DataHub → click node →
@@ -120,16 +132,10 @@ Practical tips:
 
 ### Step 6 — Submit on Devpost (~1 session)
 
-Fill the form with:
-- **What it does / how DataHub is used:** lean on README’s “DataHub Integration”
-  section — reads lineage/ownership via GraphQL, writes incidents/tags/docs
-  back, custom `reroute` data platform, deterministic blast-radius engine.
-- **Built with:** Next.js, TypeScript, DataHub (GraphQL + OpenAPI), Google ADK,
-  Gemini, Supabase, Tailwind.
-- **Links:** public repo, live URL, video.
-- **Disclosure:** copy the “Pre-existing code disclosure” paragraph from the
-  README verbatim into the submission text. It is required and it protects you.
-- `examples/` folder is already in the repo — mention it explicitly.
+**Every field is pre-written in [DEVPOST_SUBMISSION.md](DEVPOST_SUBMISSION.md)** —
+paste each section, replacing `<LIVE_URL>`, `<REPO_URL>`, `<VIDEO_URL>`.
+Include the disclosure paragraph verbatim (required, and it protects you), and
+put **`<LIVE_URL>/demo`** first in the links — that’s the judge’s one-click try.
 
 ✅ *Done when:* Devpost shows “Submitted”.
 

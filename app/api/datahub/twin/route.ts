@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
 import { loadTwin } from "@/lib/datahub/twin-source"
 import { isConfigured } from "@/lib/datahub/client"
+import { DEMO_TWIN, DEMO_TWIN_ID } from "@/lib/datahub/demo-twin"
 
 // Return a supply-chain twin in the DataHub graph shape, for the Lineage UI to
-// render. Read-only; independent of whether DataHub itself is configured.
+// render. Read-only; independent of whether DataHub itself is configured. The
+// built-in demo twin is served without a database (public /demo page).
 
 export async function GET(req: NextRequest) {
   try {
@@ -11,7 +13,7 @@ export async function GET(req: NextRequest) {
     if (!supplyChainId) {
       return NextResponse.json({ error: "supplyChainId is required." }, { status: 400 })
     }
-    const twin = await loadTwin(supplyChainId)
+    const twin = supplyChainId === DEMO_TWIN_ID ? DEMO_TWIN : await loadTwin(supplyChainId)
     if (!twin) {
       return NextResponse.json({ error: "Supply chain not found or empty." }, { status: 404 })
     }

@@ -27,8 +27,13 @@ assessments, incidents, and reroute decisions back so the graph stays truthful.*
 | API routes | `app/api/datahub/{sync,impact,twin}/route.ts` | ✅ |
 | **Blast-radius UI** (lineage graph + impact panel) | `app/(main)/lineage/` + `components/lineage/*` | ✅ |
 | Sidebar nav entry | `components/app-sidebar.tsx` | ✅ |
-| Sample outputs | `examples/` (5 real artifacts + README) | ✅ |
-| Tests | `tests/datahub.test.ts` | ✅ 15 tests (52 total) |
+| **Deterministic reroute in the impact flow** (Dijkstra, in rationale + write-back) | impact route + `rationale.ts` | ✅ + tests |
+| **Public zero-login demo** (built-in twin, no DB) | `app/demo/` + `lib/datahub/demo-twin.ts` | ✅ |
+| Custom `reroute` data platform registration | `lib/datahub/emit.ts` | ✅ |
+| Apache-2.0 LICENSE (mandatory gate) | `LICENSE` | ✅ |
+| Devpost copy, ready to paste | `docs/DEVPOST_SUBMISSION.md` | ✅ |
+| Sample outputs | `examples/` (6 real artifacts + README) | ✅ |
+| Tests | `tests/datahub.test.ts` | ✅ 20 tests (57 total) |
 | README disclosure + env | `README.md` | ✅ |
 
 **Verified real API shapes used:** emit via `POST /openapi/entities/v1/`

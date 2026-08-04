@@ -1,0 +1,71 @@
+{
+  "failedNode": "port-sg",
+  "failedLabel": "Port of Singapore",
+  "reroutes": [
+    {
+      "from": "subcon-my",
+      "fromLabel": "Assembly & Test (Malaysia)",
+      "to": "dc-us",
+      "toLabel": "US Distribution (Dallas)",
+      "brokenCost": 2900,
+      "brokenTime": 20,
+      "alternate": {
+        "path": [
+          "subcon-my",
+          "air-hk",
+          "dc-us"
+        ],
+        "labels": [
+          "Assembly & Test (Malaysia)",
+          "HK Air Cargo Hub",
+          "US Distribution (Dallas)"
+        ],
+        "cost": 5700,
+        "time": 4,
+        "hops": 2
+      },
+      "addedCost": 2800,
+      "addedTime": -16,
+      "feasible": true
+    },
+    {
+      "from": "subcon-my",
+      "fromLabel": "Assembly & Test (Malaysia)",
+      "to": "dc-nl",
+      "toLabel": "EU Distribution (Rotterdam)",
+      "brokenCost": 2500,
+      "brokenTime": 23,
+      "alternate": null,
+      "addedCost": null,
+      "addedTime": null,
+      "feasible": false
+    },
+    {
+      "from": "subcon-ph",
+      "fromLabel": "Assembly & Test (Philippines)",
+      "to": "dc-nl",
+      "toLabel": "EU Distribution (Rotterdam)",
+      "brokenCost": 2650,
+      "brokenTime": 24,
+      "alternate": null,
+      "addedCost": null,
+      "addedTime": null,
+      "feasible": false
+    },
+    {
+      "from": "subcon-ph",
+      "fromLabel": "Assembly & Test (Philippines)",
+      "to": "dc-us",
+      "toLabel": "US Distribution (Dallas)",
+      "brokenCost": 3050,
+      "brokenTime": 21,
+      "alternate": null,
+      "addedCost": null,
+      "addedTime": null,
+      "feasible": false
+    }
+  ],
+  "feasibleCount": 1,
+  "infeasibleCount": 3,
+  "severity": "High"
+}

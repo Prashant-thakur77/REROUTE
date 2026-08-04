@@ -4,6 +4,8 @@ import { blastRadius } from "@/lib/datahub/impact"
 import { buildTwinAspects } from "@/lib/datahub/emit"
 import { buildGroundedRationale } from "@/lib/datahub/rationale"
 import { nodeUrn as urnOf } from "@/lib/datahub/urn"
+import { DEMO_TWIN, DEMO_TWIN_ID, isDemoNodeId } from "@/lib/datahub/demo-twin"
+import { rerouteAroundNode } from "@/lib/routing"
 import type { TwinGraph } from "@/lib/datahub/types"
 
 // A small chain:  S(supplier) → F(factory) → W(warehouse) → R(retailer)
@@ -128,5 +130,59 @@ describe("buildGroundedRationale", () => {
     // no lineage, no owners → 0.4 confidence → below 0.6 threshold
     expect(r.confidence).toBeLessThan(0.6)
     expect(r.needsReview).toBe(true)
+  })
+
+  it("cites the best feasible reroute, grounded in the segment's URN", () => {
+    const toRaw = (g: TwinGraph) => ({
+      nodes: g.nodes.map((n) => ({ id: n.id, label: n.name ?? n.id })),
+      edges: g.edges,
+    })
+    const raw = toRaw(DEMO_TWIN)
+    const rr = rerouteAroundNode(raw.nodes, raw.edges, "port-sg")
+    const blast = blastRadius(DEMO_TWIN, "port-sg")
+    const r = buildGroundedRationale(DEMO_TWIN, blast, rr)
+
+    const best = rr.reroutes.find((x) => x.feasible)!
+    expect(best).toBeTruthy() // the air-freight lane makes at least one segment recoverable
+    const rerouteClaim = r.claims.find((c) => c.text.startsWith("Alternate route:"))!
+    expect(rerouteClaim).toBeTruthy()
+    expect(rerouteClaim.urn).toBe(urnOf(DEMO_TWIN_ID, best.from))
+    expect(r.summary).toContain("Reroute available")
+  })
+
+  it("states when no feasible reroute exists", () => {
+    // In the small `twin` fixture, W has one pred (F) and one succ (R) but no
+    // alternate path F→R avoiding W — every broken segment is severed.
+    const raw = { nodes: twin.nodes.map((n) => ({ id: n.id, label: n.name ?? n.id })), edges: twin.edges }
+    const rr = rerouteAroundNode(raw.nodes, raw.edges, "W")
+    expect(rr.feasibleCount).toBe(0)
+    const r = buildGroundedRationale(twin, blastRadius(twin, "W"), rr)
+    expect(r.claims.some((c) => c.text.includes("No feasible alternate route"))).toBe(true)
+    expect(r.summary).toContain("No feasible reroute")
+  })
+})
+
+describe("demo twin", () => {
+  it("recognises demo node ids", () => {
+    expect(isDemoNodeId("port-sg")).toBe(true)
+    expect(isDemoNodeId("nonexistent")).toBe(false)
+  })
+
+  it("has full redundancy value: every mid-chain failure leaves retailers reachable or flagged", () => {
+    const blast = blastRadius(DEMO_TWIN, "wafer-tw")
+    // Failing the risky Taiwan fab impacts both retail networks downstream.
+    const ids = blast.impacted.map((n) => n.id)
+    expect(ids).toContain("retail-eu")
+    expect(ids).toContain("retail-us")
+    // But the Korea fab is NOT impacted (it's a parallel supplier).
+    expect(ids).not.toContain("wafer-kr")
+  })
+
+  it("port-sg failure has a feasible air-freight reroute to the US", () => {
+    const raw = { nodes: DEMO_TWIN.nodes.map((n) => ({ id: n.id, label: n.name ?? n.id })), edges: DEMO_TWIN.edges }
+    const rr = rerouteAroundNode(raw.nodes, raw.edges, "port-sg")
+    expect(rr.feasibleCount).toBeGreaterThan(0) // subcon-my → air-hk → dc-us
+    expect(rr.infeasibleCount).toBeGreaterThan(0) // no alternate to dc-nl → High severity story
+    expect(rr.severity).toBe("High")
   })
 })

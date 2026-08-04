@@ -12,7 +12,7 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.wafer-tw,PROD)",
     "aspect": {
       "__type": "DatasetProperties",
       "name": "TSMC Wafer Fab (Taiwan)",
@@ -20,13 +20,14 @@
       "customProperties": {
         "type": "Supplier",
         "country": "Taiwan",
+        "leadTime": "30",
         "risk": "82"
       }
     }
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.wafer-tw,PROD)",
     "aspect": {
       "__type": "Ownership",
       "owners": [
@@ -39,7 +40,35 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.wafer-kr,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "Samsung Foundry (Korea)",
+      "description": "Supplier in South Korea · risk 35",
+      "customProperties": {
+        "type": "Supplier",
+        "country": "South Korea",
+        "leadTime": "34",
+        "risk": "35"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.wafer-kr,PROD)",
+    "aspect": {
+      "__type": "Ownership",
+      "owners": [
+        {
+          "owner": "urn:li:corpuser:kim",
+          "type": "TECHNICAL_OWNER"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-my,PROD)",
     "aspect": {
       "__type": "DatasetProperties",
       "name": "Assembly & Test (Malaysia)",
@@ -47,13 +76,14 @@
       "customProperties": {
         "type": "Manufacturer",
         "country": "Malaysia",
+        "leadTime": "9",
         "risk": "40"
       }
     }
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-my,PROD)",
     "aspect": {
       "__type": "Ownership",
       "owners": [
@@ -66,12 +96,16 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-my,PROD)",
     "aspect": {
       "__type": "UpstreamLineage",
       "upstreams": [
         {
-          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.wafer-tw,PROD)",
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.wafer-tw,PROD)",
+          "type": "TRANSFORMED"
+        },
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.wafer-kr,PROD)",
           "type": "TRANSFORMED"
         }
       ]
@@ -79,7 +113,48 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.port-sg,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-ph,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "Assembly & Test (Philippines)",
+      "description": "Manufacturer in Philippines · risk 45",
+      "customProperties": {
+        "type": "Manufacturer",
+        "country": "Philippines",
+        "leadTime": "11",
+        "risk": "45"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-ph,PROD)",
+    "aspect": {
+      "__type": "Ownership",
+      "owners": [
+        {
+          "owner": "urn:li:corpuser:ops",
+          "type": "TECHNICAL_OWNER"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-ph,PROD)",
+    "aspect": {
+      "__type": "UpstreamLineage",
+      "upstreams": [
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.wafer-tw,PROD)",
+          "type": "TRANSFORMED"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.port-sg,PROD)",
     "aspect": {
       "__type": "DatasetProperties",
       "name": "Port of Singapore",
@@ -87,18 +162,23 @@
       "customProperties": {
         "type": "Port",
         "country": "Singapore",
+        "leadTime": "4",
         "risk": "55"
       }
     }
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.port-sg,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.port-sg,PROD)",
     "aspect": {
       "__type": "UpstreamLineage",
       "upstreams": [
         {
-          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.subcon-my,PROD)",
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-my,PROD)",
+          "type": "TRANSFORMED"
+        },
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-ph,PROD)",
           "type": "TRANSFORMED"
         }
       ]
@@ -106,7 +186,35 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.air-hk,PROD)",
+    "aspect": {
+      "__type": "DatasetProperties",
+      "name": "HK Air Cargo Hub",
+      "description": "Port in Hong Kong · risk 38",
+      "customProperties": {
+        "type": "Port",
+        "country": "Hong Kong",
+        "leadTime": "1",
+        "risk": "38"
+      }
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.air-hk,PROD)",
+    "aspect": {
+      "__type": "UpstreamLineage",
+      "upstreams": [
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.subcon-my,PROD)",
+          "type": "TRANSFORMED"
+        }
+      ]
+    }
+  },
+  {
+    "entityType": "dataset",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-nl,PROD)",
     "aspect": {
       "__type": "DatasetProperties",
       "name": "EU Distribution (Rotterdam)",
@@ -114,13 +222,14 @@
       "customProperties": {
         "type": "Distribution",
         "country": "Netherlands",
+        "leadTime": "3",
         "risk": "30"
       }
     }
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-nl,PROD)",
     "aspect": {
       "__type": "Ownership",
       "owners": [
@@ -133,12 +242,12 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-nl,PROD)",
     "aspect": {
       "__type": "UpstreamLineage",
       "upstreams": [
         {
-          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.port-sg,PROD)",
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.port-sg,PROD)",
           "type": "TRANSFORMED"
         }
       ]
@@ -146,7 +255,7 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-us,PROD)",
     "aspect": {
       "__type": "DatasetProperties",
       "name": "US Distribution (Dallas)",
@@ -154,13 +263,14 @@
       "customProperties": {
         "type": "Distribution",
         "country": "USA",
+        "leadTime": "2",
         "risk": "25"
       }
     }
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-us,PROD)",
     "aspect": {
       "__type": "Ownership",
       "owners": [
@@ -173,12 +283,16 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-us,PROD)",
     "aspect": {
       "__type": "UpstreamLineage",
       "upstreams": [
         {
-          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.port-sg,PROD)",
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.port-sg,PROD)",
+          "type": "TRANSFORMED"
+        },
+        {
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.air-hk,PROD)",
           "type": "TRANSFORMED"
         }
       ]
@@ -186,7 +300,7 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-eu,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.retail-eu,PROD)",
     "aspect": {
       "__type": "DatasetProperties",
       "name": "EU Retail Network",
@@ -200,7 +314,7 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-eu,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.retail-eu,PROD)",
     "aspect": {
       "__type": "Ownership",
       "owners": [
@@ -213,12 +327,12 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-eu,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.retail-eu,PROD)",
     "aspect": {
       "__type": "UpstreamLineage",
       "upstreams": [
         {
-          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-nl,PROD)",
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-nl,PROD)",
           "type": "TRANSFORMED"
         }
       ]
@@ -226,7 +340,7 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-us,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.retail-us,PROD)",
     "aspect": {
       "__type": "DatasetProperties",
       "name": "US Retail Network",
@@ -240,7 +354,7 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-us,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.retail-us,PROD)",
     "aspect": {
       "__type": "Ownership",
       "owners": [
@@ -253,12 +367,12 @@
   },
   {
     "entityType": "dataset",
-    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.retail-us,PROD)",
+    "entityUrn": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.retail-us,PROD)",
     "aspect": {
       "__type": "UpstreamLineage",
       "upstreams": [
         {
-          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,semi-apac.dc-us,PROD)",
+          "dataset": "urn:li:dataset:(urn:li:dataPlatform:reroute,demo-semi-apac.dc-us,PROD)",
           "type": "TRANSFORMED"
         }
       ]

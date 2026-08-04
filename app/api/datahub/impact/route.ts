@@ -6,10 +6,16 @@ import { recordDisruption } from "@/lib/datahub/writeback"
 import { getDownstream } from "@/lib/datahub/read"
 import { nodeUrn } from "@/lib/datahub/urn"
 import { isConfigured } from "@/lib/datahub/client"
+import { DEMO_TWIN, DEMO_TWIN_ID, isDemoNodeId } from "@/lib/datahub/demo-twin"
+import { rerouteAroundNode, formatReroute } from "@/lib/routing"
 
-// Phase C + E — compute the deterministic downstream blast radius of a failed
-// node, then (if DataHub is configured and record=true) write the disruption
-// back to DataHub as an incident + tags + documentation.
+// Phase C + D + E — deterministic downstream blast radius of a failed node,
+// deterministic reroute around it (weighted Dijkstra), a grounded rationale
+// citing DataHub URNs, then (if DataHub is configured and record=true) the
+// disruption written back to DataHub as an incident + tags + documentation.
+//
+// Demo-twin nodes are served without a database so the public /demo page works
+// logged-out — including real DataHub write-back when configured.
 
 export async function POST(req: NextRequest) {
   try {
@@ -18,18 +24,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "nodeId is required." }, { status: 400 })
     }
 
-    const supplyChainId = await findSupplyChainId(nodeId)
+    const isDemo = isDemoNodeId(nodeId)
+    const supplyChainId = isDemo ? DEMO_TWIN_ID : await findSupplyChainId(nodeId)
     if (!supplyChainId) {
       return NextResponse.json({ error: "Node not found in any supply chain." }, { status: 404 })
     }
 
-    const twin = await loadTwin(supplyChainId)
+    const twin = isDemo ? DEMO_TWIN : await loadTwin(supplyChainId)
     if (!twin) {
       return NextResponse.json({ error: "Supply chain not found or empty." }, { status: 404 })
     }
 
+    // The math decides: blast radius + alternate routes, both deterministic.
     const blast = blastRadius(twin, nodeId)
-    const grounded = buildGroundedRationale(twin, blast)
+    const reroute = rerouteAroundNode(
+      twin.nodes.map((n) => ({ id: n.id, label: n.name ?? n.id })),
+      twin.edges,
+      nodeId
+    )
+    const grounded = buildGroundedRationale(twin, blast, reroute)
 
     // Read-path: when DataHub is the source of truth, pull the downstream lineage
     // back from DataHub and cross-check it against our local computation.
@@ -62,6 +75,19 @@ export async function POST(req: NextRequest) {
         confidence: grounded.confidence,
         needsReview: grounded.needsReview,
         claims: grounded.claims,
+      },
+      reroute: {
+        severity: reroute.severity,
+        feasibleCount: reroute.feasibleCount,
+        infeasibleCount: reroute.infeasibleCount,
+        top: reroute.reroutes.slice(0, 3).map((r) => ({
+          fromLabel: r.fromLabel,
+          toLabel: r.toLabel,
+          feasible: r.feasible,
+          route: formatReroute(r),
+          addedCost: r.addedCost,
+          addedTime: r.addedTime,
+        })),
       },
       dataHub: { configured: isConfigured(), recorded: Boolean(incidentUrn), incidentUrn, lineageCheck },
     })

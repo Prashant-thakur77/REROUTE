@@ -402,9 +402,16 @@ lineage back from DataHub, and REROUTE **writes its decisions back** — raising
 **documentation** — so the graph stays truthful and the next person/agent inherits it.
 
 - **Read** — GMS GraphQL `scrollAcrossLineage` / `dataset.ownership` (`lib/datahub/read.ts`).
-- **Emit** — OpenAPI `/openapi/entities/v1/` upsert of `DatasetProperties` / `Ownership` / `UpstreamLineage` (`lib/datahub/emit.ts`).
+- **Emit** — OpenAPI `/openapi/entities/v1/` upsert of `DatasetProperties` / `Ownership` / `UpstreamLineage` + a custom `reroute` `DataPlatformInfo` (`lib/datahub/emit.ts`).
 - **Write-back** — GraphQL `raiseIncident` / `addTags` / `updateDescription` (`lib/datahub/writeback.ts`).
 - **Impact** — deterministic downstream blast radius over the lineage DAG, unit tested (`lib/datahub/impact.ts`).
+- **Reroute** — weighted-Dijkstra alternate routes around the failed node, stated in the URN-cited rationale and written into the DataHub incident (`lib/datahub/rationale.ts`).
+
+**🎮 Try it without an account:** the public **`/demo`** page serves a built-in
+semiconductor twin (dual fabs, dual assembly sites, an air-freight backup lane)
+with no database — click **Port of Singapore** and watch the blast radius,
+the alternate-route recovery, and (when DataHub is configured) the incident
+appear in DataHub.
 
 DataHub is **optional**: with `DATAHUB_GMS_URL` unset, every entry point no-ops and
 REROUTE runs exactly as before. See [`docs/DATAHUB_HACKATHON_PLAN.md`](docs/DATAHUB_HACKATHON_PLAN.md).

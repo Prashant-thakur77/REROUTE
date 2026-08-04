@@ -1,18 +1,28 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { Loader2, Database, Zap, ShieldAlert, ExternalLink, CheckCircle2, AlertTriangle } from "lucide-react"
+import { Loader2, Database, Zap, ShieldAlert, ExternalLink, CheckCircle2, AlertTriangle, Route } from "lucide-react"
 import { useUser } from "@/lib/stores/user"
 import { getSupplyChains } from "@/lib/api/supply-chain"
 import { PageHeader } from "@/components/ui/page-header"
 import { Reveal } from "@/components/motion"
 import { LineageGraph, type ImpactMeta } from "./lineage-graph"
 
+const DEMO_CHAIN = { id: "demo-semi-apac", name: "Semiconductor APAC (demo)" }
+
 interface TwinNode { id: string; name?: string; type?: string; owner?: string; risk?: number }
 interface TwinEdge { source: string; target: string }
 interface Twin { supplyChainId: string; nodes: TwinNode[]; edges: TwinEdge[] }
 
 interface GroundedClaim { text: string; urn: string }
+interface RerouteTop {
+  fromLabel: string
+  toLabel: string
+  feasible: boolean
+  route: string
+  addedCost: number | null
+  addedTime: number | null
+}
 interface ImpactResponse {
   failedNodeId: string
   totalSeverity: number
@@ -20,6 +30,7 @@ interface ImpactResponse {
   impacted: { id: string; name: string; type: string; hops: number; severity: number; owner?: string }[]
   rationale: string
   grounded: { confidence: number; needsReview: boolean; claims: GroundedClaim[] }
+  reroute?: { severity: "Low" | "Medium" | "High"; feasibleCount: number; infeasibleCount: number; top: RerouteTop[] }
   dataHub: { configured: boolean; recorded: boolean; incidentUrn: string | null }
 }
 
@@ -28,10 +39,10 @@ const DATAHUB_UI = process.env.NEXT_PUBLIC_DATAHUB_URL?.replace(/\/+$/, "")
 const datasetLink = (urn: string) =>
   DATAHUB_UI ? `${DATAHUB_UI}/dataset/${encodeURIComponent(urn)}/` : null
 
-export function LineageView() {
+export function LineageView({ demoMode = false }: { demoMode?: boolean }) {
   const { userData } = useUser()
-  const [chains, setChains] = useState<{ id: string; name: string }[]>([])
-  const [chainId, setChainId] = useState<string>("")
+  const [chains, setChains] = useState<{ id: string; name: string }[]>(demoMode ? [DEMO_CHAIN] : [])
+  const [chainId, setChainId] = useState<string>(demoMode ? DEMO_CHAIN.id : "")
   const [twin, setTwin] = useState<Twin | null>(null)
   const [twinLoading, setTwinLoading] = useState(false)
   const [dhConfigured, setDhConfigured] = useState(false)
@@ -41,13 +52,17 @@ export function LineageView() {
   const [sync, setSync] = useState<{ loading: boolean; msg?: string }>({ loading: false })
 
   useEffect(() => {
+    if (demoMode) return // fixed demo chain; no account needed
     if (!userData?.id) return
     getSupplyChains(userData.id)
       .then((cs) =>
-        setChains(cs.map((c: any) => ({ id: c.supply_chain_id, name: c.name ?? c.supply_chain_id })))
+        setChains([
+          ...cs.map((c: any) => ({ id: c.supply_chain_id, name: c.name ?? c.supply_chain_id })),
+          DEMO_CHAIN, // always offer the built-in demo twin
+        ])
       )
-      .catch(() => setChains([]))
-  }, [userData?.id])
+      .catch(() => setChains([DEMO_CHAIN]))
+  }, [userData?.id, demoMode])
 
   useEffect(() => {
     if (!chainId) return
@@ -180,6 +195,19 @@ export function LineageView() {
                   {chainId ? "This supply chain has no nodes." : "Select a supply chain to view its lineage."}
                 </div>
               )}
+              {/* Legend */}
+              <div className="mt-3 flex flex-wrap items-center gap-4 text-[11px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-sm border-2 border-[#DC2626] bg-[#DC2626]/15" /> Failed
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-sm border-2 border-[#F59E0B] bg-[#F59E0B]/15" /> Impacted (heat = severity)
+                </span>
+                <span className="inline-flex items-center gap-1.5">
+                  <span className="h-2.5 w-2.5 rounded-sm border border-border" /> Unaffected
+                </span>
+                <span className="ml-auto hidden sm:inline">Material flow: left → right</span>
+              </div>
             </div>
           </Reveal>
 
@@ -276,6 +304,42 @@ function ImpactPanel({
               </ul>
             </div>
           ) : null}
+
+          {/* Deterministic reroute — the REROUTE namesake, math not LLM */}
+          {impact.reroute && impact.reroute.top.length > 0 && (
+            <div>
+              <div className="mb-2 flex items-center justify-between">
+                <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <Route className="h-3.5 w-3.5" /> Alternate routes
+                </h3>
+                <span
+                  className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                    impact.reroute.severity === "High"
+                      ? "bg-theme-red/10 text-theme-red"
+                      : impact.reroute.severity === "Medium"
+                        ? "bg-theme-amber/10 text-theme-amber"
+                        : "bg-theme-green/10 text-theme-green"
+                  }`}
+                >
+                  {impact.reroute.severity} · {impact.reroute.feasibleCount}/{impact.reroute.feasibleCount + impact.reroute.infeasibleCount} recoverable
+                </span>
+              </div>
+              <ul className="space-y-1.5">
+                {impact.reroute.top.map((r, i) => (
+                  <li
+                    key={i}
+                    className={`rounded-lg border p-2.5 text-xs ${
+                      r.feasible
+                        ? "border-theme-green/25 bg-theme-green/5 text-foreground"
+                        : "border-theme-red/25 bg-theme-red/5 text-muted-foreground"
+                    }`}
+                  >
+                    {r.route}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Owners to notify */}
           {impact.affectedOwners.length > 0 && (

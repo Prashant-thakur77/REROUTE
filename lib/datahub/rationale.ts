@@ -4,6 +4,7 @@
 // threshold — but grounds claims in graph facts (URNs) rather than web sources.
 
 import { nodeUrn } from "./urn"
+import { formatReroute, type RerouteResult } from "@/lib/routing"
 import type { BlastRadius, TwinGraph } from "./types"
 
 // Below this, a human should verify before acting (same bar as lib/grounding.ts).
@@ -35,8 +36,15 @@ const round = (n: number) => Math.round(n * 100) / 100
  *   + 0.2  if the failure has downstream lineage (impact is observable)
  *   + 0.2  if every impacted node has a known type (graph is well-formed)
  *   + 0.2  if at least one impacted node has an owner (the alert is routable)
+ *
+ * When a deterministic reroute result is provided, the rationale also states the
+ * best alternate route (or that none is feasible), grounded in the segment URNs.
  */
-export function buildGroundedRationale(graph: TwinGraph, blast: BlastRadius): GroundedRationale {
+export function buildGroundedRationale(
+  graph: TwinGraph,
+  blast: BlastRadius,
+  reroute?: RerouteResult
+): GroundedRationale {
   const { supplyChainId } = graph
   const { failedNodeId, impacted, totalSeverity, affectedOwners } = blast
 
@@ -80,10 +88,30 @@ export function buildGroundedRationale(graph: TwinGraph, blast: BlastRadius): Gr
     })
   }
 
+  // Deterministic reroute outcome (weighted Dijkstra around the failed node).
+  let rerouteLine = ""
+  if (reroute && reroute.reroutes.length > 0) {
+    const best = reroute.reroutes.find((r) => r.feasible)
+    if (best) {
+      claims.push({
+        text: `Alternate route: ${formatReroute(best)}.`,
+        urn: nodeUrn(supplyChainId, best.from),
+      })
+      rerouteLine = `Reroute available (${reroute.feasibleCount}/${reroute.reroutes.length} segments recoverable). `
+    } else {
+      claims.push({
+        text: `No feasible alternate route around ${failedName} — all ${reroute.reroutes.length} broken segment(s) are severed.`,
+        urn: failedUrn,
+      })
+      rerouteLine = `No feasible reroute — escalate. `
+    }
+  }
+
   const summary =
     `Disruption at ${failedName} impacts ${impacted.length} downstream node(s) ` +
     `(blast-radius ${totalSeverity}). ` +
     (routable ? `Notify: ${affectedOwners.join(", ")}. ` : `No owners on impacted nodes. `) +
+    rerouteLine +
     `Confidence ${Math.round(confidence * 100)}%` +
     (confidence < REVIEW_THRESHOLD ? " — needs human review." : ".")
 

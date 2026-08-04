@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { loadTwin } from "@/lib/datahub/twin-source"
 import { syncTwin, isConfigured } from "@/lib/datahub/emit"
+import { DEMO_TWIN, DEMO_TWIN_ID } from "@/lib/datahub/demo-twin"
 
 // Phase A — push a supply-chain twin INTO DataHub as datasets + lineage +
 // ownership, so the supply chain becomes a first-class metadata graph.
@@ -18,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "supplyChainId is required." }, { status: 400 })
     }
 
-    const twin = await loadTwin(supplyChainId)
+    const twin = supplyChainId === DEMO_TWIN_ID ? DEMO_TWIN : await loadTwin(supplyChainId)
     if (!twin) {
       return NextResponse.json({ error: "Supply chain not found or empty." }, { status: 404 })
     }
