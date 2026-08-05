@@ -4,6 +4,7 @@ import { blastRadius } from "@/lib/datahub/impact"
 import { buildGroundedRationale } from "@/lib/datahub/rationale"
 import { recordDisruption } from "@/lib/datahub/writeback"
 import { getDownstream } from "@/lib/datahub/read"
+import { mcpGetDownstream } from "@/lib/datahub/mcp"
 import { nodeUrn } from "@/lib/datahub/urn"
 import { isConfigured } from "@/lib/datahub/client"
 import { DEMO_TWIN, DEMO_TWIN_ID, isDemoNodeId } from "@/lib/datahub/demo-twin"
@@ -46,14 +47,24 @@ export async function POST(req: NextRequest) {
 
     // Read-path: when DataHub is the source of truth, pull the downstream lineage
     // back from DataHub and cross-check it against our local computation.
-    let lineageCheck: { source: "datahub" | "local"; datahubDownstream: number; agrees: boolean } | null = null
+    // Preferred transport is the official DataHub MCP Server (get_lineage tool);
+    // direct GMS GraphQL is the fallback.
+    let lineageCheck:
+      | { source: "datahub-mcp" | "datahub-graphql" | "local"; datahubDownstream: number; agrees: boolean }
+      | null = null
     if (isConfigured()) {
       try {
-        const dh = await getDownstream(nodeUrn(supplyChainId, nodeId))
+        const urn = nodeUrn(supplyChainId, nodeId)
+        const viaMcp = await mcpGetDownstream(urn)
+        const dh = viaMcp ?? (await getDownstream(urn))
         const dhIds = new Set(dh.map((h) => h.nodeId).filter(Boolean) as string[])
         const localIds = new Set(blast.impacted.map((n) => n.id))
         const agrees = dhIds.size === localIds.size && [...localIds].every((id) => dhIds.has(id))
-        lineageCheck = { source: "datahub", datahubDownstream: dhIds.size, agrees }
+        lineageCheck = {
+          source: viaMcp ? "datahub-mcp" : "datahub-graphql",
+          datahubDownstream: dhIds.size,
+          agrees,
+        }
       } catch {
         lineageCheck = { source: "local", datahubDownstream: 0, agrees: false }
       }

@@ -401,7 +401,7 @@ lineage back from DataHub, and REROUTE **writes its decisions back** — raising
 **incident**, **tagging** impacted nodes, and posting the blast-radius rationale as
 **documentation** — so the graph stays truthful and the next person/agent inherits it.
 
-- **Read** — GMS GraphQL `scrollAcrossLineage` / `dataset.ownership` (`lib/datahub/read.ts`).
+- **Read (MCP Server)** — the agent reads lineage through the official [DataHub MCP Server](https://github.com/acryldata/mcp-server-datahub) (`get_lineage` tool, stdio transport) in `lib/datahub/mcp.ts`, falling back to GMS GraphQL `scrollAcrossLineage` / `dataset.ownership` (`lib/datahub/read.ts`). Install the MCP server with `pip install mcp-server-datahub` (optional — GraphQL fallback covers everything).
 - **Emit** — OpenAPI `/openapi/entities/v1/` upsert of `DatasetProperties` / `Ownership` / `UpstreamLineage` + a custom `reroute` `DataPlatformInfo` (`lib/datahub/emit.ts`).
 - **Write-back** — GraphQL `raiseIncident` / `addTags` / `updateDescription` (`lib/datahub/writeback.ts`).
 - **Impact** — deterministic downstream blast radius over the lineage DAG, unit tested (`lib/datahub/impact.ts`).

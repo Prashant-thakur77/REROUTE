@@ -51,8 +51,12 @@ on top that does the work a war-room does.
 5. **Writes knowledge back** — the disruption becomes a DataHub **incident**,
    impacted assets get **tags**, and the rationale lands as **documentation** —
    so the graph stays truthful and the next person or agent inherits it.
-6. **Cross-checks itself** — the agent reads the downstream lineage **back from
-   DataHub** and verifies it agrees with the local computation.
+6. **Cross-checks itself via MCP** — the agent reads the downstream lineage back
+   through the **DataHub MCP Server** (`get_lineage`) and verifies DataHub's
+   graph agrees with the local computation before acting.
+7. **Closes the loop** — when the operator actions the reroute, REROUTE
+   **resolves the incident** in DataHub. Raise → investigate → resolve, full
+   lifecycle in the graph.
 
 **Try it with zero setup:** `<LIVE_URL>/demo` — public, no login, running on the
 built-in semiconductor twin (dual fabs, dual assembly sites, an air-freight
@@ -60,10 +64,13 @@ backup lane).
 
 ## How we built it
 
-- **DataHub (open source)** — GMS **GraphQL** (`scrollAcrossLineage`,
-  `raiseIncident`, `addTags`, `updateDescription`, ownership queries) + the
+- **DataHub (open source) + the official MCP Server** — the agent reads lineage
+  through **`mcp-server-datahub`** (the `get_lineage` MCP tool over stdio), with
+  GMS **GraphQL** as fallback (`scrollAcrossLineage`, `raiseIncident`, `addTags`,
+  `updateIncidentStatus`, `updateDescription`, ownership queries) + the
   **OpenAPI entities endpoint** for aspect upserts (`DatasetProperties`,
-  `Ownership`, `UpstreamLineage`, `DataPlatformInfo`).
+  `Ownership`, `UpstreamLineage`, `Domains`, `CorpUserInfo`,
+  `InstitutionalMemory`, `DataPlatformInfo`, `TagProperties`).
 - **Next.js 16 / TypeScript / React 19** — app, API routes, and the lineage UI
   (pure layered-DAG layout, SVG, theme-aware).
 - **Deterministic core** — graph algorithms (BFS blast radius, weighted
