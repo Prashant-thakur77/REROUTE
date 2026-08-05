@@ -5,7 +5,7 @@
 // buildTwinAspects() is pure (no network) and unit tested; syncTwin() posts them.
 
 import { upsertAspects, isConfigured, type AspectUpsert } from "./client"
-import { nodeUrn, corpUserUrn, PLATFORM } from "./urn"
+import { nodeUrn, corpUserUrn, PLATFORM, TAGS } from "./urn"
 import type { TwinGraph, TwinNode } from "./types"
 
 export { isConfigured }
@@ -29,14 +29,37 @@ export function buildPlatformAspect(): AspectUpsert {
 }
 
 /**
+ * REROUTE's tag entities. Tags must exist in DataHub before `addTags` can
+ * attach them to a dataset (attaching an unknown tag URN is rejected), so the
+ * sync creates them up front.
+ */
+export function buildTagAspects(): AspectUpsert[] {
+  const describe: Record<string, string> = {
+    [TAGS.atRisk]: "Node with an active REROUTE disruption",
+    [TAGS.impacted]: "Node inside the blast radius of a REROUTE disruption",
+    [TAGS.rerouted]: "Node on an active REROUTE alternate route",
+  }
+  return Object.entries(describe).map(([urn, description]) => ({
+    entityType: "tag",
+    entityUrn: urn,
+    aspect: {
+      __type: "TagProperties",
+      name: urn.replace(/^urn:li:tag:/, ""),
+      description,
+    },
+  }))
+}
+
+/**
  * Build the full aspect list for a twin — DatasetProperties + Ownership +
  * UpstreamLineage per node. Deterministic and side-effect free.
  */
 export function buildTwinAspects(graph: TwinGraph): AspectUpsert[] {
   const { supplyChainId, nodes, edges } = graph
 
-  // Register the custom platform first so datasets attach to it.
-  const out0: AspectUpsert[] = [buildPlatformAspect()]
+  // Register the custom platform + REROUTE's tags first so datasets can attach
+  // to them.
+  const out0: AspectUpsert[] = [buildPlatformAspect(), ...buildTagAspects()]
 
   // incoming edges per target node → upstream datasets (source feeds target).
   const upstreamsByTarget = new Map<string, string[]>()

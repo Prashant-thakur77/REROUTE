@@ -31,61 +31,41 @@ commands below. Companion docs: [DATAHUB_HACKATHON_PLAN.md](DATAHUB_HACKATHON_PL
 
 ## Part 2 — 🧑 Your steps, in order
 
-### Step 1 — Stand up DataHub (~1 session)
+### ~~Step 1 — Stand up DataHub~~ ✅ DONE (Claude ran it on 2026-08-05)
 
-**Decide first:** local Quickstart (fastest to try) vs **DataHub Cloud trial**
-(needed if you want the *deployed* site to write back — a Cloud Run app cannot
-reach your laptop's localhost). Recommended: start local today, request the
-cloud trial in parallel.
-
-**Local Quickstart (needs Docker + ~8 GB free RAM):**
-```bash
-# 1. Install the CLI
-python3 -m pip install --upgrade acryl-datahub
-
-# 2. Launch DataHub (pulls containers; first run takes minutes)
-datahub docker quickstart
-
-# 3. Open the UI and sign in (default user/pass on first run: datahub / datahub)
-#    UI:  http://localhost:9002       GMS API:  http://localhost:8080
-```
-
-**Create an access token:** UI → ⚙️ Settings → Access Tokens → Generate.
-
-**Wire REROUTE to it — add to your `.env`:**
+DataHub is **installed and running on this machine** (CLI 1.7.0, quickstart
+containers all healthy). Local GMS auth is disabled by default, so **no token
+was needed**; `.env.local` already contains:
 ```env
 DATAHUB_GMS_URL=http://localhost:8080
-DATAHUB_TOKEN=<the token you generated>
 NEXT_PUBLIC_DATAHUB_URL=http://localhost:9002
 ```
+- DataHub UI: **http://localhost:9002** (login `datahub` / `datahub`)
+- Containers keep running in Docker. Pause: `datahub docker quickstart --stop`;
+  resume: `datahub docker quickstart` (fast after first run).
+- ⚠️ For the **deployed** site to write back you still need a reachable DataHub
+  (DataHub Cloud trial or a VM) — localhost only works for local demos/video.
 
-✅ *Done when:* the DataHub UI loads and you have a token in `.env`.
+### ~~Step 2 — Live round-trip smoke test~~ ✅ DONE (verified end-to-end)
 
-### Step 2 — Live round-trip smoke test (~1 session)
+Claude ran the full loop against the live DataHub and verified from both sides:
+- **Sync:** 30 aspects (10 datasets + ownership + lineage + platform + 3 tags).
+- **Impact on `port-sg`:** blast-radius 8.4, 4 impacted, 4 owners; reroute found
+  the HK air-freight recovery (**+$2800, −16d**) with 3 lanes severed (High).
+- **Write-back:** incident `urn:li:incident:a189a95e…` created, `reroute-at-risk`
+  tag attached, rationale posted — confirmed by querying DataHub GraphQL directly.
+- **Read-path cross-check:** DataHub's own lineage agreed with the local math
+  (`lineageCheck.agrees: true`).
+- One bug was found live and fixed: tag entities must exist before `addTags`
+  (now emitted during sync; write-back also hardened to never lose the incident).
 
-```bash
-pnpm dev   # start REROUTE
-```
+**Your only Step-2 task now (5 min, fun):** see it with your own eyes —
+`pnpm dev` (or `npx next start`) → open **http://localhost:3000/demo** → click
+**Port of Singapore** → then open http://localhost:9002, search "Port of
+Singapore", check the **Incidents** tab. This is exactly what you'll film.
 
-1. Open **/demo** (no login needed!) or **/lineage**. Header badge should read
-   **“DataHub connected”**.
-2. On /demo the **Semiconductor APAC (demo)** chain is pre-selected → click
-   **Sync to DataHub**. Expect “Synced N aspects”. (On /lineage you can also
-   pick any of your own chains — the demo chain is in every dropdown.)
-3. In the DataHub UI, search one of your node names — the dataset should exist
-   with **Lineage** (upstream/downstream), **Properties** (risk, leadTime), and
-   **Ownership** if you set owners.
-4. **Click the “Port of Singapore” node** to fail it. Expect: blast radius
-   lights up, **Alternate routes** panel shows the HK air-freight recovery
-   (+$ but −17d) and one severed lane, cited reasoning panel renders, and
-   **“Incident written back to DataHub.”**
-5. In DataHub, open that node → **Incidents** tab: the incident is there; the
-   impacted nodes carry `reroute-impacted` tags.
-
-If anything 4xx/5xxs: tell Claude the exact response body — likely a small
-aspect-shape fix (one session, done together).
-
-✅ *Done when:* incident + tags + lineage all visible in the DataHub UI.
+> Note: the smoke test raised 2 identical incidents on port-sg (first run
+> pre-fix). Resolve one in the DataHub UI if you want a clean video shot.
 
 ### Step 3 — Make the repo public (5 min)
 

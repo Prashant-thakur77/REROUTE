@@ -74,14 +74,19 @@ export async function recordDisruption(
     rationale
   )
 
-  await tagNodes(supplyChainId, [failedNodeId], [TAGS.atRisk])
-  await tagNodes(
-    supplyChainId,
-    impacted.map((n) => n.id),
-    [TAGS.impacted]
-  )
-
-  await postDescription(supplyChainId, failedNodeId, rationale)
+  // Tags and docs are best-effort — a failure here (e.g. tag entity missing on
+  // an instance synced before tags existed) must not lose the incident.
+  try {
+    await tagNodes(supplyChainId, [failedNodeId], [TAGS.atRisk])
+    await tagNodes(
+      supplyChainId,
+      impacted.map((n) => n.id),
+      [TAGS.impacted]
+    )
+    await postDescription(supplyChainId, failedNodeId, rationale)
+  } catch (err) {
+    console.warn("[datahub/writeback] tags/docs partial failure:", (err as Error)?.message)
+  }
 
   return incidentUrn
 }
