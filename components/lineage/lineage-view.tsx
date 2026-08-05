@@ -230,6 +230,26 @@ function ImpactPanel({
   loading: boolean
   failedId: string | null
 }) {
+  const [resolveState, setResolveState] = useState<"idle" | "working" | "done">("idle")
+
+  useEffect(() => setResolveState("idle"), [impact?.dataHub?.incidentUrn])
+
+  async function resolve() {
+    const urn = impact?.dataHub?.incidentUrn
+    if (!urn) return
+    setResolveState("working")
+    try {
+      const r = await fetch("/api/datahub/resolve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ incidentUrn: urn }),
+      })
+      setResolveState(r.ok ? "done" : "idle")
+    } catch {
+      setResolveState("idle")
+    }
+  }
+
   if (!failedId) {
     return (
       <div className="flex h-full min-h-[16rem] flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/50 p-6 text-center text-sm text-muted-foreground">
@@ -356,9 +376,29 @@ function ImpactPanel({
           {/* DataHub write-back state */}
           <div className="rounded-lg border border-border bg-muted/40 p-3 text-xs">
             {impact.dataHub.recorded ? (
-              <p className="flex items-center gap-1.5 text-theme-green">
-                <CheckCircle2 className="h-3.5 w-3.5" /> Incident written back to DataHub
-              </p>
+              <div className="space-y-2">
+                <p className="flex items-center gap-1.5 text-theme-green">
+                  <CheckCircle2 className="h-3.5 w-3.5" /> Incident written back to DataHub
+                </p>
+                {resolveState === "done" ? (
+                  <p className="flex items-center gap-1.5 text-theme-green">
+                    <CheckCircle2 className="h-3.5 w-3.5" /> Incident resolved in DataHub
+                  </p>
+                ) : (
+                  <button
+                    onClick={resolve}
+                    disabled={resolveState === "working"}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-[11px] font-semibold text-foreground transition-colors hover:bg-accent disabled:opacity-50"
+                  >
+                    {resolveState === "working" ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <CheckCircle2 className="h-3 w-3" />
+                    )}
+                    Reroute actioned — resolve incident
+                  </button>
+                )}
+              </div>
             ) : impact.dataHub.configured ? (
               <p className="text-muted-foreground">DataHub connected — write-back skipped for this run.</p>
             ) : (

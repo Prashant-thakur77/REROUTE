@@ -103,6 +103,21 @@ describe("buildTwinAspects", () => {
     const f = lineage.find((a) => a.entityUrn === nodeUrn("sc1", "F"))!
     expect((f.aspect as any).upstreams[0].dataset).toBe(nodeUrn("sc1", "S"))
   })
+
+  it("creates the governance domain and assigns every node to it", () => {
+    const domain = aspects.filter((a) => a.aspect.__type === "DomainProperties")
+    expect(domain).toHaveLength(1)
+    const assignments = aspects.filter((a) => a.aspect.__type === "Domains")
+    expect(assignments).toHaveLength(5) // every node
+    expect((assignments[0].aspect as any).domains).toEqual(["urn:li:domain:reroute-supply-chain"])
+  })
+
+  it("creates corpUser profiles for each distinct owner", () => {
+    const users = aspects.filter((a) => a.aspect.__type === "CorpUserInfo")
+    expect(users).toHaveLength(3) // alice, bob, carol
+    const alice = users.find((a) => a.entityUrn === "urn:li:corpuser:alice")!
+    expect((alice.aspect as any).email).toBe("alice@acme.co")
+  })
 })
 
 describe("buildGroundedRationale", () => {

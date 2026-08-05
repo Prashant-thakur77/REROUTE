@@ -11,6 +11,6 @@ export { PLATFORM, nodeUrn, parseNodeUrn, corpUserUrn, tagUrn, TAGS } from "./ur
 export { blastRadius } from "./impact"
 export { buildGroundedRationale, REVIEW_THRESHOLD } from "./rationale"
 export type { GroundedRationale, GroundedClaim } from "./rationale"
-export { buildTwinAspects, syncTwin } from "./emit"
+export { buildTwinAspects, buildDomainAspect, buildOwnerAspects, syncTwin } from "./emit"
 export { getDownstream, getOwners, entityExists } from "./read"
-export { raiseIncident, tagNodes, postDescription, recordDisruption } from "./writeback"
+export { raiseIncident, resolveIncident, tagNodes, postDescription, recordDisruption } from "./writeback"

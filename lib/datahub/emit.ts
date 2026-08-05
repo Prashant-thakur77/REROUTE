@@ -5,7 +5,7 @@
 // buildTwinAspects() is pure (no network) and unit tested; syncTwin() posts them.
 
 import { upsertAspects, isConfigured, type AspectUpsert } from "./client"
-import { nodeUrn, corpUserUrn, PLATFORM, TAGS } from "./urn"
+import { nodeUrn, corpUserUrn, PLATFORM, TAGS, DOMAIN_URN } from "./urn"
 import type { TwinGraph, TwinNode } from "./types"
 
 export { isConfigured }
@@ -50,16 +50,59 @@ export function buildTagAspects(): AspectUpsert[] {
   }))
 }
 
+/** Governance domain grouping every REROUTE supply-chain asset. */
+export function buildDomainAspect(): AspectUpsert {
+  return {
+    entityType: "domain",
+    entityUrn: DOMAIN_URN,
+    aspect: {
+      __type: "DomainProperties",
+      name: "Supply Chain",
+      description:
+        "Physical supply-chain nodes managed by REROUTE — suppliers, factories, ports, distribution, retail.",
+    },
+  }
+}
+
+/**
+ * Real corpUser profiles for node owners, so ownership renders as people with
+ * names in DataHub instead of bare URNs.
+ */
+export function buildOwnerAspects(graph: TwinGraph): AspectUpsert[] {
+  const owners = new Map<string, string>() // urn → display handle
+  for (const n of graph.nodes) {
+    if (!n.owner) continue
+    owners.set(corpUserUrn(n.owner), n.owner)
+  }
+  return Array.from(owners.entries()).map(([urn, handle]) => ({
+    entityType: "corpUser",
+    entityUrn: urn,
+    aspect: {
+      __type: "CorpUserInfo",
+      active: true,
+      displayName: handle.includes("@") ? handle.split("@")[0] : handle,
+      email: handle.includes("@") ? handle : undefined,
+      title: "Supply-chain owner",
+    },
+  }))
+}
+
 /**
  * Build the full aspect list for a twin — DatasetProperties + Ownership +
- * UpstreamLineage per node. Deterministic and side-effect free.
+ * UpstreamLineage + Domains + a link back to REROUTE per node. Deterministic
+ * and side-effect free (the doc link timestamp is fixed at 0 = "unknown").
  */
 export function buildTwinAspects(graph: TwinGraph): AspectUpsert[] {
   const { supplyChainId, nodes, edges } = graph
 
-  // Register the custom platform + REROUTE's tags first so datasets can attach
-  // to them.
-  const out0: AspectUpsert[] = [buildPlatformAspect(), ...buildTagAspects()]
+  // Register the custom platform, REROUTE's tags, the governance domain, and
+  // owner profiles first so datasets can attach to them.
+  const out0: AspectUpsert[] = [
+    buildPlatformAspect(),
+    ...buildTagAspects(),
+    buildDomainAspect(),
+    ...buildOwnerAspects(graph),
+  ]
 
   // incoming edges per target node → upstream datasets (source feeds target).
   const upstreamsByTarget = new Map<string, string[]>()
@@ -103,6 +146,32 @@ export function buildTwinAspects(graph: TwinGraph): AspectUpsert[] {
         aspect: {
           __type: "UpstreamLineage",
           upstreams: upstreams.map((ds) => ({ dataset: ds, type: "TRANSFORMED" })),
+        },
+      })
+    }
+
+    // Governance: every node belongs to the Supply Chain domain.
+    out.push({
+      entityType: "dataset",
+      entityUrn: urn,
+      aspect: { __type: "Domains", domains: [DOMAIN_URN] },
+    })
+
+    // Bidirectional loop: each DataHub asset links back to the live REROUTE view.
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? process.env.APP_URL
+    if (appUrl) {
+      out.push({
+        entityType: "dataset",
+        entityUrn: urn,
+        aspect: {
+          __type: "InstitutionalMemory",
+          elements: [
+            {
+              url: `${appUrl.replace(/\/+$/, "")}/demo`,
+              description: "Open this node in REROUTE (lineage, blast radius, reroutes)",
+              createStamp: { time: 0, actor: "urn:li:corpuser:__datahub_system" },
+            },
+          ],
         },
       })
     }

@@ -26,6 +26,21 @@ export async function raiseIncident(
   return data.raiseIncident ?? null
 }
 
+/**
+ * Resolve an incident in DataHub (full lifecycle: REROUTE raises it on
+ * disruption and resolves it when the operator closes the loop).
+ */
+export async function resolveIncident(incidentUrn: string, message: string): Promise<boolean> {
+  if (!isConfigured()) return false
+  await graphql(
+    `mutation Resolve($urn: String!, $input: IncidentStatusInput!) {
+      updateIncidentStatus(urn: $urn, input: $input)
+    }`,
+    { urn: incidentUrn, input: { state: "RESOLVED", message } }
+  )
+  return true
+}
+
 /** Add tags to a node. No-op when unconfigured. */
 export async function tagNodes(
   supplyChainId: string,

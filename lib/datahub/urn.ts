@@ -36,3 +36,6 @@ export const TAGS = {
   rerouted: tagUrn("reroute-rerouted"),
   impacted: tagUrn("reroute-impacted"),
 } as const
+
+/** Governance domain that groups all REROUTE supply-chain assets. */
+export const DOMAIN_URN = "urn:li:domain:reroute-supply-chain"
